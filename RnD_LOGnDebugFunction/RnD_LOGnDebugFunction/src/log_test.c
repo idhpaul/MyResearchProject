@@ -2,6 +2,8 @@
 #include <string.h>
 #include "log_util.h"
 
+#define __DEBUG_PREPROCESSER 0
+
 int my_test_test_func(int value)
 {
     LOG_TRACE("TRACE LOG...1");
@@ -15,6 +17,10 @@ int main(int argc, char **argv)
 {
 	int ret;
 	int value = 0;
+
+#if __DEBUG_PREPROCESSER
+	printf("This Print Meaning Preprocesser is enable \n");
+#endif
 
 	LOGsetInfo(".", "LOG");
 	//LOGsetInfo(".", basename(argv[0]));
