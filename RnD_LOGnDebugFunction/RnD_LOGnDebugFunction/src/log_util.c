@@ -1,8 +1,6 @@
 #include <string.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <time.h>
-#include <sys/time.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <log_util.h>
@@ -92,7 +90,7 @@ int LOGsetInfo(const char *dir, const char *prefix)
 /*
 * LOGcreateFile 날짜가 변경되면 자동으로 새로운 파일이 생성됨
 */
-static int LOGcreateFile(struct tm *tm1, const char *src_file)
+static int LOGcreateFile(struct tm *t, const char *src_file)
 {
     char filename[1024];
     char *ext;
@@ -106,7 +104,7 @@ static int LOGcreateFile(struct tm *tm1, const char *src_file)
             *ext = 0x00;
         }
     }
-    snprintf(filename, 1024, "%s/%s-%04d%02d%02d.log", log_folder, log_file_prefix, 1900 + tm1->tm_year, tm1->tm_mon + 1, tm1->tm_mday);
+    snprintf(filename, 1024, "%s/%s-%04d-%02d-%02d %02d:%02d:%02d.log", log_folder, log_file_prefix, t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
 
     if(fp_log_file != NULL) {
         fclose(fp_log_file);
@@ -128,31 +126,24 @@ int LOGlogging(char log_type, const char *src_file, const char *func, int line_n
 {
     va_list ap;
     int  sz = 0;
-    struct timeval tv;
-    struct tm *tm1;
+	struct tm* t;
+	time_t timer = time(NULL);
     static int   day = -1;
-    static pid_t pid = -1;
     char   src_info[128];
 
-    gettimeofday(&tv, NULL);
-    tm1 = localtime(&tv.tv_sec);
+	localtime_s(&t, &timer);
     va_start(ap, fmt);
 
-    if(pid == -1) {
-        pid = getpid();
-    }
     /* 날짜가 변경되었으면 또는 최초 실행시에  */
-    if(day != tm1->tm_mday) {
-        if(LOGcreateFile(tm1, src_file) != 0) {
+    if(day != t->tm_mday) {
+        if(LOGcreateFile(t, src_file) != 0) {
             return -1;
         }
-        day = tm1->tm_mday;
+        day = t->tm_mday;
     }
 
     sz += fprintf(fp_log_file, "(%c) ", log_type);
-    sz += fprintf(fp_log_file, "%04d%02d%02d:%02d%02d%02d%06ld:%05d",
-                                1900 + tm1->tm_year, tm1->tm_mon + 1, tm1->tm_mday,
-                                tm1->tm_hour, tm1->tm_min, tm1->tm_sec, tv.tv_usec, pid);
+    sz += fprintf(fp_log_file, "%04d-%02d-%02d %02d:%02d:%02d", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
     snprintf(src_info, 128, "%s:%s(%d)", src_file, func, line_no);
     sz += fprintf(fp_log_file, ":%-50.50s: ", src_info);
     sz += vfprintf(fp_log_file, fmt, ap);

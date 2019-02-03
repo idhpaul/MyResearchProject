@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <libgen.h>
-#include <log_util.h>
+#include "log_util.h"
 
 int my_test_test_func(int value)
 {
@@ -17,7 +16,8 @@ int main(int argc, char **argv)
 	int ret;
 	int value = 0;
 
-    LOGsetInfo(".", basename(argv[0]));
+	LOGsetInfo(".", "LOG");
+	//LOGsetInfo(".", basename(argv[0]));
 
     LOG_TRACE("TRACE LOG...1");
     LOG_DEBUG("TEST");
