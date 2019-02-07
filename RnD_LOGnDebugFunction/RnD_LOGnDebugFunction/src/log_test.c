@@ -13,7 +13,7 @@ int my_test_test_func(int value)
     LOG_DEBUG("%s", "sample test");
 }
 
-int main(int argc, char **argv)
+int main(int argc, char* argv[])
 {
 	int ret;
 	int value = 0;

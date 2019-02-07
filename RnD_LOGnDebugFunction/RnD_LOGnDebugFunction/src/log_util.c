@@ -75,9 +75,8 @@ int LOGsetInfo(const char *dir, const char *prefix)
         return 0;
     }
 
-    strncpy(log_file_prefix, prefix, 64);
-    strncpy(log_folder,      dir,    1024);
-
+    strncpy(log_file_prefix, prefix, sizeof(log_file_prefix));
+    strncpy(log_folder,      dir,    sizeof(log_folder));
     if(fp_log_file != NULL) {
         fclose(fp_log_file);
         fp_log_file = NULL;
@@ -126,12 +125,17 @@ int LOGlogging(char log_type, const char *src_file, const char *func, int line_n
 {
     va_list ap;
     int  sz = 0;
+
+
+	time_t timer;
 	struct tm* t;
-	time_t timer = time(NULL);
+	time(&timer);
+	t = localtime(&timer);
+
+
     static int   day = -1;
     char   src_info[128];
 
-	localtime_s(&t, &timer);
     va_start(ap, fmt);
 
     /* 날짜가 변경되었으면 또는 최초 실행시에  */

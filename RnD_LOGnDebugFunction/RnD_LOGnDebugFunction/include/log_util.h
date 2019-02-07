@@ -27,9 +27,8 @@ int LOGgetLevel(void);
 * 함수의 실행 시작과 종료를 log로 생성하는 macro 함수
 */
 #define LOG_CALL(func)\
-	LOG_TRACE("%s #### starting...", #func);\
-	func;\
-	LOG_TRACE("%s #### end.", #func)
+	LOG_TRACE("%s #### starting...", func);\
+	LOG_TRACE("%s #### end.", func);
 
 /*
 * Trace Log를 생성하는 macro 함수
