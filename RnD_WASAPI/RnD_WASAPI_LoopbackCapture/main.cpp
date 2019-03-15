@@ -21,6 +21,8 @@
     if ((punk) != NULL)  \
                 { (punk)->Release(); (punk) = NULL; }
 
+//!FLAC Encode (Extern)
+extern int flac_encode(char *wasapi_pData, unsigned int wasapi_size);
 
 FILE* fp;
 
@@ -61,6 +63,16 @@ int MyAudioSink::CopyData(char *pData, UINT32 numFramesAvailable, BOOL *pbDone)
 {
 
 	printf("size : %d\n", numFramesAvailable);
+
+	/////////////////////////////////////////////////////////
+	//!FLAC Encoding
+
+	/*if (flac_encode(pData, numFramesAvailable) < 0) {
+		printf("failed to encode flac");
+		return -1;
+	}*/
+
+	/////////////////////////////////////////////////////////
 
 	send(clientsock, (char *)pData, numFramesAvailable, 0);
 
