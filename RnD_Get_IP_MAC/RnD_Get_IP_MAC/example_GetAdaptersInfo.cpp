@@ -1,3 +1,5 @@
+//! Source by : https://docs.microsoft.com/en-us/windows/desktop/api/iphlpapi/nf-iphlpapi-getadaptersinfo
+
 #include <winsock2.h>
 #include <iphlpapi.h>
 #include <stdio.h>
@@ -9,7 +11,7 @@
 
 /* Note: could also use malloc() and free() */
 
-int __cdecl main()
+int main()
 {
 
 	/* Declare and initialize variables */
