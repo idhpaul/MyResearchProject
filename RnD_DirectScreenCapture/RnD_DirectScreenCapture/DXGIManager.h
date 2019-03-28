@@ -17,7 +17,7 @@ enum CaptureSource
 	CSUndefined,
 	CSMonitor1,
 	CSMonitor2,
-    CSMonitor3,
+	CSMonitor3,
 	CSDesktop
 };
 
@@ -46,11 +46,11 @@ public:
 		ID3D11DeviceContext* pD3DDeviceContext,
 		IDXGIOutput1* pDXGIOutput1,
 		IDXGIOutputDuplication* pDXGIOutputDuplication);
-	
+
 	HRESULT GetDesc(DXGI_OUTPUT_DESC& desc);
 	HRESULT AcquireNextFrame(IDXGISurface1** pD3D11Texture2D, DXGIPointerInfo*& pDXGIPointer);
 	HRESULT ReleaseFrame();
-	
+
 	bool IsPrimary();
 
 private:
