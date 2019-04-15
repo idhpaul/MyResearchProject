@@ -54,7 +54,7 @@ int MyAudioSource::LoadData(UINT32 numFramesAvailable, char *pData, DWORD *pbDon
 {
 #if __SOCKET
 	recv(clientsock, pData, numFramesAvailable, 0);
-
+	//printf("%s\n", pData);
 	printf("recv\n");
 #else
 	int ret = fread(pData, 1, numFramesAvailable, fp);
@@ -209,7 +209,7 @@ int main()
 	memset(&clientsockinfo, 0, sizeof(clientsockinfo));
 
 	clientsockinfo.sin_family = AF_INET;
-	clientsockinfo.sin_addr.s_addr = inet_addr("192.168.0.3");
+	clientsockinfo.sin_addr.s_addr = inet_addr("192.168.0.154");
 	clientsockinfo.sin_port = htons(9999);
 
 	setsockopt(clientsock, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt, sizeof(opt));
