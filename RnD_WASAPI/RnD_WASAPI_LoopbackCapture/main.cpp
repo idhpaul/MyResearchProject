@@ -11,7 +11,7 @@
 #define __SOCKET 1
 
 // REFERENCE_TIME time units per second and per millisecond
-#define REFTIMES_PER_SEC 10000000
+#define REFTIMES_PER_SEC 1000000//10000000
 #define REFTIMES_PER_MILLISEC 10000
 
 #define EXIT_ON_ERROR(hres) \
@@ -108,7 +108,7 @@ BOOL AdjustFormatTo16Bits(WAVEFORMATEX *pwfx)
 HRESULT RecordAudioStream(MyAudioSink *pMySink)
 {
 	HRESULT         hr;
-	//    REFERENCE_TIME  hnsActualDuration;
+	REFERENCE_TIME  hnsActualDuration = REFTIMES_PER_SEC;
 	UINT32          bufferFrameCount;
 	UINT32          numFramesAvailable;
 	BYTE *          pData;
@@ -142,7 +142,8 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 
 	//hTimerWakeUp = CreateWaitableTimer(NULL, FALSE, NULL);
 
-	hr = pAudioClient->Initialize(AUDCLNT_SHAREMODE_SHARED, AUDCLNT_STREAMFLAGS_LOOPBACK, 0, 0, pwfx, NULL);
+	//hr = pAudioClient->Initialize(AUDCLNT_SHAREMODE_SHARED, AUDCLNT_STREAMFLAGS_LOOPBACK, 0, 0, pwfx, NULL);
+	hr = pAudioClient->Initialize(AUDCLNT_SHAREMODE_SHARED, AUDCLNT_STREAMFLAGS_LOOPBACK, hnsActualDuration, 0, pwfx, NULL);
 	//EXIT_ON_ERROR(hr)
 
 		// Get the size of the allocated buffer.
@@ -165,6 +166,8 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 		// Calculate the actual duration of the allocated buffer.
 	//    hnsActualDuration = (double)REFTIMES_PER_SEC * bufferFrameCount / pwfx->nSamplesPerSec;
 
+	hnsActualDuration = (double)REFTIMES_PER_SEC * bufferFrameCount / pwfx->nSamplesPerSec;
+
 	hr = pAudioClient->Start();  // Start recording.
 //EXIT_ON_ERROR(hr)
 
@@ -174,6 +177,11 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 	while (bDone == FALSE)
 	{
 		//WaitForMultipleObjects(sizeof(waitArray) / sizeof(waitArray[0]), waitArray, FALSE, INFINITE);
+
+		Sleep(hnsActualDuration / REFTIMES_PER_MILLISEC / 2);
+
+		hr = pCaptureClient->GetNextPacketSize(&packetLength);
+		EXIT_ON_ERROR(hr)
 
 		hr = pCaptureClient->GetNextPacketSize(&packetLength);
 		EXIT_ON_ERROR(hr)
@@ -193,6 +201,7 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 
 					hr = pCaptureClient->GetNextPacketSize(&packetLength);
 				EXIT_ON_ERROR(hr)
+
 			}
 	}
 
