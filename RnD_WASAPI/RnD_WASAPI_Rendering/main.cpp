@@ -10,7 +10,7 @@
 
 #define __SOCKET 1
 
-#define REFTIMES_PER_SEC        10000000
+#define REFTIMES_PER_SEC        1000000
 #define REFTIMES_PER_MILLISEC   10000
 
 #define EXIT_ON_ERROR(hres)  \
@@ -91,7 +91,7 @@ BOOL AdjustFormatTo16Bits(WAVEFORMATEX *pwfx)
 HRESULT PlayAudioStream(MyAudioSource *pMySource)
 {
 	HRESULT hr;
-	REFERENCE_TIME hnsRequestedDuration = REFTIMES_PER_SEC;
+	REFERENCE_TIME hnsRequestedDuration = 0;//REFTIMES_PER_SEC;
 	REFERENCE_TIME hnsActualDuration;
 	IMMDeviceEnumerator *pEnumerator = NULL;
 	IMMDevice *pDevice = NULL;
@@ -153,7 +153,7 @@ HRESULT PlayAudioStream(MyAudioSource *pMySource)
 		while (flags != AUDCLNT_BUFFERFLAGS_SILENT)
 		{
 			// Sleep for half the buffer duration.
-			//Sleep((DWORD)(hnsActualDuration / REFTIMES_PER_MILLISEC / 2));
+			Sleep((DWORD)(hnsActualDuration / REFTIMES_PER_MILLISEC / 2));
 
 			//printf("%d", hnsActualDuration / REFTIMES_PER_MILLISEC / 2);
 			//Sleep(5);
