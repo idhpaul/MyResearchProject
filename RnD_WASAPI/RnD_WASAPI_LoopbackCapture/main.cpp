@@ -75,6 +75,7 @@ int MyAudioSink::CopyData(char *pData, UINT32 numFramesAvailable, BOOL *pbDone)
 	/////////////////////////////////////////////////////////
 
 	send(clientsock, (char *)pData, numFramesAvailable, 0);
+	//printf("%s\n", pData);
 
 	if (pData != NULL)
 		fwrite(pData, numFramesAvailable, 1, fp);
