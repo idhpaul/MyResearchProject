@@ -11,6 +11,12 @@
 #define	SDL_USEREVENT_RENDER_IMAGE		0x0004
 #define	SDL_USEREVENT_RENDER_TEXT		0x0008
 
+const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
+
+SDL_Window *window = NULL;
+SDL_Renderer *renderer = NULL;
+SDL_Texture *texture = NULL;
+
 //static void
 //create_overlay(struct RTSPThreadParam *rtspParam, int ch) {
 //	int w, h;
@@ -205,6 +211,21 @@ ProcessEvent(SDL_Event *event) {
 		break;
 	case SDL_KEYDOWN:
 		//// switch between fullscreen?
+		
+		if (keyboard_state_array[SDL_SCANCODE_LCTRL] && keyboard_state_array[SDL_SCANCODE_LSHIFT] && keyboard_state_array[SDL_SCANCODE_F12]) {
+
+			printf("window resize\n");
+			printf("resize\n");
+
+			SDL_ShowWindow(window);
+			SDL_MaximizeWindow(window);
+			SDL_SetWindowResizable(window, SDL_TRUE);
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_MAXIMIZED);
+		}
+		if (keyboard_state_array[SDL_SCANCODE_LCTRL] && keyboard_state_array[SDL_SCANCODE_LSHIFT] && keyboard_state_array[SDL_SCANCODE_F11]) {
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			printf("window change\n");
+		}
 		//if ((event->key.keysym.sym == SDLK_RETURN)
 		//	&& (event->key.keysym.mod & KMOD_ALT)) {
 		//	switch_fullscreen();
@@ -353,12 +374,10 @@ int main()
 		return -1;
 	}
 
-	SDL_Window *window = NULL;
-	SDL_Renderer *renderer = NULL;
-	SDL_Texture *texture = NULL;
-
-	window = SDL_CreateWindow("SDL Window Title", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, 0/*SDL_WINDOW_RESIZEABLE*/);
+	window = SDL_CreateWindow("MSLM RX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1920, 1080, 0/*SDL_WINDOW_RESIZABLE*/);
 	renderer = SDL_CreateRenderer(window, -1, 0);
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32, SDL_TEXTUREACCESS_STREAMING, 1920, 1080);
+
 
 	while (true)
 	{
