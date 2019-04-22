@@ -75,7 +75,6 @@ int MyAudioSink::CopyData(char *pData, UINT32 numFramesAvailable, BOOL *pbDone)
 	/////////////////////////////////////////////////////////
 
 	send(clientsock, (char *)pData, numFramesAvailable, 0);
-	//printf("%s\n", pData);
 
 	if (pData != NULL)
 		fwrite(pData, numFramesAvailable, 1, fp);
@@ -180,9 +179,6 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 		//WaitForMultipleObjects(sizeof(waitArray) / sizeof(waitArray[0]), waitArray, FALSE, INFINITE);
 
 		Sleep(hnsActualDuration / REFTIMES_PER_MILLISEC / 2);
-
-		hr = pCaptureClient->GetNextPacketSize(&packetLength);
-		EXIT_ON_ERROR(hr)
 
 		hr = pCaptureClient->GetNextPacketSize(&packetLength);
 		EXIT_ON_ERROR(hr)
