@@ -2,6 +2,9 @@
 
 #include "SDL.h"
 
+#include <Windows.h>
+#pragma comment(lib,"ws2_32.lib")
+
 #ifdef main
 #undef main
 #endif
@@ -13,9 +16,205 @@
 
 const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
 
-SDL_Window *window = NULL;
-SDL_Renderer *renderer = NULL;
-SDL_Texture *texture = NULL;
+SDL_Window *window;
+SDL_Renderer *renderer;
+SDL_Texture *texture;
+
+
+#define DELTA_EPOCH_IN_USEC	11644473600000000Ui64
+// save files
+static FILE *savefp_keyts = NULL;
+
+static FILE *
+ga_save_init_internal(const char *filename, const char *mode) {
+	FILE *fp = NULL;
+	if (filename != NULL) {
+		fp = fopen(filename, mode);
+		if (fp == NULL) {
+			printf("save file: open %s failed.\n", filename);
+		}
+	}
+	return fp;
+}
+FILE *
+ga_save_init_txt(const char *filename) {
+	return ga_save_init_internal(filename, "wt");
+}
+int
+ga_save_close(FILE *fp) {
+	if (fp != NULL) {
+		fclose(fp);
+	}
+	return 0;
+}
+
+static unsigned __int64
+filetime_to_unix_epoch(const FILETIME *ft) {
+	unsigned __int64 res = (unsigned __int64)ft->dwHighDateTime << 32;
+	res |= ft->dwLowDateTime;
+	res /= 10;                   /* from 100 nano-sec periods to usec */
+	res -= DELTA_EPOCH_IN_USEC;  /* from Win epoch to Unix epoch */
+	return (res);
+}
+
+int
+gettimeofday(struct timeval *tv, void *tz) {
+	FILETIME  ft;
+	unsigned __int64 tim;
+	if (!tv) {
+		//errno = EINVAL;
+		return (-1);
+	}
+	GetSystemTimeAsFileTime(&ft);
+	tim = filetime_to_unix_epoch(&ft);
+	tv->tv_sec = (long)(tim / 1000000L);
+	tv->tv_usec = (long)(tim % 1000000L);
+	return (0);
+}
+
+int
+ga_save_printf(FILE *fp, const char *fmt, ...) {
+	int wlen;
+	va_list ap;
+	if (fp == NULL)
+		return -1;
+	va_start(ap, fmt);
+	wlen = vfprintf(fp, fmt, ap);
+	va_end(ap);
+	fflush(fp);
+	return wlen;
+}
+
+
+#define	SDL_EVENT_MSGTYPE_NULL		0
+#define	SDL_EVENT_MSGTYPE_KEYBOARD	1
+#define	SDL_EVENT_MSGTYPE_MOUSEKEY	2
+#define SDL_EVENT_MSGTYPE_MOUSEMOTION	3
+#define SDL_EVENT_MSGTYPE_MOUSEWHEEL	4
+
+struct sdlmsg_s {
+	unsigned short msgsize;		// size of this data-structure
+					// every message MUST start from a
+					// unsigned short message size
+					// the size includes the 'msgsize'
+	unsigned char msgtype;
+	unsigned char which;
+	unsigned char padding[60];	// must be large enough to fit
+					// all supported type of messages
+};
+typedef struct sdlmsg_s			sdlmsg_t;
+
+// keyboard event
+struct sdlmsg_keyboard_s {
+	unsigned short msgsize;
+	unsigned char msgtype;		// SDL_EVENT_MSGTYPE_KEYBOARD
+	unsigned char which;
+	unsigned char is_pressed;
+	unsigned char unused0;
+	unsigned short scancode;	// scancode
+	int sdlkey;			// SDLKey
+	unsigned int unicode;		// unicode or ASCII value
+	unsigned short sdlmod;		// SDLMod
+};
+typedef struct sdlmsg_keyboard_s	sdlmsg_keyboard_t;
+
+// mouse event
+struct sdlmsg_mouse_s {
+	unsigned short msgsize;
+	unsigned char msgtype;		// SDL_EVENT_MSGTYPE_MOUSEKEY
+					// SDL_EVENT_MSGTYPE_MOUSEMOTION
+					// SDL_EVENT_MSGTYPE_MOUSEWHEEL
+	unsigned char which;
+	unsigned char is_pressed;	// for mouse button
+	unsigned char mousebutton;	// mouse button
+	unsigned char mousestate;	// mouse stat
+	unsigned char relativeMouseMode;
+	unsigned short mousex;
+	unsigned short mousey;
+	unsigned short mouseRelX;
+	unsigned short mouseRelY;
+};
+typedef struct sdlmsg_mouse_s		sdlmsg_mouse_t;
+
+#define	VIDEO_SOURCE_CHANNEL_MAX	2
+static int windowSizeX[VIDEO_SOURCE_CHANNEL_MAX];
+static int windowSizeY[VIDEO_SOURCE_CHANNEL_MAX];
+// support resizable window
+static int nativeSizeX[VIDEO_SOURCE_CHANNEL_MAX];
+static int nativeSizeY[VIDEO_SOURCE_CHANNEL_MAX];
+
+static int
+xlat_mouseX(int ch, int x) {
+	return (1.0 * nativeSizeX[ch] / windowSizeX[ch]) * x;
+}
+
+static int
+xlat_mouseY(int ch, int y) {
+	return (1.0 * nativeSizeY[ch] / windowSizeY[ch]) * y;
+}
+
+
+sdlmsg_t *
+sdlmsg_keyboard(sdlmsg_t *msg, unsigned char pressed, unsigned short scancode, SDL_Keycode key, unsigned short mod, unsigned int unicode)
+{
+	sdlmsg_keyboard_t *msgk = (sdlmsg_keyboard_t*)msg;
+	//ga_error("sdl client: key event code=%x key=%x mod=%x pressed=%u\n", scancode, key, mod, pressed);
+	ZeroMemory(msg, sizeof(sdlmsg_keyboard_t));
+	msgk->msgsize = htons(sizeof(sdlmsg_keyboard_t));
+	msgk->msgtype = SDL_EVENT_MSGTYPE_KEYBOARD;
+	msgk->is_pressed = pressed;
+#if 1	// only support SDL2
+	msgk->scancode = htons(scancode);
+	msgk->sdlkey = htonl(key);
+	msgk->unicode = htonl(unicode);
+#endif
+	msgk->sdlmod = htons(mod);
+	return msg;
+}
+
+sdlmsg_t *
+sdlmsg_mousekey(sdlmsg_t *msg, unsigned char pressed, unsigned char button, unsigned short x, unsigned short y) {
+	sdlmsg_mouse_t *msgm = (sdlmsg_mouse_t*)msg;
+	//ga_error("sdl client: button event btn=%u pressed=%u\n", button, pressed);
+	ZeroMemory(msg, sizeof(sdlmsg_mouse_t));
+	msgm->msgsize = htons(sizeof(sdlmsg_mouse_t));
+	msgm->msgtype = SDL_EVENT_MSGTYPE_MOUSEKEY;
+	msgm->is_pressed = pressed;
+	msgm->mousex = htons(x);
+	msgm->mousey = htons(y);
+	msgm->mousebutton = button;
+	return msg;
+}
+
+#if 1	// only support SDL2
+sdlmsg_t *
+sdlmsg_mousewheel(sdlmsg_t *msg, unsigned short mousex, unsigned short mousey) {
+	sdlmsg_mouse_t *msgm = (sdlmsg_mouse_t*)msg;
+	//ga_error("sdl client: motion event x=%u y=%u\n", mousex, mousey);
+	ZeroMemory(msg, sizeof(sdlmsg_mouse_t));
+	msgm->msgsize = htons(sizeof(sdlmsg_mouse_t));
+	msgm->msgtype = SDL_EVENT_MSGTYPE_MOUSEWHEEL;
+	msgm->mousex = htons(mousex);
+	msgm->mousey = htons(mousey);
+	return msg;
+}
+#endif
+
+sdlmsg_t *
+sdlmsg_mousemotion(sdlmsg_t *msg, unsigned short mousex, unsigned short mousey, unsigned short relx, unsigned short rely, unsigned char state, int relativeMouseMode) {
+	sdlmsg_mouse_t *msgm = (sdlmsg_mouse_t*)msg;
+	//ga_error("sdl client: motion event x=%u y=%u\n", mousex, mousey);
+	ZeroMemory(msg, sizeof(sdlmsg_mouse_t));
+	msgm->msgsize = htons(sizeof(sdlmsg_mouse_t));
+	msgm->msgtype = SDL_EVENT_MSGTYPE_MOUSEMOTION;
+	msgm->mousestate = state;
+	msgm->relativeMouseMode = (relativeMouseMode != 0) ? 1 : 0;
+	msgm->mousex = htons(mousex);
+	msgm->mousey = htons(mousey);
+	msgm->mouseRelX = htons(relx);
+	msgm->mouseRelY = htons(rely);
+	return msg;
+}
 
 //static void
 //create_overlay(struct RTSPThreadParam *rtspParam, int ch) {
@@ -166,10 +365,10 @@ SDL_Texture *texture = NULL;
 
 void
 ProcessEvent(SDL_Event *event) {
-	/*sdlmsg_t m;
-	map<unsigned int, int>::iterator mi;
+	sdlmsg_t m;
+	//map<unsigned int, int>::iterator mi;
 	int ch;
-	struct timeval tv;*/
+	struct timeval tv;
 	//
 	switch (event->type) {
 	case SDL_KEYUP:
@@ -199,19 +398,25 @@ ProcessEvent(SDL_Event *event) {
 //					0/*event->key.keysym.unicode*/);
 //				ctrl_client_sendmsg(&m, sizeof(sdlmsg_keyboard_t));
 //			}
-//		if (savefp_keyts != NULL) {
-//			gettimeofday(&tv, NULL);
-//			ga_save_printf(savefp_keyts, "KEY-UP: %u.%06u scan 0x%04x sym 0x%04x mod 0x%04x\n",
-//				tv.tv_sec, tv.tv_usec,
-//				event->key.keysym.scancode,
-//				event->key.keysym.sym,
-//				event->key.keysym.mod);
-//		}
+
+		sdlmsg_keyboard(&m, 0,
+			event->key.keysym.scancode,
+			event->key.keysym.sym,
+			event->key.keysym.mod,
+			0/*event->key.keysym.unicode*/);
+
+		if (savefp_keyts != NULL) {
+			gettimeofday(&tv, NULL);
+			ga_save_printf(savefp_keyts, "KEY-UP: %u.%06u scan 0x%04x sym 0x%04x mod 0x%04x\n",
+				tv.tv_sec, tv.tv_usec,
+				event->key.keysym.scancode,
+				event->key.keysym.sym,
+				event->key.keysym.mod);
+		}
 		printf("key up\n");
 		break;
 	case SDL_KEYDOWN:
-		//// switch between fullscreen?
-		
+
 		if (keyboard_state_array[SDL_SCANCODE_LCTRL] && keyboard_state_array[SDL_SCANCODE_LSHIFT] && keyboard_state_array[SDL_SCANCODE_F12]) {
 
 			printf("window resize\n");
@@ -232,67 +437,57 @@ ProcessEvent(SDL_Event *event) {
 		//}
 		//else
 		//	//
-		//	if (rtspconf->ctrlenable) {
-		//		sdlmsg_keyboard(&m, 1,
-		//			event->key.keysym.scancode,
-		//			event->key.keysym.sym,
-		//			event->key.keysym.mod,
-		//			0/*event->key.keysym.unicode*/);
-		//		ctrl_client_sendmsg(&m, sizeof(sdlmsg_keyboard_t));
-		//	}
-		//if (savefp_keyts != NULL) {
-		//	gettimeofday(&tv, NULL);
-		//	ga_save_printf(savefp_keyts, "KEY-DN: %u.%06u scan 0x%04x sym 0x%04x mod 0x%04x\n",
-		//		tv.tv_sec, tv.tv_usec,
-		//		event->key.keysym.scancode,
-		//		event->key.keysym.sym,
-		//		event->key.keysym.mod);
-		//}
+
+		sdlmsg_keyboard(&m, 1,
+				event->key.keysym.scancode,
+				event->key.keysym.sym,
+				event->key.keysym.mod,
+				0/*event->key.keysym.unicode*/);
+			
+		if (savefp_keyts != NULL) {
+			gettimeofday(&tv, NULL);
+			ga_save_printf(savefp_keyts, "KEY-DOWN: %u.%06u scan 0x%04x sym 0x%04x mod 0x%04x\n",
+				tv.tv_sec, tv.tv_usec,
+				event->key.keysym.scancode,
+				event->key.keysym.sym,
+				event->key.keysym.mod);
+		}
 		printf("key down\n");
 		break;
 	case SDL_MOUSEBUTTONUP:
-		/*mi = windowId2ch.find(event->button.windowID);
-		if (mi != windowId2ch.end() && rtspconf->ctrlenable) {
-			ch = mi->second;
-			sdlmsg_mousekey(&m, 0, event->button.button,
-				xlat_mouseX(ch, event->button.x),
-				xlat_mouseY(ch, event->button.y));
-			ctrl_client_sendmsg(&m, sizeof(sdlmsg_mouse_t));
-		}*/
+
+		sdlmsg_mousekey(&m, 0, event->button.button,
+			event->button.x,
+			event->button.y);
+
 		printf("mouse up\n");
 		break;
 	case SDL_MOUSEBUTTONDOWN:
-		/*mi = windowId2ch.find(event->button.windowID);
-		if (mi != windowId2ch.end() && rtspconf->ctrlenable) {
-			ch = mi->second;
-			sdlmsg_mousekey(&m, 1, event->button.button,
-				xlat_mouseX(ch, event->button.x),
-				xlat_mouseY(ch, event->button.y));
-			ctrl_client_sendmsg(&m, sizeof(sdlmsg_mouse_t));
-		}*/
+
+		sdlmsg_mousekey(&m, 1, event->button.button,
+			event->button.x,
+			event->button.y);
+
 		printf("mouse down\n");
 		break;
 	case SDL_MOUSEMOTION:
-		/*mi = windowId2ch.find(event->motion.windowID);
-		if (mi != windowId2ch.end() && rtspconf->ctrlenable && rtspconf->sendmousemotion) {
-			ch = mi->second;
-			sdlmsg_mousemotion(&m,
-				xlat_mouseX(ch, event->motion.x),
-				xlat_mouseY(ch, event->motion.y),
-				xlat_mouseX(ch, event->motion.xrel),
-				xlat_mouseY(ch, event->motion.yrel),
-				event->motion.state,
-				relativeMouseMode == 0 ? 0 : 1);
-			ctrl_client_sendmsg(&m, sizeof(sdlmsg_mouse_t));
-		}*/
+
+		sdlmsg_mousemotion(&m,
+			event->motion.x,
+			event->motion.y,
+			event->motion.xrel,
+			event->motion.yrel,
+			event->motion.state,
+			0/*relativeMouseMode == 0 ? 0 : 1*/);
+
 		printf("mouse motion\n");
 		break;
 #if 1	// only support SDL2
 	case SDL_MOUSEWHEEL:
-		/*if (rtspconf->ctrlenable && rtspconf->sendmousemotion) {
-			sdlmsg_mousewheel(&m, event->motion.x, event->motion.y);
-			ctrl_client_sendmsg(&m, sizeof(sdlmsg_mouse_t));
-		}*/
+
+		sdlmsg_mousewheel(&m, event->motion.x, event->motion.y);
+
+		
 		printf("mouse wheel\n");
 		break;
 
@@ -368,6 +563,9 @@ ProcessEvent(SDL_Event *event) {
 int main()
 {
 	SDL_Event event;
+	char savefile_keyts[128] = "savefp_keyfile.txt";
+
+	savefp_keyts = ga_save_init_txt(savefile_keyts);
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		printf("SDL init failed: %s\n", SDL_GetError());
@@ -384,6 +582,11 @@ int main()
 		if (SDL_WaitEvent(&event)) {
 			ProcessEvent(&event);
 		}
+	}
+
+	if (savefp_keyts != NULL) {
+		ga_save_close(savefp_keyts);
+		savefp_keyts = NULL;
 	}
 
 	SDL_Quit();
