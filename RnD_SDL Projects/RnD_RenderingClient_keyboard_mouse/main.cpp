@@ -9,6 +9,13 @@
 #undef main
 #endif
 
+#define __SOCKET 1
+#if __SOCKET
+WSADATA wsadata;
+SOCKET clientSocket;
+struct sockaddr_in clientsockinfo;
+#endif
+
 #define	SDL_USEREVENT_CREATE_OVERLAY	0x0001
 #define	SDL_USEREVENT_OPEN_AUDIO		0x0002
 #define	SDL_USEREVENT_RENDER_IMAGE		0x0004
@@ -557,7 +564,42 @@ ProcessEvent(SDL_Event *event) {
 		// do nothing
 		break;
 	}
+#if __SOCKET
+	send(clientSocket, (char*)&m, sizeof(sdlmsg_t), 0);
+#endif
 	return;
+}
+
+int socket_init(void) {
+
+	int opt = 0;
+	int recvlen = 0;
+
+	if (WSAStartup(MAKEWORD(2, 2), &wsadata) != 0) {
+		printf("windows socket initialize failed\n");
+		return -1;
+	}
+
+	clientSocket = socket(PF_INET, SOCK_STREAM, 0);
+	if (clientSocket == INVALID_SOCKET) {
+		printf("failed to create socket");
+		return -1;
+	}
+
+	memset(&clientsockinfo, 0, sizeof(clientsockinfo));
+
+	clientsockinfo.sin_family = AF_INET;
+	clientsockinfo.sin_addr.s_addr = inet_addr("192.168.0.3");
+	clientsockinfo.sin_port = htons(9999);
+
+	setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt, sizeof(opt));
+
+	if (connect(clientSocket, (SOCKADDR*)&clientsockinfo, sizeof(clientsockinfo)) == SOCKET_ERROR) {
+		printf("faile to connect");
+		return -1;
+	}
+
+	printf("Socket Connected\n");
 }
 
 int main()
@@ -571,7 +613,9 @@ int main()
 		printf("SDL init failed: %s\n", SDL_GetError());
 		return -1;
 	}
-
+#if __SOCKET
+	socket_init();
+#endif
 	window = SDL_CreateWindow("MSLM RX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1920, 1080, 0/*SDL_WINDOW_RESIZABLE*/);
 	renderer = SDL_CreateRenderer(window, -1, 0);
 	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32, SDL_TEXTUREACCESS_STREAMING, 1920, 1080);
