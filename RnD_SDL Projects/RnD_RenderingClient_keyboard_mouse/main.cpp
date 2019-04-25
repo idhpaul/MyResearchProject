@@ -1,13 +1,17 @@
 #include <stdio.h>
 
-#include "SDL.h"
-
 #include <Windows.h>
 #pragma comment(lib,"ws2_32.lib")
+
+#include <map>
+using namespace std;
+typedef WORD KeySym;
 
 #ifdef main
 #undef main
 #endif
+
+#include "main.h"
 
 #define __SOCKET 1
 #if __SOCKET
@@ -21,127 +25,11 @@ struct sockaddr_in clientsockinfo;
 #define	SDL_USEREVENT_RENDER_IMAGE		0x0004
 #define	SDL_USEREVENT_RENDER_TEXT		0x0008
 
-const Uint8 *keyboard_state_array = SDL_GetKeyboardState(NULL);
-
 SDL_Window *window;
 SDL_Renderer *renderer;
 SDL_Texture *texture;
 
 
-#define DELTA_EPOCH_IN_USEC	11644473600000000Ui64
-// save files
-static FILE *savefp_keyts = NULL;
-
-static FILE *
-ga_save_init_internal(const char *filename, const char *mode) {
-	FILE *fp = NULL;
-	if (filename != NULL) {
-		fp = fopen(filename, mode);
-		if (fp == NULL) {
-			printf("save file: open %s failed.\n", filename);
-		}
-	}
-	return fp;
-}
-FILE *
-ga_save_init_txt(const char *filename) {
-	return ga_save_init_internal(filename, "wt");
-}
-int
-ga_save_close(FILE *fp) {
-	if (fp != NULL) {
-		fclose(fp);
-	}
-	return 0;
-}
-
-static unsigned __int64
-filetime_to_unix_epoch(const FILETIME *ft) {
-	unsigned __int64 res = (unsigned __int64)ft->dwHighDateTime << 32;
-	res |= ft->dwLowDateTime;
-	res /= 10;                   /* from 100 nano-sec periods to usec */
-	res -= DELTA_EPOCH_IN_USEC;  /* from Win epoch to Unix epoch */
-	return (res);
-}
-
-int
-gettimeofday(struct timeval *tv, void *tz) {
-	FILETIME  ft;
-	unsigned __int64 tim;
-	if (!tv) {
-		//errno = EINVAL;
-		return (-1);
-	}
-	GetSystemTimeAsFileTime(&ft);
-	tim = filetime_to_unix_epoch(&ft);
-	tv->tv_sec = (long)(tim / 1000000L);
-	tv->tv_usec = (long)(tim % 1000000L);
-	return (0);
-}
-
-int
-ga_save_printf(FILE *fp, const char *fmt, ...) {
-	int wlen;
-	va_list ap;
-	if (fp == NULL)
-		return -1;
-	va_start(ap, fmt);
-	wlen = vfprintf(fp, fmt, ap);
-	va_end(ap);
-	fflush(fp);
-	return wlen;
-}
-
-
-#define	SDL_EVENT_MSGTYPE_NULL		0
-#define	SDL_EVENT_MSGTYPE_KEYBOARD	1
-#define	SDL_EVENT_MSGTYPE_MOUSEKEY	2
-#define SDL_EVENT_MSGTYPE_MOUSEMOTION	3
-#define SDL_EVENT_MSGTYPE_MOUSEWHEEL	4
-
-struct sdlmsg_s {
-	unsigned short msgsize;		// size of this data-structure
-					// every message MUST start from a
-					// unsigned short message size
-					// the size includes the 'msgsize'
-	unsigned char msgtype;
-	unsigned char which;
-	unsigned char padding[60];	// must be large enough to fit
-					// all supported type of messages
-};
-typedef struct sdlmsg_s			sdlmsg_t;
-
-// keyboard event
-struct sdlmsg_keyboard_s {
-	unsigned short msgsize;
-	unsigned char msgtype;		// SDL_EVENT_MSGTYPE_KEYBOARD
-	unsigned char which;
-	unsigned char is_pressed;
-	unsigned char unused0;
-	unsigned short scancode;	// scancode
-	int sdlkey;			// SDLKey
-	unsigned int unicode;		// unicode or ASCII value
-	unsigned short sdlmod;		// SDLMod
-};
-typedef struct sdlmsg_keyboard_s	sdlmsg_keyboard_t;
-
-// mouse event
-struct sdlmsg_mouse_s {
-	unsigned short msgsize;
-	unsigned char msgtype;		// SDL_EVENT_MSGTYPE_MOUSEKEY
-					// SDL_EVENT_MSGTYPE_MOUSEMOTION
-					// SDL_EVENT_MSGTYPE_MOUSEWHEEL
-	unsigned char which;
-	unsigned char is_pressed;	// for mouse button
-	unsigned char mousebutton;	// mouse button
-	unsigned char mousestate;	// mouse stat
-	unsigned char relativeMouseMode;
-	unsigned short mousex;
-	unsigned short mousey;
-	unsigned short mouseRelX;
-	unsigned short mouseRelY;
-};
-typedef struct sdlmsg_mouse_s		sdlmsg_mouse_t;
 
 #define	VIDEO_SOURCE_CHANNEL_MAX	2
 static int windowSizeX[VIDEO_SOURCE_CHANNEL_MAX];
@@ -150,225 +38,317 @@ static int windowSizeY[VIDEO_SOURCE_CHANNEL_MAX];
 static int nativeSizeX[VIDEO_SOURCE_CHANNEL_MAX];
 static int nativeSizeY[VIDEO_SOURCE_CHANNEL_MAX];
 
-static int
-xlat_mouseX(int ch, int x) {
-	return (1.0 * nativeSizeX[ch] / windowSizeX[ch]) * x;
+static map<int, KeySym> keymap;
+static KeySym SDLKeyToKeySym(int sdlkey);
+
+static void
+SDLKeyToKeySym_init() {
+	unsigned short i;
+	//
+	keymap[SDLK_BACKSPACE] = VK_BACK;		//		= 8,
+	keymap[SDLK_TAB] = VK_TAB;		//		= 9,
+	keymap[SDLK_CLEAR] = VK_CLEAR;		//		= 12,
+	keymap[SDLK_RETURN] = VK_RETURN;		//		= 13,
+	keymap[SDLK_PAUSE] = VK_PAUSE;		//		= 19,
+	keymap[SDLK_ESCAPE] = VK_ESCAPE;		//		= 27,
+	// Latin 1: starting from space (0x20)
+	keymap[SDLK_SPACE] = VK_SPACE;		//		= 32,
+	// (0x20) space, exclam, quotedbl, numbersign, dollar, percent, ampersand,
+	// (0x27) quoteright, parentleft, parentright, asterisk, plus, comma,
+	// (0x2d) minus, period, slash
+	//SDLK_EXCLAIM		= 33,
+	keymap[SDLK_QUOTEDBL] = VK_OEM_7;		//		= 34,
+	//SDLK_HASH		= 35,
+	//SDLK_DOLLAR		= 36,
+	//SDLK_AMPERSAND		= 38,
+	keymap[SDLK_QUOTE] = VK_OEM_7;		//		= 39,
+	//SDLK_LEFTPAREN		= 40,
+	//SDLK_RIGHTPAREN		= 41,
+	//SDLK_ASTERISK		= 42,
+	keymap[SDLK_PLUS] = VK_OEM_PLUS;		//		= 43,
+	keymap[SDLK_COMMA] = VK_OEM_COMMA;		//		= 44,
+	keymap[SDLK_MINUS] = VK_OEM_MINUS;		//		= 45,
+	keymap[SDLK_PERIOD] = VK_OEM_PERIOD;	//		= 46,
+	keymap[SDLK_SLASH] = VK_OEM_2;		//		= 47,
+	keymap[SDLK_COLON] = VK_OEM_1;		//		= 58,
+	keymap[SDLK_SEMICOLON] = VK_OEM_1;		//		= 59,
+	keymap[SDLK_LESS] = VK_OEM_COMMA;		//		= 60,
+	keymap[SDLK_EQUALS] = VK_OEM_PLUS;		//		= 61,
+	keymap[SDLK_GREATER] = VK_OEM_PERIOD;	//		= 62,
+	keymap[SDLK_QUESTION] = VK_OEM_2;		//		= 63,
+	//SDLK_AT			= 64,
+	/*
+	   Skip uppercase letters
+	 */
+	keymap[SDLK_LEFTBRACKET] = VK_OEM_4;		//		= 91,
+	keymap[SDLK_BACKSLASH] = VK_OEM_5;		//		= 92,
+	keymap[SDLK_RIGHTBRACKET] = VK_OEM_6;		//		= 93,
+	//SDLK_CARET		= 94,
+	keymap[SDLK_UNDERSCORE] = VK_OEM_MINUS;		//		= 95,
+	keymap[SDLK_BACKQUOTE] = VK_OEM_3;		//		= 96,
+	// (0x30-0x39) 0-9
+	for (i = 0x30; i <= 0x39; i++) {
+		keymap[i] = i;
+	}
+	// (0x3a) colon, semicolon, less, equal, greater, question, at
+	// (0x41-0x5a) A-Z
+	// SDL: no upper cases, only lower cases
+	// (0x5b) bracketleft, backslash, bracketright, asciicircum/caret,
+	// (0x5f) underscore, grave
+	// (0x61-7a) a-z
+	for (i = 0x61; i <= 0x7a; i++) {
+		keymap[i] = i & 0xdf;	// convert to uppercases
+	}
+	keymap[SDLK_DELETE] = VK_DELETE;		//		= 127,
+	// SDLK_WORLD_0 (0xa0) - SDLK_WORLD_95 (0xff) are ignored
+	/** @name Numeric keypad */
+	keymap[SDLK_KP_0] = VK_NUMPAD0;	//		= 256,
+	keymap[SDLK_KP_1] = VK_NUMPAD1;	//		= 257,
+	keymap[SDLK_KP_2] = VK_NUMPAD2;	//		= 258,
+	keymap[SDLK_KP_3] = VK_NUMPAD3;	//		= 259,
+	keymap[SDLK_KP_4] = VK_NUMPAD4;	//		= 260,
+	keymap[SDLK_KP_5] = VK_NUMPAD5;	//		= 261,
+	keymap[SDLK_KP_6] = VK_NUMPAD6;	//		= 262,
+	keymap[SDLK_KP_7] = VK_NUMPAD7;	//		= 263,
+	keymap[SDLK_KP_8] = VK_NUMPAD8;	//		= 264,
+	keymap[SDLK_KP_9] = VK_NUMPAD9;	//		= 265,
+	keymap[SDLK_KP_PERIOD] = VK_DECIMAL;	//		= 266,
+	keymap[SDLK_KP_DIVIDE] = VK_DIVIDE;	//		= 267,
+	keymap[SDLK_KP_MULTIPLY] = VK_MULTIPLY;	//		= 268,
+	keymap[SDLK_KP_MINUS] = VK_SUBTRACT;	//		= 269,
+	keymap[SDLK_KP_PLUS] = VK_ADD;	//		= 270,
+	//keymap[SDLK_KP_ENTER]	= XK_KP_Enter;	//		= 271,
+	//keymap[SDLK_KP_EQUALS]	= XK_KP_Equal;	//		= 272,
+	/** @name Arrows + Home/End pad */
+	keymap[SDLK_UP] = VK_UP;	//		= 273,
+	keymap[SDLK_DOWN] = VK_DOWN;	//		= 274,
+	keymap[SDLK_RIGHT] = VK_RIGHT;	//		= 275,
+	keymap[SDLK_LEFT] = VK_LEFT;	//		= 276,
+	keymap[SDLK_INSERT] = VK_INSERT;	//		= 277,
+	keymap[SDLK_HOME] = VK_HOME;	//		= 278,
+	keymap[SDLK_END] = VK_END;	//		= 279,
+	keymap[SDLK_PAGEUP] = VK_PRIOR;	//		= 280,
+	keymap[SDLK_PAGEDOWN] = VK_NEXT;	//		= 281,
+	/** @name Function keys */
+	keymap[SDLK_F1] = VK_F1;	//		= 282,
+	keymap[SDLK_F2] = VK_F2;	//		= 283,
+	keymap[SDLK_F3] = VK_F3;	//		= 284,
+	keymap[SDLK_F4] = VK_F4;	//		= 285,
+	keymap[SDLK_F5] = VK_F5;	//		= 286,
+	keymap[SDLK_F6] = VK_F6;	//		= 287,
+	keymap[SDLK_F7] = VK_F7;	//		= 288,
+	keymap[SDLK_F8] = VK_F8;	//		= 289,
+	keymap[SDLK_F9] = VK_F9;	//		= 290,
+	keymap[SDLK_F10] = VK_F10;	//		= 291,
+	keymap[SDLK_F11] = VK_F11;	//		= 292,
+	keymap[SDLK_F12] = VK_F12;	//		= 293,
+	keymap[SDLK_F13] = VK_F13;	//		= 294,
+	keymap[SDLK_F14] = VK_F14;	//		= 295,
+	keymap[SDLK_F15] = VK_F15;	//		= 296,
+	/** @name Key state modifier keys */
+	keymap[SDLK_NUMLOCKCLEAR] = VK_NUMLOCK;	//		= 300,
+	keymap[SDLK_CAPSLOCK] = VK_CAPITAL;	//		= 301,
+	keymap[SDLK_SCROLLLOCK] = VK_SCROLL;	//		= 302,
+	keymap[SDLK_RSHIFT] = VK_RSHIFT;	//		= 303,
+	keymap[SDLK_LSHIFT] = VK_LSHIFT;	//		= 304,
+	keymap[SDLK_RCTRL] = VK_RCONTROL;	//		= 305,
+	keymap[SDLK_LCTRL] = VK_LCONTROL;	//		= 306,
+	keymap[SDLK_RALT] = VK_RMENU;	//		= 307,
+	keymap[SDLK_LALT] = VK_LMENU;	//		= 308,
+	keymap[SDLK_RGUI] = VK_RWIN;	//		= 309,
+	keymap[SDLK_LGUI] = VK_LWIN;	//		= 310,
+	//keymap[SDLK_LSUPER]	= XK_Super_L;	//		= 311,		/**< Left "Windows" key */
+	//keymap[SDLK_RSUPER]	= XK_Super_R;	//		= 312,		/**< Right "Windows" key */
+	keymap[SDLK_MODE] = VK_MODECHANGE;//		= 313,		/**< "Alt Gr" key */
+	//keymap[SDLK_COMPOSE]	= XK_Multi_key;	//		= 314,		/**< Multi-key compose key */
+	/** @name Miscellaneous function keys */
+	keymap[SDLK_HELP] = VK_HELP;	//		= 315,
+	//keymap[SDLK_SYSREQ]	= XK_Sys_Req;	//		= 317,
+	keymap[SDLK_CANCEL] = VK_CANCEL;	//		= 318,
+	keymap[SDLK_MENU] = VK_MENU;	//		= 319,
+
+	return;
+}
+static KeySym
+SDLKeyToKeySym(int sdlkey) {
+	map<int, KeySym>::iterator mi;
+
+	SDLKeyToKeySym_init();
+
+	if ((mi = keymap.find(sdlkey)) != keymap.end()) {
+		return mi->second;
+	}
+	return INVALID_KEY;
 }
 
-static int
-xlat_mouseY(int ch, int y) {
-	return (1.0 * nativeSizeY[ch] / windowSizeY[ch]) * y;
+
+#define	GEN_KB_ADD_FUNC_PROTO(type, field) \
+	int sdlmsg_kb_add_##field(type v, int remove)
+#define GEN_KB_ADD_FUNC(type, field, db)	\
+	GEN_KB_ADD_FUNC_PROTO(type, field) { \
+		if(remove) { db.erase(v); } \
+		else       { db[v] = v;   } \
+		return 0; \
+	}
+#define GEN_KB_MATCH_FUNC_PROTO(type, field) \
+	int sdlmsg_kb_match_##field(type v)
+#define	GEN_KB_MATCH_FUNC(type, field, db) \
+	GEN_KB_MATCH_FUNC_PROTO(type, field) { \
+		if(db.find(v) == db.end()) { return 0; } \
+		return 1; \
+	}
+
+static bool keyblock_initialized = false;
+static map<unsigned short, unsigned short> kbScancode;
+static map<int, int> kbSdlkey;
+
+GEN_KB_ADD_FUNC(unsigned short, scancode, kbScancode)
+GEN_KB_ADD_FUNC(int, sdlkey, kbSdlkey)
+GEN_KB_MATCH_FUNC(unsigned short, scancode, kbScancode)
+GEN_KB_MATCH_FUNC(int, sdlkey, kbSdlkey)
+
+int
+sdlmsg_key_blocked(sdlmsg_t *msg) {
+	sdlmsg_keyboard_t *msgk;
+	if (msg->msgtype != SDL_EVENT_MSGTYPE_KEYBOARD) {
+		return 0;
+	}
+	//
+	msgk = (sdlmsg_keyboard_t*)msg;
+	//
+	if (sdlmsg_kb_match_scancode(msgk->scancode)) {
+		return 1;
+	}
+	if (sdlmsg_kb_match_sdlkey(msgk->sdlkey)) {
+		return 1;
+	}
+	return 0;
 }
 
 
-sdlmsg_t *
-sdlmsg_keyboard(sdlmsg_t *msg, unsigned char pressed, unsigned short scancode, SDL_Keycode key, unsigned short mod, unsigned int unicode)
-{
+static void
+sdlmsg_replay_native(sdlmsg_t *msg) {
+	INPUT in;
 	sdlmsg_keyboard_t *msgk = (sdlmsg_keyboard_t*)msg;
-	//ga_error("sdl client: key event code=%x key=%x mod=%x pressed=%u\n", scancode, key, mod, pressed);
-	ZeroMemory(msg, sizeof(sdlmsg_keyboard_t));
-	msgk->msgsize = htons(sizeof(sdlmsg_keyboard_t));
-	msgk->msgtype = SDL_EVENT_MSGTYPE_KEYBOARD;
-	msgk->is_pressed = pressed;
-#if 1	// only support SDL2
-	msgk->scancode = htons(scancode);
-	msgk->sdlkey = htonl(key);
-	msgk->unicode = htonl(unicode);
-#endif
-	msgk->sdlmod = htons(mod);
-	return msg;
-}
-
-sdlmsg_t *
-sdlmsg_mousekey(sdlmsg_t *msg, unsigned char pressed, unsigned char button, unsigned short x, unsigned short y) {
 	sdlmsg_mouse_t *msgm = (sdlmsg_mouse_t*)msg;
-	//ga_error("sdl client: button event btn=%u pressed=%u\n", button, pressed);
-	ZeroMemory(msg, sizeof(sdlmsg_mouse_t));
-	msgm->msgsize = htons(sizeof(sdlmsg_mouse_t));
-	msgm->msgtype = SDL_EVENT_MSGTYPE_MOUSEKEY;
-	msgm->is_pressed = pressed;
-	msgm->mousex = htons(x);
-	msgm->mousey = htons(y);
-	msgm->mousebutton = button;
-	return msg;
+	//
+	switch (msg->msgtype) {
+	case SDL_EVENT_MSGTYPE_KEYBOARD:
+		ZeroMemory(&in, sizeof(in));
+		in.type = INPUT_KEYBOARD;
+		if ((in.ki.wVk = SDLKeyToKeySym(msgk->sdlkey)) != INVALID_KEY) {
+			if (msgk->is_pressed == 0) {
+				in.ki.dwFlags |= KEYEVENTF_KEYUP;
+			}
+			in.ki.wScan = MapVirtualKey(in.ki.wVk, MAPVK_VK_TO_VSC);
+			//ga_error("sdl replayer: vk=%x scan=%x\n", in.ki.wVk, in.ki.wScan);
+			printf("in");
+			SendInput(1, &in, sizeof(in));
+		}
+		else {
+			////////////////
+			printf("sdl replayer: undefined key scan=%u(%04x) key=%u(%04x) mod=%u(%04x) pressed=%d\n",
+				msgk->scancode, msgk->scancode,
+				msgk->sdlkey, msgk->sdlkey, msgk->sdlmod, msgk->sdlmod,
+				msgk->is_pressed);
+			////////////////
+		}
+		break;
+	case SDL_EVENT_MSGTYPE_MOUSEKEY:
+		////ga_error("sdl replayer: button event btn=%u pressed=%d\n", msg->mousebutton, msg->is_pressed);
+		//ZeroMemory(&in, sizeof(in));
+		//in.type = INPUT_MOUSE;
+		//if (msgm->mousebutton == 1 && msgm->is_pressed != 0) {
+		//	in.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+		//}
+		//else if (msgm->mousebutton == 1 && msgm->is_pressed == 0) {
+		//	in.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+		//}
+		//else if (msgm->mousebutton == 2 && msgm->is_pressed != 0) {
+		//	in.mi.dwFlags = MOUSEEVENTF_MIDDLEDOWN;
+		//}
+		//else if (msgm->mousebutton == 2 && msgm->is_pressed == 0) {
+		//	in.mi.dwFlags = MOUSEEVENTF_MIDDLEUP;
+		//}
+		//else if (msgm->mousebutton == 3 && msgm->is_pressed != 0) {
+		//	in.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+		//}
+		//else if (msgm->mousebutton == 3 && msgm->is_pressed == 0) {
+		//	in.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+		//}
+		//else if (msgm->mousebutton == 4 && msgm->is_pressed != 0) {
+		//	// mouse wheel forward
+		//	in.mi.dwFlags = MOUSEEVENTF_WHEEL;
+		//	in.mi.mouseData = +WHEEL_DELTA;
+		//}
+		//else if (msgm->mousebutton == 5 && msgm->is_pressed != 0) {
+		//	// mouse wheel backward
+		//	in.mi.dwFlags = MOUSEEVENTF_WHEEL;
+		//	in.mi.mouseData = -WHEEL_DELTA;
+		//}
+		//SendInput(1, &in, sizeof(in));
+		break;
+	case SDL_EVENT_MSGTYPE_MOUSEWHEEL:
+		//if (msgm->mousex != 0) {
+		//	ZeroMemory(&in, sizeof(in));
+		//	in.type = INPUT_MOUSE;
+		//	if (((short)msgm->mousex) > 0) {
+		//		// mouse wheel forward
+		//		in.mi.dwFlags = MOUSEEVENTF_WHEEL;
+		//		in.mi.mouseData = +WHEEL_DELTA;
+		//	}
+		//	else if (((short)msgm->mousex) < 0) {
+		//		// mouse wheel backward
+		//		in.mi.dwFlags = MOUSEEVENTF_WHEEL;
+		//		in.mi.mouseData = -WHEEL_DELTA;
+		//	}
+		//	SendInput(1, &in, sizeof(in));
+		//}
+
+		break;
+	case SDL_EVENT_MSGTYPE_MOUSEMOTION:
+		////ga_error("sdl replayer: motion event x=%u y=%d\n", msgm->mousex, msgm->mousey);
+		//ZeroMemory(&in, sizeof(in));
+		//in.type = INPUT_MOUSE;
+		//// mouse x/y has to be mapped to (0,0)-(65535,65535)
+		//if (msgm->relativeMouseMode == 0) {
+		//	if (prect == NULL) {
+		//		in.mi.dx = (DWORD)
+		//			(65536.0 * scaleFactorX * msgm->mousex) / cxsize;
+		//		in.mi.dy = (DWORD)
+		//			(65536.0 * scaleFactorY * msgm->mousey) / cysize;
+		//	}
+		//	else {
+		//		in.mi.dx = (DWORD)
+		//			(65536.0 * (prect->left + scaleFactorX * msgm->mousex)) / cxsize;
+		//		in.mi.dy = (DWORD)
+		//			(65536.0 * (prect->top + scaleFactorY * msgm->mousey)) / cysize;
+		//	}
+		//	in.mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
+		//}
+		//else {
+		//	in.mi.dx = (short)(scaleFactorX * msgm->mouseRelX);
+		//	in.mi.dy = (short)(scaleFactorY * msgm->mouseRelY);
+		//	in.mi.dwFlags = MOUSEEVENTF_MOVE;
+		//}
+		//SendInput(1, &in, sizeof(in));
+		break;
+	default: // do nothing
+		break;
+	}
+	return;
 }
 
-#if 1	// only support SDL2
-sdlmsg_t *
-sdlmsg_mousewheel(sdlmsg_t *msg, unsigned short mousex, unsigned short mousey) {
-	sdlmsg_mouse_t *msgm = (sdlmsg_mouse_t*)msg;
-	//ga_error("sdl client: motion event x=%u y=%u\n", mousex, mousey);
-	ZeroMemory(msg, sizeof(sdlmsg_mouse_t));
-	msgm->msgsize = htons(sizeof(sdlmsg_mouse_t));
-	msgm->msgtype = SDL_EVENT_MSGTYPE_MOUSEWHEEL;
-	msgm->mousex = htons(mousex);
-	msgm->mousey = htons(mousey);
-	return msg;
+int
+sdlmsg_replay(sdlmsg_t *msg) {
+	// convert from network byte order to host byte order
+	//sdlmsg_ntoh(msg);
+	/*if (sdlmsg_key_blocked(msg)) {
+		return 0;
+	}*/
+	sdlmsg_replay_native(msg);
+	return 0;
 }
-#endif
-
-sdlmsg_t *
-sdlmsg_mousemotion(sdlmsg_t *msg, unsigned short mousex, unsigned short mousey, unsigned short relx, unsigned short rely, unsigned char state, int relativeMouseMode) {
-	sdlmsg_mouse_t *msgm = (sdlmsg_mouse_t*)msg;
-	//ga_error("sdl client: motion event x=%u y=%u\n", mousex, mousey);
-	ZeroMemory(msg, sizeof(sdlmsg_mouse_t));
-	msgm->msgsize = htons(sizeof(sdlmsg_mouse_t));
-	msgm->msgtype = SDL_EVENT_MSGTYPE_MOUSEMOTION;
-	msgm->mousestate = state;
-	msgm->relativeMouseMode = (relativeMouseMode != 0) ? 1 : 0;
-	msgm->mousex = htons(mousex);
-	msgm->mousey = htons(mousey);
-	msgm->mouseRelX = htons(relx);
-	msgm->mouseRelY = htons(rely);
-	return msg;
-}
-
-//static void
-//create_overlay(struct RTSPThreadParam *rtspParam, int ch) {
-//	int w, h;
-//	PixelFormat format;
-//#if 1	// only support SDL2
-//	unsigned int renderer_flags = SDL_RENDERER_SOFTWARE;
-//	SDL_Window *surface = NULL;
-//	SDL_Renderer *renderer = NULL;
-//	SDL_Texture *overlay = NULL;
-//#endif
-//	struct SwsContext *swsctx = NULL;
-//	dpipe_t *pipe = NULL;
-//	dpipe_buffer_t *data = NULL;
-//	char windowTitle[64];
-//	char pipename[64];
-//	//
-//	pthread_mutex_lock(&rtspParam->surfaceMutex[ch]);
-//	if (rtspParam->surface[ch] != NULL) {
-//		pthread_mutex_unlock(&rtspParam->surfaceMutex[ch]);
-//		rtsperror("ga-client: duplicated create window request - image comes too fast?\n");
-//		return;
-//	}
-//	w = rtspParam->width[ch];
-//	h = rtspParam->height[ch];
-//	format = rtspParam->format[ch];
-//	pthread_mutex_unlock(&rtspParam->surfaceMutex[ch]);
-//	// swsctx
-//	if ((swsctx = sws_getContext(w, h, format, w, h, PIX_FMT_YUV420P,
-//		SWS_BICUBIC, NULL, NULL, NULL)) == NULL) {
-//		rtsperror("ga-client: cannot create swsscale context.\n");
-//		exit(-1);
-//	}
-//	// pipeline
-//	snprintf(pipename, sizeof(pipename), "channel-%d", ch);
-//	if ((pipe = dpipe_create(ch, pipename, POOLSIZE, sizeof(AVPicture))) == NULL) {
-//		rtsperror("ga-client: cannot create pipeline.\n");
-//		exit(-1);
-//	}
-//	for (data = pipe->in; data != NULL; data = data->next) {
-//		bzero(data->pointer, sizeof(AVPicture));
-//		if (avpicture_alloc((AVPicture*)data->pointer, PIX_FMT_YUV420P, w, h) != 0) {
-//			rtsperror("ga-client: per frame initialization failed.\n");
-//			exit(-1);
-//		}
-//	}
-//	// sdl
-//	int wflag = 0;
-//#if 1	// only support SDL2
-//#ifdef	ANDROID
-//	wflag = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_BORDERLESS;
-//#else
-//	wflag |= SDL_WINDOW_RESIZABLE;
-//	if (ga_conf_readbool("fullscreen", 0) != 0) {
-//		wflag |= SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_BORDERLESS;
-//	}
-//#endif
-//	if (relativeMouseMode != 0) {
-//		wflag |= SDL_WINDOW_INPUT_GRABBED;
-//	}
-//	snprintf(windowTitle, sizeof(windowTitle), WINDOW_TITLE, ch, w, h);
-//	surface = SDL_CreateWindow(windowTitle,
-//		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-//		w, h, wflag);
-//#endif
-//	if (surface == NULL) {
-//		rtsperror("ga-client: set video mode (create window) failed.\n");
-//		exit(-1);
-//	}
-//	//SDL_SetWindowMaximumSize(surface, w, h);
-//	SDL_SetWindowMinimumSize(surface, w >> 2, h >> 2);
-//	nativeSizeX[ch] = windowSizeX[ch] = w;
-//	nativeSizeY[ch] = windowSizeY[ch] = h;
-//	windowId2ch[SDL_GetWindowID(surface)] = ch;
-//	// move mouse to center
-//#if 1	// only support SDL2
-//	SDL_WarpMouseInWindow(surface, w / 2, h / 2);
-//#endif
-//	if (relativeMouseMode != 0) {
-//		SDL_SetRelativeMouseMode(SDL_TRUE);
-//		showCursor = 0;
-//		//SDL_ShowCursor(0);
-//#if 0		//// XXX: EXPERIMENTAL - switch twice to make it normal?
-//		switch_grab_input(NULL);
-//		SDL_SetRelativeMouseMode(SDL_FALSE);
-//		switch_grab_input(NULL);
-//		SDL_SetRelativeMouseMode(SDL_TRUE);
-//#endif		////
-//		ga_error("ga-client: relative mouse mode enabled.\n");
-//	}
-//	//
-//#if 1	// only support SDL2
-//	do {	// choose SW or HW renderer?
-//		// XXX: Windows crashed if there is not a HW renderer!
-//		int i, n = SDL_GetNumRenderDrivers();
-//		SDL_RendererInfo info;
-//		for (i = 0; i < n; i++) {
-//			if (SDL_GetRenderDriverInfo(i, &info) < 0)
-//				continue;
-//			rtsperror("ga-client: renderer#%d - %s (%s%s%s%s)\n",
-//				i, info.name,
-//				info.flags & SDL_RENDERER_SOFTWARE ? "SW" : "",
-//				info.flags & SDL_RENDERER_ACCELERATED ? "HW" : "",
-//				info.flags & SDL_RENDERER_PRESENTVSYNC ? ",vsync" : "",
-//				info.flags & SDL_RENDERER_TARGETTEXTURE ? ",texture" : "");
-//			if (info.flags & SDL_RENDERER_ACCELERATED)
-//				renderer_flags = SDL_RENDERER_ACCELERATED;
-//		}
-//	} while (0);
-//	//
-//	renderer = SDL_CreateRenderer(surface, -1,
-//		rtspconf->video_renderer_software ?
-//		SDL_RENDERER_SOFTWARE : renderer_flags);
-//	if (renderer == NULL) {
-//		rtsperror("ga-client: create renderer failed.\n");
-//		exit(-1);
-//	}
-//	//
-//	overlay = SDL_CreateTexture(renderer,
-//		SDL_PIXELFORMAT_YV12,
-//		SDL_TEXTUREACCESS_STREAMING,
-//		w, h);
-//#endif
-//	if (overlay == NULL) {
-//		rtsperror("ga-client: create overlay (textuer) failed.\n");
-//		exit(-1);
-//	}
-//	//
-//	pthread_mutex_lock(&rtspParam->surfaceMutex[ch]);
-//	rtspParam->pipe[ch] = pipe;
-//	rtspParam->swsctx[ch] = swsctx;
-//	rtspParam->overlay[ch] = overlay;
-//#if 1	// only support SDL2
-//	rtspParam->renderer[ch] = renderer;
-//	rtspParam->windowId[ch] = SDL_GetWindowID(surface);
-//#endif
-//	rtspParam->surface[ch] = surface;
-//	pthread_mutex_unlock(&rtspParam->surfaceMutex[ch]);
-//	//
-//	rtsperror("ga-client: window created successfully (%dx%d).\n", w, h);
-//	// initialize watchdog
-//	pthread_mutex_lock(&watchdogMutex);
-//	gettimeofday(&watchdogTimer, NULL);
-//	pthread_mutex_unlock(&watchdogMutex);
-//	//
-//	return;
-//}
 
 void
 ProcessEvent(SDL_Event *event) {
@@ -376,9 +356,13 @@ ProcessEvent(SDL_Event *event) {
 	//map<unsigned int, int>::iterator mi;
 	int ch;
 	struct timeval tv;
+
+	//sdlmsg_replay(&m);
 	//
 	switch (event->type) {
+
 	case SDL_KEYUP:
+		
 //		if (event->key.keysym.sym == SDLK_BACKQUOTE && relativeMouseMode != 0) {
 //			showCursor = 1 - showCursor;
 //			//SDL_ShowCursor(showCursor);
@@ -412,32 +396,11 @@ ProcessEvent(SDL_Event *event) {
 			event->key.keysym.mod,
 			0/*event->key.keysym.unicode*/);
 
-		if (savefp_keyts != NULL) {
-			gettimeofday(&tv, NULL);
-			ga_save_printf(savefp_keyts, "KEY-UP: %u.%06u scan 0x%04x sym 0x%04x mod 0x%04x\n",
-				tv.tv_sec, tv.tv_usec,
-				event->key.keysym.scancode,
-				event->key.keysym.sym,
-				event->key.keysym.mod);
-		}
 		printf("key up\n");
 		break;
 	case SDL_KEYDOWN:
 
-		if (keyboard_state_array[SDL_SCANCODE_LCTRL] && keyboard_state_array[SDL_SCANCODE_LSHIFT] && keyboard_state_array[SDL_SCANCODE_F12]) {
 
-			printf("window resize\n");
-			printf("resize\n");
-
-			SDL_ShowWindow(window);
-			SDL_MaximizeWindow(window);
-			SDL_SetWindowResizable(window, SDL_TRUE);
-			SDL_SetWindowFullscreen(window, SDL_WINDOW_MAXIMIZED);
-		}
-		if (keyboard_state_array[SDL_SCANCODE_LCTRL] && keyboard_state_array[SDL_SCANCODE_LSHIFT] && keyboard_state_array[SDL_SCANCODE_F11]) {
-			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-			printf("window change\n");
-		}
 		//if ((event->key.keysym.sym == SDLK_RETURN)
 		//	&& (event->key.keysym.mod & KMOD_ALT)) {
 		//	switch_fullscreen();
@@ -445,20 +408,19 @@ ProcessEvent(SDL_Event *event) {
 		//else
 		//	//
 
+
+		if (event->key.keysym.scancode != SDL_GetScancodeFromKey(event->key.keysym.sym))
+			printf("GetScancodeName : %s \n GetKeyName %s\n", SDL_GetScancodeName(event->key.keysym.scancode), SDL_GetKeyName(event->key.keysym.sym));
+
+		SDL_Log("Physical %s key acting as %s key", SDL_GetScancodeName(event->key.keysym.scancode), SDL_GetKeyName(event->key.keysym.sym));
+
+
 		sdlmsg_keyboard(&m, 1,
 				event->key.keysym.scancode,
 				event->key.keysym.sym,
 				event->key.keysym.mod,
 				0/*event->key.keysym.unicode*/);
-			
-		if (savefp_keyts != NULL) {
-			gettimeofday(&tv, NULL);
-			ga_save_printf(savefp_keyts, "KEY-DOWN: %u.%06u scan 0x%04x sym 0x%04x mod 0x%04x\n",
-				tv.tv_sec, tv.tv_usec,
-				event->key.keysym.scancode,
-				event->key.keysym.sym,
-				event->key.keysym.mod);
-		}
+		
 		printf("key down\n");
 		break;
 	case SDL_MOUSEBUTTONUP:
@@ -569,7 +531,7 @@ ProcessEvent(SDL_Event *event) {
 #endif
 	return;
 }
-
+#if __SOCKET
 int socket_init(void) {
 
 	int opt = 0;
@@ -601,13 +563,11 @@ int socket_init(void) {
 
 	printf("Socket Connected\n");
 }
+#endif
 
 int main()
 {
 	SDL_Event event;
-	char savefile_keyts[128] = "savefp_keyfile.txt";
-
-	savefp_keyts = ga_save_init_txt(savefile_keyts);
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		printf("SDL init failed: %s\n", SDL_GetError());
@@ -616,21 +576,15 @@ int main()
 #if __SOCKET
 	socket_init();
 #endif
-	window = SDL_CreateWindow("MSLM RX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1920, 1080, 0/*SDL_WINDOW_RESIZABLE*/);
+	window = SDL_CreateWindow("MSLM RX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800,600, 0/*SDL_WINDOW_RESIZABLE*/);
 	renderer = SDL_CreateRenderer(window, -1, 0);
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32, SDL_TEXTUREACCESS_STREAMING, 1920, 1080);
-
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32, SDL_TEXTUREACCESS_STREAMING, 800,600);
 
 	while (true)
 	{
 		if (SDL_WaitEvent(&event)) {
 			ProcessEvent(&event);
 		}
-	}
-
-	if (savefp_keyts != NULL) {
-		ga_save_close(savefp_keyts);
-		savefp_keyts = NULL;
 	}
 
 	SDL_Quit();
