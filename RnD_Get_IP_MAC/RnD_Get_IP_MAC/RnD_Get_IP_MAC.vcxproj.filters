@@ -27,5 +27,8 @@
     <ClCompile Include="example_GetAdaptersAddresses.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="externel_ip.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
