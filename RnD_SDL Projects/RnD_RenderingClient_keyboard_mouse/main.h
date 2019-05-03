@@ -1,5 +1,9 @@
 #include "SDL.h"
 
+#ifdef main
+#undef main
+#endif
+
 #define	INVALID_KEY	0xffff
 #define	SDL_EVENT_MSGTYPE_NULL		0
 #define	SDL_EVENT_MSGTYPE_KEYBOARD	1
@@ -55,7 +59,7 @@ sdlmsg_t *
 sdlmsg_keyboard(sdlmsg_t *msg, unsigned char pressed, unsigned short scancode, SDL_Keycode key, unsigned short mod, unsigned int unicode)
 {
 	sdlmsg_keyboard_t *msgk = (sdlmsg_keyboard_t*)msg;
-	printf("sdl client: key event code=%x key=%x mod=%x pressed=%u\n", scancode, key, mod, pressed);
+	//printf("sdl client: key event code=%x key=%x mod=%x pressed=%u\n", scancode, key, mod, pressed);
 	ZeroMemory(msg, sizeof(sdlmsg_keyboard_t));
 	msgk->msgsize = htons(sizeof(sdlmsg_keyboard_t));
 	msgk->msgtype = SDL_EVENT_MSGTYPE_KEYBOARD;
@@ -67,7 +71,7 @@ sdlmsg_keyboard(sdlmsg_t *msg, unsigned char pressed, unsigned short scancode, S
 #endif
 	msgk->sdlmod = htons(mod);
 
-	printf("%d\n", key);
+	//printf("%d\n", key);
 
 	return msg;
 }
