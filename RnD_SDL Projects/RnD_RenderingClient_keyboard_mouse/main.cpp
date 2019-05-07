@@ -7,13 +7,15 @@
 using namespace std;
 typedef WORD KeySym;
 
+
+#include "main.h"
+
+
 #ifdef main
 #undef main
 #endif
 
-#include "main.h"
-
-#define __SOCKET 1
+#define __SOCKET 0
 #if __SOCKET
 WSADATA wsadata;
 SOCKET clientSocket;
@@ -400,13 +402,26 @@ ProcessEvent(SDL_Event *event) {
 		break;
 	case SDL_KEYDOWN:
 
+		if (event->key.keysym.sym == SDLK_RETURN) {
+			SDL_SetWindowResizable(window, SDL_TRUE);
+			//SDL_MaximizeWindow(window);
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_SHOWN);
+			//SDL_SetWindowSize(window, 1280, 720);
+			//SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+			//SDL_ShowWindow(window);
+			//SDL_SetWindowFullscreen(window, SDL_WINDOW_SHOWN);
 
-		//if ((event->key.keysym.sym == SDLK_RETURN)
-		//	&& (event->key.keysym.mod & KMOD_ALT)) {
-		//	switch_fullscreen();
-		//}
-		//else
-		//	//
+
+			/*SDL_ShowWindow(window);
+			SDL_MaximizeWindow(window);
+			SDL_SetWindowResizable(window, SDL_TRUE);
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_MAXIMIZED);*/
+		}
+		else {
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			SDL_SetWindowResizable(window, SDL_FALSE);
+		}
+			//
 
 
 		if (event->key.keysym.scancode != SDL_GetScancodeFromKey(event->key.keysym.sym))
@@ -576,9 +591,9 @@ int main()
 #if __SOCKET
 	socket_init();
 #endif
-	window = SDL_CreateWindow("MSLM RX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800,600, 0/*SDL_WINDOW_RESIZABLE*/);
+	window = SDL_CreateWindow("MSLM RX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1920,1080, SDL_WINDOW_MAXIMIZED);
 	renderer = SDL_CreateRenderer(window, -1, 0);
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32, SDL_TEXTUREACCESS_STREAMING, 800,600);
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32, SDL_TEXTUREACCESS_STREAMING, 1920, 1080);
 
 	while (true)
 	{
