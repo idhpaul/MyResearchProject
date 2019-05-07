@@ -1,0 +1,32 @@
+[ MSDN Thread ]
+https://docs.microsoft.com/ko-kr/windows/desktop/ProcThread/processes-and-threads
+
+
+[ WaitForSingleObject()와 WaitForMultipleObjects() ]
+
+	** 주의점
+
+	WaitForSingleObject()와 WaitForMultipleObjects() 두 함수는 스레드 종료 대기를 위한 전용 함수가 아니다.  
+	이 두 함수는 스레드의 동기화 목적으로 자주 쓰이는 함수이다.
+
+[ 실행 중지, 재실행 ]
+
+	SuspendThread() 함수는 스레드 실행을 일시 중지하고,
+	ResumeThread() 함수는 스레드를 재실행한다.
+
+	운영체제는 스레드의 중지 횟수(suspend count)를 유지하면서 SuspendThread() 함수를 호출할때마다 +1 증가하고 ResumeThread()를 호출할 때마다 -1식 감소한다.
+	중지 횟수가 0보다 크면 스레드의 실행이 중지된다.
+
+ 
+	DWORD SuspendThread( HANDLE hThread );
+	성공시 : 중지 횟수 ,  실패 시 : -1
+
+	DWORD ResumeThread( HANDLE hThread );
+	성공시 : 중지 횟수 , 실패 시 : -1
+
+ 
+
+	스레드가 대기한다는 것은 CPU시간을 사용하지 않고 기다린다는 뜻이다.
+	루프를 돌면서 기다리는 방법보다 더 효율적이다.
+
+출처: https://dongwook8467.tistory.com/109 [IT Story of Giner-Prince]

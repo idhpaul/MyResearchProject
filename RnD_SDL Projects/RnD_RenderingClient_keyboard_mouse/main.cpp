@@ -3,19 +3,19 @@
 #include <Windows.h>
 #pragma comment(lib,"ws2_32.lib")
 
+
+
 #include <map>
 using namespace std;
 typedef WORD KeySym;
-
-
-#include "main.h"
-
 
 #ifdef main
 #undef main
 #endif
 
-#define __SOCKET 0
+#include "main.h"
+
+#define __SOCKET 1
 #if __SOCKET
 WSADATA wsadata;
 SOCKET clientSocket;
@@ -424,10 +424,10 @@ ProcessEvent(SDL_Event *event) {
 			//
 
 
-		if (event->key.keysym.scancode != SDL_GetScancodeFromKey(event->key.keysym.sym))
-			printf("GetScancodeName : %s \n GetKeyName %s\n", SDL_GetScancodeName(event->key.keysym.scancode), SDL_GetKeyName(event->key.keysym.sym));
+		//if (event->key.keysym.scancode != SDL_GetScancodeFromKey(event->key.keysym.sym))
+		//	printf("GetScancodeName : %s \n GetKeyName %s\n", SDL_GetScancodeName(event->key.keysym.scancode), SDL_GetKeyName(event->key.keysym.sym));
 
-		SDL_Log("Physical %s key acting as %s key", SDL_GetScancodeName(event->key.keysym.scancode), SDL_GetKeyName(event->key.keysym.sym));
+		//SDL_Log("Physical %s key acting as %s key", SDL_GetScancodeName(event->key.keysym.scancode), SDL_GetKeyName(event->key.keysym.sym));
 
 
 		sdlmsg_keyboard(&m, 1,
@@ -500,7 +500,14 @@ ProcessEvent(SDL_Event *event) {
 	case SDL_USEREVENT:
 
 		printf("user event in\n");
-
+		if (event->user.code == 1) {
+			printf("user data %d\n", event->user.data1);
+			break;
+		}
+		if (event->user.code == 2) {
+			printf("user message %s\n", event->user.data1);
+			break;
+		}
 		if (event->user.code == SDL_USEREVENT_RENDER_IMAGE) {
 			printf("\t user event render_image\n");
 			/*long long ch = (long long)event->user.data2;
@@ -580,9 +587,44 @@ int socket_init(void) {
 }
 #endif
 
+
+
+int m_nHotKeyID;
+HHOOK hHook;
+
+LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
+{
+	PKBDLLHOOKSTRUCT pKey = (PKBDLLHOOKSTRUCT)lParam;
+
+	if (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)
+	{
+		
+		//Now just check pKey->vkCode etc for whatever you want
+		//for instance, a basic printout of the value and a check for pgup
+		if (pKey->vkCode == VK_HANGUL) {
+			printf("한영키 누름\n");
+			event.type = Hangul;
+			event.user.code = 1;
+			event.user.data1 = (int*)0x15;
+			event.user.data2 = 0;
+			SDL_PushEvent(&event);
+
+		}
+			
+		else if (pKey->vkCode == 25)
+			printf("한자키 누름\n");
+		else {
+			printf("%d\n", pKey->vkCode);
+		}
+	}
+
+	CallNextHookEx(hHook, nCode, wParam, lParam);
+	return 0;
+}
+
 int main()
 {
-	SDL_Event event;
+	
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		printf("SDL init failed: %s\n", SDL_GetError());
@@ -593,16 +635,22 @@ int main()
 #endif
 	window = SDL_CreateWindow("MSLM RX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1920,1080, SDL_WINDOW_MAXIMIZED);
 	renderer = SDL_CreateRenderer(window, -1, 0);
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32, SDL_TEXTUREACCESS_STREAMING, 1920, 1080);
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32, SDL_TEXTUREACCESS_STREAMING, 800,600);
 
 	while (true)
-	{
+	{		
 		if (SDL_WaitEvent(&event)) {
 			ProcessEvent(&event);
 		}
 	}
 
+	
+
 	SDL_Quit();
+
+	MSG msg;
+	GetMessage(&msg, NULL, NULL, NULL);
+	UnhookWindowsHookEx(hHook);
 
 	return 0;
 }
