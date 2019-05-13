@@ -1,0 +1,76 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <windows.h>
+#include <stdio.h>
+#include <iostream>
+
+MSG msg;
+
+HANDLE hThread;
+DWORD dwThreadId;
+
+DWORD WINAPI MyThreadFunction(LPVOID lpParam);
+
+int main(void) {
+
+	int sts = 1;
+	int input;
+
+	hThread = CreateThread(
+		NULL, 
+		0, 
+		MyThreadFunction, 
+		NULL, 
+		0, 
+		&dwThreadId);
+
+	printf("dwThreadId : %d\n", dwThreadId);
+
+	while (sts) {
+
+		printf("1: 종료\n");
+		scanf("%d", &input);
+
+		switch (input)
+		{
+		case 1:
+			printf("종료합니다.");
+			sts = 0;  //change statment
+
+			if (hThread) {
+				PostThreadMessage(GetThreadId(hThread), WM_QUIT, 0, 0);
+				WaitForMultipleObjects(1, &hThread, TRUE, INFINITE);
+				CloseHandle(hThread);
+
+				printf("스레드가 정상적으로 종료되었습니다.\n");
+			}
+
+			break;
+		default:
+			printf("always loop\n");
+			break;
+		}
+	}
+
+	return 0;
+}
+
+DWORD WINAPI MyThreadFunction(LPVOID lpParam)
+{
+	int num=0;
+
+	while (true)
+	{
+		printf("[Thread id : %d ]num : %d\n", GetCurrentThreadId(), num++);
+		
+		Sleep(100);
+
+		if (PeekMessage(&msg,NULL,0,0,PM_REMOVE)/*GetMessage(&msg, NULL, WM_QUIT, 0)*/)
+			break;
+	
+	}
+
+	printf("out while loop\n");
+
+	return 5;
+}
