@@ -406,8 +406,9 @@ ProcessEvent(SDL_Event *event) {
 
 		if (event->key.keysym.sym == SDLK_F12) {
 			//#idea1 모드 변경안하고 하는 방법
-			//SDL_SetWindowResizable(window, SDL_TRUE);
-			//SDL_SetWindowPosition(window, 100, 100);
+			SDL_SetWindowResizable(window, SDL_TRUE);
+			SDL_SetWindowResizable(window, SDL_TRUE);
+			SDL_SetWindowPosition(window, 100, 100);
 			//
 
 			//#idea2 미니멈사이즈 이용
