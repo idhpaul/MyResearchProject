@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Name_mangling.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="overlap_hello.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="overlap_test.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -32,9 +26,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Name_mangling.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="overlap_main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
