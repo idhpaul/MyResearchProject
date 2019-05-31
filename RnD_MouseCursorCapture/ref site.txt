@@ -1,0 +1,6 @@
+https://insurang.tistory.com/405 C# 댓글 단 사이트
+
+
+TX 적용 참고
+https://stackoverflow.com/questions/27112845/winapi-setsystemcursor-and-loadcursorfrom-how-to-set-default-cursor
+http://www.cplusplus.com/forum/general/131305/
