@@ -15,7 +15,7 @@ SDL_Event event;
 Uint32 Hangul = SDL_RegisterEvents(1);
 Uint32 upHangul = SDL_RegisterEvents(2);
 
-#define __SOCKET 0
+#define __SOCKET 1
 #if __SOCKET
 WSADATA wsadata;
 SOCKET clientSocket;
@@ -403,10 +403,28 @@ ProcessEvent(SDL_Event *event) {
 	case SDL_KEYDOWN:
 
 
-		//if ((event->key.keysym.sym == SDLK_RETURN)
-		//	&& (event->key.keysym.mod & KMOD_ALT)) {
-		//	switch_fullscreen();
-		//}
+		if (event->key.keysym.sym == SDLK_RETURN) {
+			//SDL_SetWindowSize(window, 1280, 720);
+			SDL_SetWindowTitle(window, "title");
+			//SDL_SetWindowFullscreen(window, SDL_WINDOW_MAXIMIZED);
+			//SDL_SetWindowDisplayMode(window, SDL_WINDOW_RESIZABLE)
+			//SDL_ShowWindow(window);
+			SDL_MaximizeWindow(window);
+			//SDL_MinimizeWindow(window);
+			//SDL_SetWindowResizable(window, SDL_TRUE);
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_MAXIMIZED);
+
+
+			
+		}
+		else if (event->key.keysym.sym == SDLK_SPACE) {
+			//SDL_LockTexture(texture, 0, NULL, NULL);
+
+			SDL_MaximizeWindow(window);
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			//SDL_UnlockTexture(texture);
+
+		}
 		//else
 		//	//
 
@@ -556,18 +574,24 @@ int socket_init(void) {
 		printf("failed to create socket");
 		return -1;
 	}
+	else {
+		printf("socket ok\n");
+	}
 
 	memset(&clientsockinfo, 0, sizeof(clientsockinfo));
 
 	clientsockinfo.sin_family = AF_INET;
 	clientsockinfo.sin_addr.s_addr = inet_addr("192.168.0.3");
-	clientsockinfo.sin_port = htons(9999);
+	clientsockinfo.sin_port = htons(27015);
 
 	setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt, sizeof(opt));
 
 	if (connect(clientSocket, (SOCKADDR*)&clientsockinfo, sizeof(clientsockinfo)) == SOCKET_ERROR) {
 		printf("faile to connect");
 		return -1;
+	}
+	else {
+		printf("connect\n");
 	}
 
 	printf("Socket Connected\n");
@@ -620,9 +644,41 @@ int main()
 #if __SOCKET
 	socket_init();
 #endif
-	window = SDL_CreateWindow("MSLM RX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800,600, 0/*SDL_WINDOW_RESIZABLE*/);
-	renderer = SDL_CreateRenderer(window, -1, 0);
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32, SDL_TEXTUREACCESS_STREAMING, 800, 600);
+	int w, h, ch = 0;
+	w = 1280;
+	h = 720;
+
+	unsigned int renderer_flags = SDL_RENDERER_ACCELERATED;
+
+
+
+	//
+
+	int wflag = 0;
+	wflag |= SDL_WINDOW_RESIZABLE;
+
+	window = SDL_CreateWindow("MSLM RX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0);
+	//SDL_SetWindowMinimumSize(window, w >> 2, h >> 2);
+	//SDL_WarpMouseInWindow(window, w / 2, h / 2);
+
+	//do {	// choose SW or HW renderer?
+	//	int i, n = SDL_GetNumRenderDrivers();
+	//	SDL_RendererInfo info;
+	//	for (i = 0; i < n; i++) {
+	//		if (SDL_GetRenderDriverInfo(i, &info) < 0)
+	//			continue;
+	//		i, info.name,
+	//			info.flags & SDL_RENDERER_SOFTWARE ? "SW" : "",
+	//			info.flags & SDL_RENDERER_ACCELERATED ? "HW" : "",
+	//			info.flags & SDL_RENDERER_PRESENTVSYNC ? ",vsync" : "",
+	//			info.flags & SDL_RENDERER_TARGETTEXTURE ? ",texture" : "");
+	//			if (info.flags & SDL_RENDERER_ACCELERATED)
+	//				renderer_flags = SDL_RENDERER_ACCELERATED;
+	//	}
+	//} while (0);
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32, SDL_TEXTUREACCESS_STREAMING, w, h);
 
 	//Uint32 myEventType = SDL_RegisterEvents(1);
 	//if (myEventType != ((Uint32)-1)) {
