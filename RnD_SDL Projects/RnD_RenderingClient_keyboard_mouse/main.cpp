@@ -15,7 +15,11 @@ typedef WORD KeySym;
 
 #include "main.h"
 
-#define __SOCKET 0
+SDL_Event event;
+Uint32 Hangul = SDL_RegisterEvents(1);
+Uint32 upHangul = SDL_RegisterEvents(2);
+
+#define __SOCKET 1
 #if __SOCKET
 WSADATA wsadata;
 SOCKET clientSocket;
@@ -640,18 +644,24 @@ int socket_init(void) {
 		printf("failed to create socket");
 		return -1;
 	}
+	else {
+		printf("socket ok\n");
+	}
 
 	memset(&clientsockinfo, 0, sizeof(clientsockinfo));
 
 	clientsockinfo.sin_family = AF_INET;
 	clientsockinfo.sin_addr.s_addr = inet_addr("192.168.0.3");
-	clientsockinfo.sin_port = htons(9999);
+	clientsockinfo.sin_port = htons(27015);
 
 	setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt, sizeof(opt));
 
 	if (connect(clientSocket, (SOCKADDR*)&clientsockinfo, sizeof(clientsockinfo)) == SOCKET_ERROR) {
 		printf("faile to connect");
 		return -1;
+	}
+	else {
+		printf("connect\n");
 	}
 
 	printf("Socket Connected\n");
@@ -704,9 +714,57 @@ int main()
 #if __SOCKET
 	socket_init();
 #endif
-	window = SDL_CreateWindow("MSLM RX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1920,1080, 0);
-	renderer = SDL_CreateRenderer(window, -1, 0);
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32, SDL_TEXTUREACCESS_STREAMING, 1920,1080);
+	int w, h, ch = 0;
+	w = 1280;
+	h = 720;
+
+	unsigned int renderer_flags = SDL_RENDERER_ACCELERATED;
+
+
+
+	//
+
+	int wflag = 0;
+	wflag |= SDL_WINDOW_RESIZABLE;
+
+	window = SDL_CreateWindow("MSLM RX", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, 0);
+	//SDL_SetWindowMinimumSize(window, w >> 2, h >> 2);
+	//SDL_WarpMouseInWindow(window, w / 2, h / 2);
+
+	//do {	// choose SW or HW renderer?
+	//	int i, n = SDL_GetNumRenderDrivers();
+	//	SDL_RendererInfo info;
+	//	for (i = 0; i < n; i++) {
+	//		if (SDL_GetRenderDriverInfo(i, &info) < 0)
+	//			continue;
+	//		i, info.name,
+	//			info.flags & SDL_RENDERER_SOFTWARE ? "SW" : "",
+	//			info.flags & SDL_RENDERER_ACCELERATED ? "HW" : "",
+	//			info.flags & SDL_RENDERER_PRESENTVSYNC ? ",vsync" : "",
+	//			info.flags & SDL_RENDERER_TARGETTEXTURE ? ",texture" : "");
+	//			if (info.flags & SDL_RENDERER_ACCELERATED)
+	//				renderer_flags = SDL_RENDERER_ACCELERATED;
+	//	}
+	//} while (0);
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32, SDL_TEXTUREACCESS_STREAMING, w, h);
+
+	//Uint32 myEventType = SDL_RegisterEvents(1);
+	//if (myEventType != ((Uint32)-1)) {
+	//	SDL_Event event;
+	//	SDL_memset(&event, 0, sizeof(event)); /* or SDL_zero(event) */
+	//	event.type = myEventType;
+	//	event.user.code = 1;
+	//	event.user.data1 = (char*)"data";
+	//	event.user.data2 = 0;
+	//	SDL_PushEvent(&event);
+	//}
+
+	
+	RegisterHotKey(NULL, 26000, 0,VK_F5);
+	HMODULE hInstance = GetModuleHandle(NULL);
+	hHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardProc, hInstance, NULL);
 
 	while (true)
 	{		
