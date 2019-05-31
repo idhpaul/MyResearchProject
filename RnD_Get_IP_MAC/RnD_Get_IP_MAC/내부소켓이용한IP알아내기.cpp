@@ -1,35 +1,3 @@
-//#include <stdio.h>
-//#include <WinSock.h>
-//#include <IPHlpApi.h>                       // for GetAdaptersInfo()
-//#pragma comment(lib, "iphlpapi.lib" )
-//
-//char my_mac[64];
-//char my_ip[64];
-//
-//int main(int argc, char* argv[])
-//{
-//	DWORD size = sizeof(PIP_ADAPTER_INFO);
-//
-//	PIP_ADAPTER_INFO Info;
-//	ZeroMemory(&Info, size);
-//	int result = GetAdaptersInfo(Info, &size);        // 첫번째 랜카드 MAC address 가져오기
-//	if (result == ERROR_BUFFER_OVERFLOW)    // GetAdaptersInfo가 메모리가 부족하면 재 할당하고 재호출
-//	{
-//		Info = (PIP_ADAPTER_INFO)malloc(size);
-//		GetAdaptersInfo(Info, &size);
-//	}
-//	if (!Info)        return 0;
-//	sprintf(my_mac, "%0.2X:%0.2X:%0.2X:%0.2X:%0.2X:%0.2X",
-//		Info->Address[0], Info->Address[1], Info->Address[2], Info->Address[3], Info->Address[4], Info->Address[5]);
-//	sprintf(my_ip, "%s",
-//		Info->IpAddressList.IpAddress.String);
-//
-//	printf(my_ip);
-//	getchar();
-//	return 1;
-//}
-
-/* 예제 */
 #pragma comment(lib, "ws2_32.lib")
 
 #include <winsock2.h>

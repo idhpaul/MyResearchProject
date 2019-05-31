@@ -139,14 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Name_mangling.h" />
-    <ClInclude Include="overlap_hello.h" />
     <ClInclude Include="overlap_main.h" />
     <ClInclude Include="overlap_test.h" />
     <ClInclude Include="overlap_test2.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Name_mangling.cpp" />
     <ClCompile Include="overlap_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

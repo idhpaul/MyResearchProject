@@ -1,0 +1,18 @@
+[difftool "codecompare"]
+cmd = 'C:\\Program Files\\Devart\\Code Compare\\codecompare.exe' -W \"$LOCAL\" \"$REMOTE\" 
+renames = true
+
+[diff]
+tool = codecompare
+guitool = codecompare
+
+[mergetool "codecompare"]
+cmd = 'C:\\Program Files\\Devart\\Code Compare\\codemerge.exe' -MF=\"$LOCAL\" -TF=\"$REMOTE\" -BF=\"$BASE\" -RF=\"$MERGED\"
+trustExitCode = true
+
+[mergetool]
+keepBackup = false
+
+[merge]
+tool = codecompare
+guitool = codecompare

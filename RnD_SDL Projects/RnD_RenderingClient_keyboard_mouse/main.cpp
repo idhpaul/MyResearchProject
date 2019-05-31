@@ -9,6 +9,10 @@
 using namespace std;
 typedef WORD KeySym;
 
+#ifdef main
+#undef main
+#endif
+
 #include "main.h"
 
 SDL_Event event;
@@ -26,6 +30,8 @@ struct sockaddr_in clientsockinfo;
 #define	SDL_USEREVENT_OPEN_AUDIO		0x0002
 #define	SDL_USEREVENT_RENDER_IMAGE		0x0004
 #define	SDL_USEREVENT_RENDER_TEXT		0x0008
+
+SDL_Event event;
 
 SDL_Window *window;
 SDL_Renderer *renderer;
@@ -402,31 +408,47 @@ ProcessEvent(SDL_Event *event) {
 		break;
 	case SDL_KEYDOWN:
 
+		if (event->key.keysym.sym == SDLK_F12) {
+			//#idea1 모드 변경안하고 하는 방법
+			SDL_SetWindowResizable(window, SDL_TRUE);
+			SDL_SetWindowResizable(window, SDL_TRUE);
+			SDL_SetWindowPosition(window, 100, 100);
+			//
 
-		if (event->key.keysym.sym == SDLK_RETURN) {
-			//SDL_SetWindowSize(window, 1280, 720);
-			SDL_SetWindowTitle(window, "title");
-			//SDL_SetWindowFullscreen(window, SDL_WINDOW_MAXIMIZED);
-			//SDL_SetWindowDisplayMode(window, SDL_WINDOW_RESIZABLE)
-			//SDL_ShowWindow(window);
-			SDL_MaximizeWindow(window);
-			//SDL_MinimizeWindow(window);
+			//#idea2 미니멈사이즈 이용
 			//SDL_SetWindowResizable(window, SDL_TRUE);
-			SDL_SetWindowFullscreen(window, SDL_WINDOW_MAXIMIZED);
+			//SDL_SetWindowPosition(window, 10, 10);
 
 
-			
-		}
-		else if (event->key.keysym.sym == SDLK_SPACE) {
-			//SDL_LockTexture(texture, 0, NULL, NULL);
 
+
+			//SDL_SetWindowFullscreen(window, SDL_WINDOW_MAXIMIZED);
+			//SDL_SetWindowSize(window, 1280, 720);
+			//SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+			//SDL_ShowWindow(window);
+			//SDL_SetWindowFullscreen(window, SDL_WINDOW_SHOWN);
+
+
+			/*SDL_ShowWindow(window);
 			SDL_MaximizeWindow(window);
-			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-			//SDL_UnlockTexture(texture);
+			SDL_SetWindowResizable(window, SDL_TRUE);
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_MAXIMIZED);*/
+		}
+		else if(event->key.keysym.sym == SDLK_F11) {
+			//#모드 변경안하고 하는 방법
+			SDL_SetWindowResizable(window, SDL_FALSE);
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_MAXIMIZED);
+			SDL_SetWindowPosition(window, 0, 0);
+
+
+			//SDL_SetWindowResizable(window, SDL_FALSE);
+			//SDL_MaximizeWindow(window);
+			//SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			//SDL_SetWindowPosition(window, 0, 0);
+			//SDL_SetWindowDisplayMode(window, NULL);
 
 		}
-		//else
-		//	//
+			//
 
 
 		//if (event->key.keysym.scancode != SDL_GetScancodeFromKey(event->key.keysym.sym))
@@ -481,26 +503,74 @@ ProcessEvent(SDL_Event *event) {
 		break;
 
 	case SDL_WINDOWEVENT:
-		/*if (event->window.event == SDL_WINDOWEVENT_CLOSE) {
-			rtspThreadParam.running = false;
-			return;
-		}
-		else if (event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-			mi = windowId2ch.find(event->window.windowID);
-			if (mi != windowId2ch.end()) {
-				int w, h, ch = mi->second;
-				char title[64];
-				w = event->window.data1;
-				h = event->window.data2;
-				windowSizeX[ch] = w;
-				windowSizeY[ch] = h;
-				snprintf(title, sizeof(title), WINDOW_TITLE, ch, w, h);
-				SDL_SetWindowTitle(rtspThreadParam.surface[ch], title);
-				rtsperror("event window #%d(%x) resized: w=%d h=%d\n",
-					ch, event->window.windowID, w, h);
+
+		if (event->type == SDL_WINDOWEVENT) {
+			switch (event->window.event) {
+			case SDL_WINDOWEVENT_SHOWN:
+				SDL_Log("Window %d shown", event->window.windowID);
+				break;
+			case SDL_WINDOWEVENT_HIDDEN:
+				SDL_Log("Window %d hidden", event->window.windowID);
+				break;
+			case SDL_WINDOWEVENT_EXPOSED:
+				SDL_Log("Window %d exposed", event->window.windowID);
+				break;
+			case SDL_WINDOWEVENT_MOVED:
+				SDL_Log("Window %d moved to %d,%d",
+					event->window.windowID, event->window.data1,
+					event->window.data2);
+				break;
+			case SDL_WINDOWEVENT_RESIZED:
+				SDL_Log("Window %d resized to %dx%d",
+					event->window.windowID, event->window.data1,
+					event->window.data2);
+				break;
+			case SDL_WINDOWEVENT_SIZE_CHANGED:
+				SDL_Log("Window %d size changed to %dx%d",
+					event->window.windowID, event->window.data1,
+					event->window.data2);
+				break;
+			case SDL_WINDOWEVENT_MINIMIZED:
+				SDL_Log("Window %d minimized", event->window.windowID);
+				break;
+			case SDL_WINDOWEVENT_MAXIMIZED:
+				SDL_Log("Window %d maximized", event->window.windowID);
+				break;
+			case SDL_WINDOWEVENT_RESTORED:
+				SDL_Log("Window %d restored", event->window.windowID);
+				break;
+			case SDL_WINDOWEVENT_ENTER:
+				SDL_Log("Mouse entered window %d",
+					event->window.windowID);
+				break;
+			case SDL_WINDOWEVENT_LEAVE:
+				SDL_Log("Mouse left window %d", event->window.windowID);
+				break;
+			case SDL_WINDOWEVENT_FOCUS_GAINED:
+				SDL_Log("Window %d gained keyboard focus",
+					event->window.windowID);
+				break;
+			case SDL_WINDOWEVENT_FOCUS_LOST:
+				SDL_Log("Window %d lost keyboard focus",
+					event->window.windowID);
+				break;
+			case SDL_WINDOWEVENT_CLOSE:
+				SDL_Log("Window %d closed", event->window.windowID);
+				break;
+#if SDL_VERSION_ATLEAST(2, 0, 5)
+			case SDL_WINDOWEVENT_TAKE_FOCUS:
+				SDL_Log("Window %d is offered a focus", event->window.windowID);
+				break;
+			case SDL_WINDOWEVENT_HIT_TEST:
+				SDL_Log("Window %d has a special hit test", event->window.windowID);
+				break;
+#endif
+			default:
+				SDL_Log("Window %d got unknown event %d",
+					event->window.windowID, event->window.event);
+				break;
 			}
-		}*/
-		printf("window event\n");
+		}
 		break;
 	case SDL_USEREVENT:
 
@@ -603,35 +673,35 @@ int socket_init(void) {
 int m_nHotKeyID;
 HHOOK hHook;
 
-LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
-{
-	PKBDLLHOOKSTRUCT pKey = (PKBDLLHOOKSTRUCT)lParam;
-
-	if (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)
-	{
-		
-		//Now just check pKey->vkCode etc for whatever you want
-		//for instance, a basic printout of the value and a check for pgup
-		if (pKey->vkCode == VK_HANGUL) {
-			printf("한영키 누름\n");
-			event.type = Hangul;
-			event.user.code = 1;
-			event.user.data1 = (int*)0x15;
-			event.user.data2 = 0;
-			SDL_PushEvent(&event);
-
-		}
-			
-		else if (pKey->vkCode == 25)
-			printf("한자키 누름\n");
-		else {
-			printf("%d\n", pKey->vkCode);
-		}
-	}
-
-	CallNextHookEx(hHook, nCode, wParam, lParam);
-	return 0;
-}
+//LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
+//{
+//	PKBDLLHOOKSTRUCT pKey = (PKBDLLHOOKSTRUCT)lParam;
+//
+//	if (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)
+//	{
+//		
+//		//Now just check pKey->vkCode etc for whatever you want
+//		//for instance, a basic printout of the value and a check for pgup
+//		if (pKey->vkCode == VK_HANGUL) {
+//			printf("한영키 누름\n");
+//			event.type = Hangul;
+//			event.user.code = 1;
+//			event.user.data1 = (int*)0x15;
+//			event.user.data2 = 0;
+//			SDL_PushEvent(&event);
+//
+//		}
+//			
+//		else if (pKey->vkCode == 25)
+//			printf("한자키 누름\n");
+//		else {
+//			printf("%d\n", pKey->vkCode);
+//		}
+//	}
+//
+//	CallNextHookEx(hHook, nCode, wParam, lParam);
+//	return 0;
+//}
 
 int main()
 {
