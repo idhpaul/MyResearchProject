@@ -39,6 +39,16 @@
 
 #define __BSD_STYLE 1
 
+typedef struct message
+{
+	char option[10];
+	char user[20];
+	char buf[1024];
+	char target[256];
+	int num1;
+	int num2;
+}MyStruct;
+
 int __cdecl main(int argc, char **argv)
 {
 	WSADATA wsaData;
@@ -52,10 +62,10 @@ int __cdecl main(int argc, char **argv)
 	int recvbuflen = DEFAULT_BUFLEN;
 
 	// Validate the parameters
-	if (argc != 2) {
+	/*if (argc != 2) {
 		printf("usage: %s server-name\n", argv[0]);
 		return 1;
-	}
+	}*/
 
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -69,8 +79,16 @@ int __cdecl main(int argc, char **argv)
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 
+	//// Resolve the server address and port
+	//iResult = getaddrinfo(argv[1], DEFAULT_PORT, &hints, &result);
+	//if (iResult != 0) {
+	//	printf("getaddrinfo failed with error: %d\n", iResult);
+	//	WSACleanup();
+	//	return 1;
+	//}
+
 	// Resolve the server address and port
-	iResult = getaddrinfo(argv[1], DEFAULT_PORT, &hints, &result);
+	iResult = getaddrinfo("192.168.0.3", DEFAULT_PORT, &hints, &result);
 	if (iResult != 0) {
 		printf("getaddrinfo failed with error: %d\n", iResult);
 		WSACleanup();
@@ -122,6 +140,24 @@ int __cdecl main(int argc, char **argv)
 		WSACleanup();
 		return 1;
 	}
+
+	MyStruct mystruct;
+	ZeroMemory(&mystruct, sizeof(MyStruct));
+
+	iResult = recv(ConnectSocket, (char*)&mystruct, sizeof(MyStruct), 0);
+	if (iResult > 0) 
+	{
+		printf("Bytes received: %d\n", iResult);
+	}
+	else if (iResult == 0)
+		printf("Connection closing...\n");
+	else {
+		printf("recv failed with error: %d\n", WSAGetLastError());
+		closesocket(ConnectSocket);
+		WSACleanup();
+		return 1;
+	}
+
 
 	// Send an initial buffer
 	iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf), 0);
