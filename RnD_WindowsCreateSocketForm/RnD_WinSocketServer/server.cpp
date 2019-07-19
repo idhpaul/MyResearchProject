@@ -17,6 +17,7 @@
 #endif
 
 #define WIN32_LEAN_AND_MEAN
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <windows.h>
 #include <winsock2.h>
@@ -32,6 +33,17 @@
 #define DEFAULT_PORT "27015"
 
 #define __BSD_STYLE 1
+
+typedef struct message
+{
+	char option[10];
+	char user[20];
+	char buf[1024];
+	char target[256];
+	int num1;
+	int num2;
+}MyStruct;
+
 
 int __cdecl main(void)
 {
@@ -125,6 +137,31 @@ int __cdecl main(void)
 
 	// No longer need server socket
 	closesocket(ListenSocket);
+
+	MyStruct mystruct;
+	ZeroMemory(&mystruct, sizeof(MyStruct));
+
+
+	//mystruct.user = "DongHyun";
+	//mystruct.target = "Window";
+	//mystruct.option = "Fast";
+	strcpy(mystruct.user, "DongHyun");
+	strcpy(mystruct.target, "Window");
+	strcpy(mystruct.option, "Fast");
+	strcpy(mystruct.buf, "This is for test struct send message");
+	mystruct.num1 = 1;
+	mystruct.num2 = 2;
+
+	// Send an initial buffer by struct
+	iResult = send(ClientSocket, (char*)&mystruct, sizeof(MyStruct), 0);
+	if (iResult == SOCKET_ERROR) {
+		printf("send failed with error: %d\n", WSAGetLastError());
+		closesocket(ClientSocket);
+		WSACleanup();
+		return 1;
+	}
+
+	printf("Bytes Sent: %ld\n", iResult);
 
 	// Receive until the peer shuts down the connection
 	do {
