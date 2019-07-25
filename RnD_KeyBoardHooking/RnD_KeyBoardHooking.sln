@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RnD_KeyBoardHooking", "RnD_KeyBoardHooking\RnD_KeyBoardHooking.vcxproj", "{BDFBDA45-B32A-40B2-B154-B7D23EB1674A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RnD_KeyBoardHook_consolever_low_level", "RnD_KeyBoardHook_consolever\RnD_KeyBoardHook_consolever.vcxproj", "{0E5988EE-E381-45AB-9531-E30A7CBF9D66}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RnD_KeyBoardHook_console", "RnD_KeyBoardHook_console\RnD_KeyBoardHook_console.vcxproj", "{6A57F92C-16E4-4807-A775-5965E2107613}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RnD_KeyboardHook_console_dll", "RnD_KeyboardHook_console_dll\RnD_KeyboardHook_console_dll.vcxproj", "{E6035471-B8D1-4CCA-93F7-FCAA1E8A978C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +27,30 @@ Global
 		{BDFBDA45-B32A-40B2-B154-B7D23EB1674A}.Release|x64.Build.0 = Release|x64
 		{BDFBDA45-B32A-40B2-B154-B7D23EB1674A}.Release|x86.ActiveCfg = Release|Win32
 		{BDFBDA45-B32A-40B2-B154-B7D23EB1674A}.Release|x86.Build.0 = Release|Win32
+		{0E5988EE-E381-45AB-9531-E30A7CBF9D66}.Debug|x64.ActiveCfg = Debug|x64
+		{0E5988EE-E381-45AB-9531-E30A7CBF9D66}.Debug|x64.Build.0 = Debug|x64
+		{0E5988EE-E381-45AB-9531-E30A7CBF9D66}.Debug|x86.ActiveCfg = Debug|Win32
+		{0E5988EE-E381-45AB-9531-E30A7CBF9D66}.Debug|x86.Build.0 = Debug|Win32
+		{0E5988EE-E381-45AB-9531-E30A7CBF9D66}.Release|x64.ActiveCfg = Release|x64
+		{0E5988EE-E381-45AB-9531-E30A7CBF9D66}.Release|x64.Build.0 = Release|x64
+		{0E5988EE-E381-45AB-9531-E30A7CBF9D66}.Release|x86.ActiveCfg = Release|Win32
+		{0E5988EE-E381-45AB-9531-E30A7CBF9D66}.Release|x86.Build.0 = Release|Win32
+		{6A57F92C-16E4-4807-A775-5965E2107613}.Debug|x64.ActiveCfg = Debug|x64
+		{6A57F92C-16E4-4807-A775-5965E2107613}.Debug|x64.Build.0 = Debug|x64
+		{6A57F92C-16E4-4807-A775-5965E2107613}.Debug|x86.ActiveCfg = Debug|Win32
+		{6A57F92C-16E4-4807-A775-5965E2107613}.Debug|x86.Build.0 = Debug|Win32
+		{6A57F92C-16E4-4807-A775-5965E2107613}.Release|x64.ActiveCfg = Release|x64
+		{6A57F92C-16E4-4807-A775-5965E2107613}.Release|x64.Build.0 = Release|x64
+		{6A57F92C-16E4-4807-A775-5965E2107613}.Release|x86.ActiveCfg = Release|Win32
+		{6A57F92C-16E4-4807-A775-5965E2107613}.Release|x86.Build.0 = Release|Win32
+		{E6035471-B8D1-4CCA-93F7-FCAA1E8A978C}.Debug|x64.ActiveCfg = Debug|x64
+		{E6035471-B8D1-4CCA-93F7-FCAA1E8A978C}.Debug|x64.Build.0 = Debug|x64
+		{E6035471-B8D1-4CCA-93F7-FCAA1E8A978C}.Debug|x86.ActiveCfg = Debug|Win32
+		{E6035471-B8D1-4CCA-93F7-FCAA1E8A978C}.Debug|x86.Build.0 = Debug|Win32
+		{E6035471-B8D1-4CCA-93F7-FCAA1E8A978C}.Release|x64.ActiveCfg = Release|x64
+		{E6035471-B8D1-4CCA-93F7-FCAA1E8A978C}.Release|x64.Build.0 = Release|x64
+		{E6035471-B8D1-4CCA-93F7-FCAA1E8A978C}.Release|x86.ActiveCfg = Release|Win32
+		{E6035471-B8D1-4CCA-93F7-FCAA1E8A978C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
