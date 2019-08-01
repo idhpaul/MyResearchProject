@@ -27,22 +27,23 @@ extern "C" {
 	{
 
 		//MessageBox(NULL,L"Enter hook", L"WARNING", MB_OK);
+		printf("Enter Hook\n");
 
 		if (lParam & 0x80000000) // released
 		{
-			//printf("press : %d\n", wParam);
-			if (wParam == VK_LWIN) // f7 pressed
-			{
-				printf("press LWIN\n");
-				MessageBox(NULL,L"F7 pressed", L"WARNING", MB_OK);
-			}
+			printf("press : %d\n", wParam);
+			//if (wParam == VK_LWIN) // f7 pressed
+			//{
+			//	printf("press LWIN\n");
+			//	MessageBox(NULL,L"F7 pressed", L"WARNING", MB_OK);
+			//}
 			return 1;
 		}
 		else
 		{
-			printf("dddd\n");
-			return CallNextHookEx(g_hHook, nCode, wParam, lParam);
+			printf("up :%d\n",wParam);
 		}
+			return CallNextHookEx(g_hHook, nCode, wParam, lParam);
 
 		//return CallNextHookEx(g_hHook, nCode, wParam, lParam);
 
