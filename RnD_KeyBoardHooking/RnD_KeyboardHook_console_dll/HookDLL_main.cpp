@@ -84,7 +84,7 @@ extern "C" {
 
 		printf("dll_ThreadId : %d\n", threadId);
 
-		g_hHook = SetWindowsHookEx(WH_KEYBOARD, KeyboardProc, g_hInstance, threadId); //후킹 시작
+		g_hHook = SetWindowsHookEx(WH_KEYBOARD, KeyboardProc, g_hInstance, 0); //후킹 시작
 		printf("Hook Start....\n");
 	}
 	__declspec(dllexport) void HookStop()
