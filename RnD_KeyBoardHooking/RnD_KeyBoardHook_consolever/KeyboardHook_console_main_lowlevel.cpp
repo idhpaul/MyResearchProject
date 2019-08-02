@@ -84,13 +84,56 @@ LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 
 	//}
 
-	PKBDLLHOOKSTRUCT hookstruct;
+	KBDLLHOOKSTRUCT* hookstruct = reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam);
 
-	hookstruct = (PKBDLLHOOKSTRUCT)lParam;
+	//PKBDLLHOOKSTRUCT hookstruct;
+
+	//hookstruct = (PKBDLLHOOKSTRUCT)lParam;
 
 	if (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)
 	{
-		if (GetAsyncKeyState(VK_LWIN) & 0x8000 || GetAsyncKeyState(VK_RWIN) & 0x8000)
+
+		printf("%x ", hookstruct->vkCode);
+
+		if (hookstruct->vkCode == VK_HANGUL)
+		{
+			printf("Hangul\n");
+			printf("scancode : %d\n", hookstruct->scanCode);
+		}
+		else if (hookstruct->vkCode == VK_HANJA)
+		{
+			printf("Hanja\n");
+			printf("scancode : %d\n", hookstruct->scanCode);
+
+
+		}
+		else if (hookstruct->vkCode == VK_RCONTROL)
+		{
+			printf("Right Control\n");
+			printf("scancode : %d\n", hookstruct->scanCode);
+
+
+		}
+		else if (hookstruct->vkCode == VK_RMENU)
+		{
+			printf("Right Alt\n");
+			printf("scancode : %d\n", hookstruct->scanCode);
+		}
+		else if (hookstruct->vkCode == VK_LCONTROL)
+		{
+			printf("Left Control\n");
+			printf("scancode : %d\n", hookstruct->scanCode);
+
+
+		}
+		else if (hookstruct->vkCode == VK_LMENU)
+		{
+			printf("Left Alt\n");
+			printf("scancode : %d\n", hookstruct->scanCode);
+		}
+
+		return 1;
+		/*if (GetAsyncKeyState(VK_LWIN) & 0x8000 || GetAsyncKeyState(VK_RWIN) & 0x8000)
 		{
 			if (hookstruct->vkCode == 0x51)
 			{
@@ -103,7 +146,7 @@ LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 		
 			}
 
-		}
+		}*/
 
 		//return 1;
 		//if(GetAsyncKeyState(VK_LSHIFT) & 0x8000 || GetAsyncKeyState(VK_RSHIFT) & 0x8000)
