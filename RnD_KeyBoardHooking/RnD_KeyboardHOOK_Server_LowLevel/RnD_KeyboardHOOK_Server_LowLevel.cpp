@@ -5,18 +5,18 @@
 
 #include <processthreadsapi.h>
 
-#include "pch.h"
-
 #pragma comment(lib, "Ws2_32.lib")
 
 #include <stdio.h>
 #include <iostream>
 
-#define __SOCKET 0
+HHOOK hHook;
+
+#define __SOCKET 1
+#define __BARRIER 1
+#define __TEST_SEND 1
 
 #if __SOCKET
-
-
 
 SOCKET sock;
 SOCKET clientsock;
@@ -39,11 +39,7 @@ typedef struct HOOK {
 
 #endif
 
-HHOOK hHook;
-
-#define __TEST_BAR 1
-
-#if __TEST_BAR
+#if __BARRIER
 
 #include "key_types.h"
 
@@ -63,7 +59,18 @@ static BYTE                g_deadKeyState[256] = { 0 };
 static BYTE                g_keyState[256] = { 0 };
 #endif
 
-#if __TEST_BAR
+#if __BARRIER
+
+#if __TEST_SEND
+
+typedef struct TESTHOOK {
+	DWORD   vkCode;
+	BOOL	key_up;
+} TESTHOOK;
+
+#endif
+
+
 
 //IKeyState* getKeyState() const
 //{
@@ -352,7 +359,8 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 	//PostThreadMessage(g_threadID, BARRIER_MSG_DEBUG, wParam, lParam);
 	//printf("[%d]hook: 0x%08x 0x%08x\n", __LINE__,wParam, lParam);
 
-
+#if 0
+	//! 한국어 키보드에는 데드키가 없음
 	// ignore dead key release
 	if ((g_deadVirtKey == wParam || g_deadRelease == wParam) &&
 		(lParam & 0x80000000u) != 0) {
@@ -363,29 +371,25 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 
 		return false;
 	}
+#endif
 
 	// we need the keyboard state for ToAscii()
 	BYTE keys[256];
 	keyboardGetState(keys, vkCode, kf_up);
 
-	for (int i = 0; i < 256; ++i)
+	/*for (int i = 0; i < 256; ++i)
 	{
 		printf("%d ", g_keyState[i]);
 	}
+	printf("\n↑g_keyState\n");
 
-#if __SOCKET
-
-
-	if (send(clientsock, (char*)g_keyState, sizeof(g_keyState), 0))
+	for (int i = 0; i < 256; ++i)
 	{
-		std::cout << "SEND OK" << std::endl;
-		return 1;
+		printf("%d ", keys[i]);
 	}
-	else
-	{
-		std::cout << "ERR Send  : " << WSAGetLastError() << std::endl;
-	}
-#endif
+	printf("\n↑keys\n");
+
+	return true;*/
 
 	// ToAscii() maps ctrl+letter to the corresponding control code
 	// and ctrl+backspace to delete.  we don't want those translations
@@ -402,6 +406,7 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 		keys[VK_LCONTROL] = 0;
 		keys[VK_RCONTROL] = 0;
 		keys[VK_CONTROL] = 0;
+		printf("Control up\n");
 	}
 	else {
 		keys[VK_LCONTROL] = 0x80;
@@ -410,6 +415,7 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 		keys[VK_LMENU] = 0x80;
 		keys[VK_RMENU] = 0x80;
 		keys[VK_MENU] = 0x80;
+		printf("Control & Alt down\n");
 	}
 
 
@@ -452,7 +458,8 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 	}
 
 	WORD c = 0;
-
+#if 0
+	//! 한국어 키보드에는 데드키가 없음
 	// map the key event to a character.  we have to put the dead
 	// key back first and this has the side effect of removing it.
 	// 키 이벤트를 문자에 매핑합니다.우리는 먼저 죽은 키를 다시 
@@ -478,9 +485,11 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 			g_deadRelease = g_deadVirtKey;
 		}
 	}
+#endif
 
 	UINT scanCode = ((lParam & 0x10ff0000u) >> 16);
 	int n = ToAscii((UINT)wParam, scanCode, keys, &c, flags);
+
 
 	// if mapping failed and ctrl and alt are pressed then try again
 	// with both not pressed.  this handles the case where ctrl and
@@ -500,6 +509,8 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 
 		//printf("[%d]hook: 0x%08x 0x%08x\n",__LINE__, wParam | 0x05000000, lParam);
 
+#if 0
+		//! 한국어 키보드에는 데드키가 없음
 		if (g_deadVirtKey != 0) {
 			if (ToAscii((UINT)g_deadVirtKey, (g_deadLParam & 0x10ff0000u) >> 16,
 				g_deadKeyState, &c, flags) == 2) {
@@ -508,6 +519,8 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 				g_deadRelease = g_deadVirtKey;
 			}
 		}
+#endif
+
 		BYTE keys2[256];
 		for (size_t i = 0; i < sizeof(keys) / sizeof(keys[0]); ++i) {
 			keys2[i] = keys[i];
@@ -520,6 +533,7 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 		keys2[VK_MENU] = 0;
 		n = ToAscii((UINT)wParam, scanCode, keys2, &c, flags);
 	}
+
 
 	//printf("[%d]hook: 0x%08x 0x%08x\n", __LINE__,wParam | ((c & 0xff) << 8) | ((n & 0xff) << 16) | 0x06000000, lParam);
 
@@ -550,26 +564,23 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 	case 0:
 		// key doesn't map to a character.  this can happen if
 		// non-character keys are pressed after a dead key.
+		printf("case 0\n");
 		charAndVirtKey = makeKeyMsg((UINT)wParam, (char)0, noAltGr);
 		break;
 
 	case 1:
+		printf("case 1\n");
 		// key maps to a character composed with dead key
 		charAndVirtKey = makeKeyMsg((UINT)wParam, (char)LOBYTE(c), noAltGr);
 		clearDeadKey = true;
 		break;
 
 	case 2: {
+		printf("case 2\n");
 		// previous dead key not composed.  send a fake key press
 		// and release for the dead key to our window.
 		WPARAM deadCharAndVirtKey =
 			makeKeyMsg((UINT)g_deadVirtKey, (char)LOBYTE(c), noAltGr);
-
-		printf("[%d]hook: 0x%08x 0x%08x\n", __LINE__,
-			deadCharAndVirtKey, g_deadLParam & 0x7fffffffu);
-		printf("[%d]hook: 0x%08x 0x%08x\n", __LINE__,
-			deadCharAndVirtKey, g_deadLParam | 0x80000000u);
-
 
 		// use uncomposed character
 		charAndVirtKey = makeKeyMsg((UINT)wParam, (char)HIBYTE(c), noAltGr);
@@ -578,6 +589,8 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 	}
 	}
 
+#if 0
+	//! 한국어 키보드에는 데드키가 없음
 	// put back the dead key, if any, for the application to use
 	if (g_deadVirtKey != 0) {
 		ToAscii((UINT)g_deadVirtKey, (g_deadLParam & 0x10ff0000u) >> 16,
@@ -589,6 +602,36 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 		g_deadVirtKey = 0;
 		g_deadLParam = 0;
 	}
+#endif
+
+	printf("wParam : %x\n", wParam);
+	printf("c : %c\n", (char)LOBYTE(c));
+	printf("noAltGr : %d\n", noAltGr);
+	printf("charAndVirtKey 0x%x\n", charAndVirtKey);
+
+#if __TEST_SEND 1
+
+	TESTHOOK hook = { 0, };
+	hook.vkCode = static_cast<DWORD>(wParam);
+	hook.key_up = kf_up;
+
+	printf("hook.vkCode : %x\n", hook.vkCode);
+	printf("hook.key_up = %d\n", hook.key_up);
+
+
+#if __SOCKET
+	if (send(clientsock, (char*)&hook, sizeof(TESTHOOK), 0))
+	{
+		std::cout << "SEND OK" << std::endl;
+		return 1;
+	}
+	else
+	{
+		std::cout << "ERR Send  : " << WSAGetLastError() << std::endl;
+	}
+#endif
+
+#endif
 
 	// forward message to our window.  do this whether or not we're
 	// forwarding events to clients because this'll keep our thread's
@@ -599,12 +642,13 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 	if (charAndVirtKey != 0) {
 		//PostThreadMessage(g_threadID, BARRIER_MSG_DEBUG,
 		//	charAndVirtKey | 0x07000000, lParam);
-		printf("[%d]hook: 0x%08x 0x%08x\n", __LINE__,
+		printf("hook: 0x%08x 0x%08x\n",
 			charAndVirtKey | 0x07000000, lParam);
 
 		//PostThreadMessage(g_threadID, BARRIER_MSG_KEY, charAndVirtKey, lParam);
-		printf("[%d] SEND MSG\n", __LINE__);
 		//onKey(charAndVirtKey, lParam);
+
+		return true;
 
 
 	}
@@ -636,7 +680,7 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-#if __TEST_BAR
+#if __BARRIER
 	// decode the message
 	KBDLLHOOKSTRUCT* info = reinterpret_cast<KBDLLHOOKSTRUCT*>(lParam);
 
@@ -649,19 +693,19 @@ LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 		lParam |= (info->scanCode << 16);				// scan code
 		if (info->flags & LLKHF_EXTENDED) {
 			lParam |= (1lu << 24);						// extended key
-			printf("확장키 입력\n");
+			printf("[확장키 입력]\n");
 		}
 		if (info->flags & LLKHF_ALTDOWN) {
 			lParam |= (1lu << 29);						// context code
-			printf("Alt 눌림(SYSKEY)\n");
+			printf("[Alt 눌림(SYSKEY)]\n");
 		}
 		if (info->flags & LLKHF_UP) {
 			lParam |= (1lu << 31);						// transition
-			printf("KEY UP\n");
+			printf("[KEY UP]\n");
 		}
 		else
 		{
-			printf("KEY DOWN\n");
+			printf("[KEY DOWN]\n");
 		}
 
 
