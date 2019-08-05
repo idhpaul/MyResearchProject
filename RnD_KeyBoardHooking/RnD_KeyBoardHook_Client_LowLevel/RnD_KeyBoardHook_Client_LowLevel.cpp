@@ -44,6 +44,12 @@ typedef struct HOOK {
 	bool winPress;
 } MYHOOK;
 
+
+typedef struct TESTHOOK {
+	DWORD   vkCode;
+	BOOL	key_up;
+} TESTHOOK;
+
 int __cdecl main(int argc, char **argv)
 {
 	WSADATA wsaData;
@@ -143,25 +149,48 @@ int __cdecl main(int argc, char **argv)
 
 	BYTE keys[256] = { 0, };
 
+	TESTHOOK testhook = { 0, };
+
 	while (true)
 	{
 
 		ZeroMemory(keys, 256);
 
 		//iResult = recv(ConnectSocket, (char*)&hookstruct, sizeof(MYHOOK), 0);
-		iResult = recv(ConnectSocket, (char*)keys, sizeof(keys), 0);
+		//iResult = recv(ConnectSocket, (char*)keys, sizeof(keys), 0);
+		iResult = recv(ConnectSocket, (char*)&testhook, sizeof(TESTHOOK), 0);
 
 		if (iResult > 0)
 		{
+			INPUT ip;
 
-			for (int i = 0; i < 256; ++i)
-			{
-				if (keys[i])
-				{
-					printf("[%x] key pressed\n", i);
-				}
-				//printf("%d ", keys[i]);
-			}
+			ip.type = INPUT_KEYBOARD;
+			ip.ki.wScan = 0;
+			ip.ki.time = 0;
+			ip.ki.dwExtraInfo = 0;
+
+			ip.ki.wVk = testhook.vkCode;
+			ip.ki.dwFlags = testhook.key_up ? KEYEVENTF_KEYUP : 0;
+			SendInput(1, &ip, sizeof(INPUT));
+
+			//for (int i = 0; i < 256; ++i)
+			//{
+			//	if (keys[i])
+			//	{
+			//		INPUT ip;
+
+			//		ip.type = INPUT_KEYBOARD;
+			//		ip.ki.wScan = 0;
+			//		ip.ki.time = 0;
+			//		ip.ki.dwExtraInfo = 0;
+
+			//		ip.ki.wVk = i;
+			//		ip.ki.dwFlags = 0;
+			//		SendInput(1, &ip, sizeof(INPUT));
+			//		printf("[%x] key pressed\n", i);
+			//	}
+			//	//printf("%d ", keys[i]);
+			//}
 
 
 			/*std::cout << "Bytes received: " << iResult << std::endl;
@@ -184,6 +213,17 @@ int __cdecl main(int argc, char **argv)
 			WSACleanup();
 			return 1;
 		}
+
+
+		INPUT ip;
+
+		ip.type = INPUT_KEYBOARD;
+		ip.ki.wScan = 0;
+		ip.ki.time = 0;
+		ip.ki.dwExtraInfo = 0;
+
+		ip.ki.wVk = 
+
 		printf("///////////////////////////////////////////\n");
 	}
 
