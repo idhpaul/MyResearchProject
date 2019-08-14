@@ -1,3 +1,10 @@
+/*
+	해당 소스코드의 문제점
+	
+	스레드1은 값을 확인하기 위해서 CPU 사이클을 소비하고 bool 플래그를 업데이트하기 위해 점유권을 획득해야하기 때문에 속도가 느림
+
+*/
+
 #include<iostream>
 #include<thread>
 #include<mutex>
