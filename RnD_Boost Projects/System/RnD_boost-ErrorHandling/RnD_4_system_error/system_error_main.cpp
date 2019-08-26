@@ -20,5 +20,7 @@ int main()
 		error_code ec = e.code();
 		std::cerr << ec.value() << '\n';
 		std::cerr << ec.category().name() << '\n';
+		std::cerr << ec.message() << '\n';
+		std::cerr << e.what() << '\n';
 	}
 }

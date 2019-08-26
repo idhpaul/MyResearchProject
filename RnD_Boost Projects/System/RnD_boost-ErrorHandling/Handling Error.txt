@@ -1,0 +1,41 @@
+[Fuction Error Handling]
+
+		boost::system::error_code boost_err;
+
+	try
+	{
+		boost::...func(..., boost_err)
+		if(boost_err)
+		{
+			//Error Handling for cerr
+			std::cerr << "[Err Print Message here]"
+				"(value : " << boost_err.value() <<
+				", category : " << boost_err.category().name() <<
+				", message : " << boost_err.message() << ")" << std::endl;
+
+			//Error Handling for PLOG lib
+			PLOG_ERROR << "[Err - Print Message here]"
+				"(value : " << boost_err.value() <<
+				", category : " << boost_err.category().name() <<
+				", message : " << boost_err.message() << ")";
+
+			throw  boost::system::system_error{ boost_err };
+		}
+	}//try
+	catch(boost::system::system_error &e)
+	{
+		//Error Handling for cerr
+		std::cerr << e.what() << std::endl;
+
+		boost::system::error_code ec = e.code();
+		std::cerr << ec.value() << std::endl;
+		std::cerr << ec.category().name() << std::endl;
+		std::cerr << ec.message() << std::endl;
+
+		//Error Handling for PLOG lib
+		PLOG_ERROR << "Err - Try catch"
+			"(system_error : " << e.what() <<") "
+			"(value : " << ec.value() <<
+			", category : " << ec.category().name() <<
+			", message : " << ec.message() << ")";
+	}//catch
