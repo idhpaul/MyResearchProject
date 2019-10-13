@@ -38,7 +38,7 @@ void Get_audio_format(int bitrate, int hz)
 		deviceFormatProperties->Samples.wSamplesPerBlock = 16;
 		deviceFormatProperties->Samples.wValidBitsPerSample = 16;
 
-		deviceFormatProperties->dwChannelMask = 0x00000003;
+		//deviceFormatProperties->dwChannelMask = 0x00000003;
 		deviceFormatProperties->Format.cbSize = 22;
 	}
 
@@ -56,7 +56,7 @@ void Get_audio_format(int bitrate, int hz)
 		deviceFormatProperties->Samples.wSamplesPerBlock = 16;
 		deviceFormatProperties->Samples.wValidBitsPerSample = 16;
 
-		deviceFormatProperties->dwChannelMask = 0x00000003;
+		//deviceFormatProperties->dwChannelMask = 0x00000003;
 		deviceFormatProperties->Format.cbSize = 22;
 	}
 
@@ -74,7 +74,7 @@ void Get_audio_format(int bitrate, int hz)
 		deviceFormatProperties->Samples.wSamplesPerBlock = 24;
 		deviceFormatProperties->Samples.wValidBitsPerSample = 24;
 
-		deviceFormatProperties->dwChannelMask = 0x00000003;
+		//deviceFormatProperties->dwChannelMask = 0x00000003;
 		deviceFormatProperties->Format.cbSize = 22;
 	}
 
@@ -92,7 +92,7 @@ void Get_audio_format(int bitrate, int hz)
 		deviceFormatProperties->Samples.wSamplesPerBlock = 24;
 		deviceFormatProperties->Samples.wValidBitsPerSample = 24;
 
-		deviceFormatProperties->dwChannelMask = 0x00000003;
+		//deviceFormatProperties->dwChannelMask = 0x00000003;
 		deviceFormatProperties->Format.cbSize = 22;
 	}
 
@@ -113,7 +113,7 @@ int main()
 	IMMDeviceEnumerator * pEnumerator_READ = NULL, *pEnumerator_WRITE = NULL;
 	IPropertyStore* store_READ = nullptr, *store_WRITE = nullptr;
 	IAudioClient   *audioClient = NULL;
-	PROPVARIANT prop_READ, prop_WRITE;
+	PROPVARIANT prop_READ, prop_WRITE, prop_SET;
 	CoInitialize(NULL);
 	//get the device enumerator
 	hr_READ = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_ALL, __uuidof(IMMDeviceEnumerator), (LPVOID *)&pEnumerator_READ);
@@ -146,7 +146,7 @@ int main()
 	std::cout << "Samples.wValidBitsPerSample   = " << deviceFormatProperties->Samples.wValidBitsPerSample << std::endl;
 	std::cout << "dwChannelMask   = " << deviceFormatProperties->dwChannelMask << std::endl;
 
-	
+
 	//Set Audio Device format
 	Get_audio_format(24, 48000);
 
@@ -156,12 +156,12 @@ int main()
 		std::cout << "pDevice->Activate failed!" << std::endl;
 	}
 
-
 	hr_READ = audioClient->IsFormatSupported(AUDCLNT_SHAREMODE_EXCLUSIVE, (PWAVEFORMATEX)&deviceFormatProperties->Format, NULL);
 	if (FAILED(hr_READ))
 	{
 		std::cout << "IsFormatSupported failed" << std::endl;
 	}
+
 	hr_WRITE = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_ALL, __uuidof(IMMDeviceEnumerator), (LPVOID *)&pEnumerator_WRITE);
 
 	// get default audio endpoint
@@ -189,16 +189,21 @@ int main()
 	std::cout << "Samples.wSamplesPerBlock = " << deviceFormatProperties->Samples.wSamplesPerBlock << std::endl;
 	std::cout << "Samples.wValidBitsPerSample   = " << deviceFormatProperties->Samples.wValidBitsPerSample << std::endl;
 	std::cout << "dwChannelMask   = " << deviceFormatProperties->dwChannelMask << std::endl;
+
 	hr_WRITE = store_WRITE->Commit();
 	pDevice_WRITE->Release();
 	pEnumerator_WRITE->Release();
 	store_WRITE->Release();
+
 	PropVariantClear(&prop_WRITE);
+
 	pDevice_READ->Release();
 	pEnumerator_READ->Release();
 	store_READ->Release();
+
 	pDevice_READ = nullptr;
 	PropVariantClear(&prop_READ);
+
 	CoUninitialize();
 	system("pause");
 	return 0;

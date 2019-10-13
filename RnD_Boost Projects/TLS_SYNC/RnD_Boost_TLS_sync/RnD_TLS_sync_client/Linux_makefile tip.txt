@@ -1,0 +1,43 @@
+# When you used Linux make file system try to use this setting
+# Test Configuration
+#	OS : Ubuntu 16.04 LTS
+#	C++ IDE : Visual studio Code
+#	boost version : 1.71
+# author : IDH
+
+CXX		  := g++
+CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb
+
+BIN		:= bin
+SRC		:= src
+INCLUDE	:= include
+LIB		:= lib
+
+LIBRARIES	:= -lpthread
+EXECUTABLE	:= main
+
+BOOST_INCLUDE	:= /home/kt/boost_1_71_0
+BOOST_LIB		:= /home/kt/boost_1_71_0/stage/lib
+BOOST_LINK		:= -lboost_system
+TLS_LINK		:= -lssl -lcrypto
+
+all: $(BIN)/$(EXECUTABLE)
+
+run: clean all
+	clear
+	./$(BIN)/$(EXECUTABLE)
+
+$(BIN)/$(EXECUTABLE): \
+	$(SRC)/*.cpp
+	$(CXX) $(CXX_FLAGS) \
+	-I$(INCLUDE) \
+	-I$(BOOST_INCLUDE) \
+	-L$(LIB) \
+	-L/usr/local/ssl/lib \
+	-L$(BOOST_LIB) \
+	$^ -o $@ $(LIBRARIES) \
+	$(TLS_LINK) \
+	$(BOOST_LINK)
+
+clean:
+	-rm $(BIN)/$(EXECUTABLE)
