@@ -1,0 +1,44 @@
+#When you test this client at Linux
+#Use this make file
+
+# Platform : Ubuntu 16.04 LTS
+# Boost version : 1.71.0
+# IDE : Visual Studio Code
+# Author : IDH
+# Date : 2019-10-17
+
+CXX		  := g++
+CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb
+
+BIN		:= bin
+SRC		:= src
+INCLUDE	:= include
+LIB		:= lib
+
+LIBRARIES	:= -lpthread
+EXECUTABLE	:= main
+
+BOOST_INCLUDE	:= /home/kt/boost_1_71_0
+BOOST_LIB		:= /home/kt/boost_1_71_0/stage/lib
+BOOST_LINK		:= -lboost_system
+TLS_LINK		:= -lssl -lcrypto
+
+all: $(BIN)/$(EXECUTABLE)
+
+run: clean all
+	clear
+	./$(BIN)/$(EXECUTABLE)
+
+$(BIN)/$(EXECUTABLE): \
+	$(SRC)/*.cpp
+	$(CXX) $(CXX_FLAGS) \
+	-I$(INCLUDE) \
+	-I$(BOOST_INCLUDE) \
+	-L$(LIB) \
+	-L$(BOOST_LIB) \
+	$^ -o $@ $(LIBRARIES) \
+	$(BOOST_LINK)
+
+
+clean:
+	-rm $(BIN)/$(EXECUTABLE)

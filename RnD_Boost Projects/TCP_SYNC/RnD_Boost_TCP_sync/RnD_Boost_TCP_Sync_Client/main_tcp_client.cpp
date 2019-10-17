@@ -27,11 +27,11 @@ public:
 	std::string emulateLongComputationOp(
 		unsigned int duration_sec) {
 
-		std::string request = "EMULATE_LONG_COMP_OP "
-			+ std::to_string(duration_sec)
-			+ "\n";
+		// std::string request = "EMULATE_LONG_COMP_OP "
+		// 	+ std::to_string(duration_sec)
+		// 	+ "\n";
 
-		sendRequest(request);
+		//sendRequest(request);
 		return receiveResponse();
 	};
 
@@ -61,7 +61,7 @@ private:
 
 int main()
 {
-
+	int i = 0;
 	std::string input_str;
 
 	std::cout << "Input server ip addr : ";
@@ -78,14 +78,19 @@ int main()
 		// Sync connect.
 		client.connect();
 
-		std::cout << "Sending request to the server... "
-			<< std::endl;
+		while (true)
+		{
+			if (i > 10)
+			{
+				break;
+			}
 
-		std::string response =
-			client.emulateLongComputationOp(10);
+			std::string response = client.emulateLongComputationOp(10);
 
-		std::cout << "Response received: " << response
-			<< std::endl;
+			std::cout << "Response received: " << response << std::endl;
+
+			i++;
+		}
 
 		// Close the connection and free resources.
 		client.close();
