@@ -89,9 +89,10 @@ int MyAudioSource::LoadData(UINT32 numFramesAvailable, char *pData, DWORD *pbDon
 	recv(clientsock, (char*)&audio_pkt, sizeof(audio_packet), 0);
 	//recv(clientsock, pData, numFramesAvailable, 0);
 
-	fVolume = (float)audio_pkt.volume / MAX_VOL;
-	g_pEndptVol->SetMasterVolumeLevelScalar(fVolume, &g_guidMyContext);
+	printf("volume : %d\n", audio_pkt.volume);
 
+	// TODO : 가져온 Volume 값으로 App 자체 Volume 수정하도록 변경 필요
+	g_pEndptVol->SetChannelVolumeLevelScalar(1,(float)audio_pkt.volume / MAX_VOL, &g_guidMyContext);
 
 	//printf("recv\n");
 #else
@@ -142,9 +143,12 @@ HRESULT PlayAudioStream(MyAudioSource *pMySource)
 	BYTE *pData;
 	DWORD flags = 0;
 
-	IAudioEndpointVolume *g_pEndptVol = NULL;
+
 	int nVolume;
 	float fVolume;
+
+	hr = CoCreateGuid(&g_guidMyContext);
+	EXIT_ON_ERROR(hr)
 
 	hr = CoCreateInstance(CLSID_MMDeviceEnumerator, NULL, CLSCTX_ALL, IID_IMMDeviceEnumerator, (void**)&pEnumerator);
 	EXIT_ON_ERROR(hr)
@@ -153,6 +157,9 @@ HRESULT PlayAudioStream(MyAudioSource *pMySource)
 	EXIT_ON_ERROR(hr)
 
 		hr = pDevice->Activate(IID_IAudioClient, CLSCTX_ALL, NULL, (void**)&pAudioClient);
+	EXIT_ON_ERROR(hr)
+
+		hr = pDevice->Activate(__uuidof(IAudioEndpointVolume), CLSCTX_ALL, NULL, (void**)&g_pEndptVol);
 	EXIT_ON_ERROR(hr)
 
 		hr = pAudioClient->GetMixFormat(&pwfx);
@@ -231,6 +238,7 @@ HRESULT PlayAudioStream(MyAudioSource *pMySource)
 		SAFE_RELEASE(pDevice)
 		SAFE_RELEASE(pAudioClient)
 		SAFE_RELEASE(pRenderClient)
+		SAFE_RELEASE(g_pEndptVol)
 
 		return hr;
 }
@@ -252,7 +260,7 @@ int main()
 	memset(&clientsockinfo, 0, sizeof(clientsockinfo));
 
 	clientsockinfo.sin_family = AF_INET;
-	clientsockinfo.sin_addr.s_addr = inet_addr("192.168.0.3");
+	clientsockinfo.sin_addr.s_addr = inet_addr("192.168.0.55");
 	clientsockinfo.sin_port = htons(9999);
 
 	setsockopt(clientsock, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt, sizeof(opt));
