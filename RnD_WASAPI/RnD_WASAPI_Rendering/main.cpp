@@ -7,8 +7,32 @@
 #include <mmsystem.h>
 #include <mmdeviceapi.h>
 #include <audioclient.h>
+#include <endpointvolume.h>
+
+#define MAX_VOL  100
 
 #define __SOCKET 1
+
+#define _RECV_VOL 1
+
+#if __SOCKET
+#if _RECV_VOL
+
+
+
+struct audio_packet {
+	int volume;
+	long timestamp;
+	char audio_data[1920];
+};
+
+static audio_packet audio_pkt;
+GUID g_guidMyContext = GUID_NULL;
+
+static IAudioEndpointVolume *g_pEndptVol = NULL;
+
+#endif
+#endif
 
 #define REFTIMES_PER_SEC        1000000
 #define REFTIMES_PER_MILLISEC   10000
@@ -52,8 +76,22 @@ int MyAudioSource::SetFormat(WAVEFORMATEX *pwfx)
 
 int MyAudioSource::LoadData(UINT32 numFramesAvailable, char *pData, DWORD *pbDone)
 {
+
 #if __SOCKET
-	recv(clientsock, pData, numFramesAvailable, 0);
+
+	audio_packet audio_pkt;
+
+	int p = 0;
+	size_t audio_read_size;
+
+	float fVolume;
+
+	recv(clientsock, (char*)&audio_pkt, sizeof(audio_packet), 0);
+	//recv(clientsock, pData, numFramesAvailable, 0);
+
+	fVolume = (float)audio_pkt.volume / MAX_VOL;
+	g_pEndptVol->SetMasterVolumeLevelScalar(fVolume, &g_guidMyContext);
+
 
 	//printf("recv\n");
 #else
@@ -103,6 +141,10 @@ HRESULT PlayAudioStream(MyAudioSource *pMySource)
 	UINT32 numFramesPadding;
 	BYTE *pData;
 	DWORD flags = 0;
+
+	IAudioEndpointVolume *g_pEndptVol = NULL;
+	int nVolume;
+	float fVolume;
 
 	hr = CoCreateInstance(CLSID_MMDeviceEnumerator, NULL, CLSCTX_ALL, IID_IMMDeviceEnumerator, (void**)&pEnumerator);
 	EXIT_ON_ERROR(hr)
@@ -168,8 +210,9 @@ HRESULT PlayAudioStream(MyAudioSource *pMySource)
 			hr = pRenderClient->GetBuffer(numFramesAvailable, &pData);
 			EXIT_ON_ERROR(hr)
 
-				// Get next 1/2-second of data from the audio source.
-				hr = pMySource->LoadData(numFramesAvailable * pwfx->nBlockAlign, (char *)pData, &flags);
+
+			// Get next 1/2-second of data from the audio source.
+			hr = pMySource->LoadData(numFramesAvailable * pwfx->nBlockAlign, (char *)pData, &flags);
 			EXIT_ON_ERROR(hr)
 
 				hr = pRenderClient->ReleaseBuffer(numFramesAvailable, flags);

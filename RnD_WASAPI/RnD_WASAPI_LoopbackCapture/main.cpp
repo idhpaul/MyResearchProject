@@ -7,8 +7,14 @@
 #include <mmsystem.h>
 #include <mmdeviceapi.h>
 #include <audioclient.h>
+#include <endpointvolume.h>
 
-#define __SOCKET 1
+
+#define _SOCKET 1
+
+#define _SEND_VOL 1
+
+#define MAX_VOL  100
 
 // REFERENCE_TIME time units per second and per millisecond
 #define REFTIMES_PER_SEC 1000000//10000000
@@ -20,6 +26,21 @@
 #define SAFE_RELEASE(punk) \
     if ((punk) != NULL)  \
                 { (punk)->Release(); (punk) = NULL; }
+
+
+#if _SEND_VOL
+
+struct audio_packet {
+	int volume;
+	long timestamp;
+	char audio_data[1920];
+};
+
+static audio_packet audio_pkt;
+static IAudioEndpointVolume *g_pEndptVol = NULL;
+
+
+#endif
 
 //!FLAC Encode (Extern)
 extern int flac_encode(char *wasapi_pData, unsigned int wasapi_size);
@@ -45,24 +66,24 @@ const IID IID_IAudioCaptureClient = __uuidof(IAudioCaptureClient);
 class MyAudioSink {
 public:
 	int SetFormat(WAVEFORMATEX *pwfx);
-	int CopyData(char *pData, UINT32 numFramesAvailable, BOOL *pbDone);
+	int CopyData(char *pData, UINT32 numFramesAvailable, int volume ,long timestamp, BOOL *pbDone);
 };
 
 int MyAudioSink::SetFormat(WAVEFORMATEX *pwfx)
 {
-	FILE *fp = fopen("capture_format.txt", "w");
+	/*FILE *fp = fopen("capture_format.txt", "w");
 	char str[128];
 	sprintf(str, "wFormatTag \t\tis %x\nnChannels \t\tis %d\nnSamplesPerSec \tis %ld\nnAvgBytesPerSec is %ld\nwBitsPerSample \tis %d",
 		pwfx->wFormatTag, pwfx->nChannels, pwfx->nSamplesPerSec, pwfx->nAvgBytesPerSec, pwfx->wBitsPerSample);
 	fwrite(str, 1, strlen(str), fp);
-	fclose(fp);
+	fclose(fp);*/
 	return 0;
 }
 
-int MyAudioSink::CopyData(char *pData, UINT32 numFramesAvailable, BOOL *pbDone)
+int MyAudioSink::CopyData(char *pData, UINT32 numFramesAvailable, int volume, long timestamp, BOOL *pbDone)
 {
 
-	printf("size : %d\n", numFramesAvailable);
+	//printf("size : %d\n", numFramesAvailable);
 
 	/////////////////////////////////////////////////////////
 	//!FLAC Encoding
@@ -74,10 +95,24 @@ int MyAudioSink::CopyData(char *pData, UINT32 numFramesAvailable, BOOL *pbDone)
 
 	/////////////////////////////////////////////////////////
 
-	send(clientsock, (char *)pData, numFramesAvailable, 0);
+#if _SOCKET
 
-	if (pData != NULL)
-		fwrite(pData, numFramesAvailable, 1, fp);
+	ZeroMemory(&audio_pkt, sizeof(audio_packet));
+
+	audio_pkt.volume = volume;
+	audio_pkt.timestamp = timestamp;
+
+	memcpy(audio_pkt.audio_data, pData, 1920);
+
+
+	send(clientsock, (char *)&audio_pkt, sizeof(audio_packet), 0);
+
+	//send(clientsock, (char *)pData, numFramesAvailable, 0);
+#else
+	//if (pData != NULL)
+	fwrite(pData, numFramesAvailable, 1, fp);
+#endif
+
 	return 0;
 }
 
@@ -124,19 +159,29 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 	BOOL                    bDone = FALSE;
 	HANDLE                  hTimerWakeUp = NULL;
 
+
+	long timestamp;
+
+	BOOL bMuted = FALSE;
+	int nVolume;
+	float fVolume;
+
 	hr = CoCreateInstance(CLSID_MMDeviceEnumerator, NULL, CLSCTX_ALL, IID_IMMDeviceEnumerator, (void**)&pEnumerator);
-	//EXIT_ON_ERROR(hr)
+	EXIT_ON_ERROR(hr)
 
 	hr = pEnumerator->GetDefaultAudioEndpoint(eRender, eConsole, &pDevice);
-	//EXIT_ON_ERROR(hr)
+	EXIT_ON_ERROR(hr)
 
 	hr = pDevice->Activate(IID_IAudioClient, CLSCTX_ALL, NULL, (void**)&pAudioClient);
-	//EXIT_ON_ERROR(hr)
+	EXIT_ON_ERROR(hr)
+
+	hr = pDevice->Activate(__uuidof(IAudioEndpointVolume),CLSCTX_ALL, NULL, (void**)&g_pEndptVol);
+	EXIT_ON_ERROR(hr)
 
 		//hr = pAudioClient->GetDevicePeriod(&hnsDefaultDevicePeriod, NULL);
 
 	hr = pAudioClient->GetMixFormat(&pwfx);
-	//EXIT_ON_ERROR(hr)
+	EXIT_ON_ERROR(hr)
 
 	AdjustFormatTo16Bits(pwfx);
 
@@ -144,14 +189,14 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 
 	//hr = pAudioClient->Initialize(AUDCLNT_SHAREMODE_SHARED, AUDCLNT_STREAMFLAGS_LOOPBACK, 0, 0, pwfx, NULL);
 	hr = pAudioClient->Initialize(AUDCLNT_SHAREMODE_SHARED, AUDCLNT_STREAMFLAGS_LOOPBACK, hnsActualDuration, 0, pwfx, NULL);
-	//EXIT_ON_ERROR(hr)
+	EXIT_ON_ERROR(hr)
 
 		// Get the size of the allocated buffer.
 	hr = pAudioClient->GetBufferSize(&bufferFrameCount);
-	//EXIT_ON_ERROR(hr)
+	EXIT_ON_ERROR(hr)
 
 	hr = pAudioClient->GetService(IID_IAudioCaptureClient, (void**)&pCaptureClient);
-	//EXIT_ON_ERROR(hr)
+	EXIT_ON_ERROR(hr)
 
 	//	LARGE_INTEGER liFirstFire;
 	//liFirstFire.QuadPart = -hnsDefaultDevicePeriod / 2; // negative means relative time
@@ -161,7 +206,7 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 
 	// Notify the audio sink which format to use.
 	hr = pMySink->SetFormat(pwfx);
-	//EXIT_ON_ERROR(hr)
+	EXIT_ON_ERROR(hr)
 
 		// Calculate the actual duration of the allocated buffer.
 	//    hnsActualDuration = (double)REFTIMES_PER_SEC * bufferFrameCount / pwfx->nSamplesPerSec;
@@ -169,7 +214,7 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 	hnsActualDuration = (double)REFTIMES_PER_SEC * bufferFrameCount / pwfx->nSamplesPerSec;
 
 	hr = pAudioClient->Start();  // Start recording.
-//EXIT_ON_ERROR(hr)
+	EXIT_ON_ERROR(hr)
 
 //HANDLE waitArray[1] = { hTimerWakeUp };
 
@@ -180,6 +225,15 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 
 		Sleep(hnsActualDuration / REFTIMES_PER_MILLISEC / 2);
 
+		hr = g_pEndptVol->GetMute(&bMuted);
+		EXIT_ON_ERROR(hr)
+		//printf("is mute : %d", bMuted);
+		if (bMuted)
+		{
+			Sleep(15);
+			continue;
+		}
+
 		hr = pCaptureClient->GetNextPacketSize(&packetLength);
 		EXIT_ON_ERROR(hr)
 
@@ -189,14 +243,25 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 				hr = pCaptureClient->GetBuffer(&pData, &numFramesAvailable, &flags, NULL, NULL);
 				EXIT_ON_ERROR(hr)
 
-					// Copy the available capture data to the audio sink.
-					hr = pMySink->CopyData((char *)pData, numFramesAvailable * pwfx->nBlockAlign, &bDone);
+				hr = g_pEndptVol->GetMasterVolumeLevelScalar(&fVolume);
 				EXIT_ON_ERROR(hr)
 
-					hr = pCaptureClient->ReleaseBuffer(numFramesAvailable);
+				nVolume = (int)(MAX_VOL*fVolume + 0.5);
+				printf("Now volume : %d\n", nVolume);
+
+				SYSTEMTIME time;
+				GetSystemTime(&time);
+				timestamp = (time.wSecond * 1000) + time.wMilliseconds;
+				printf("Now timestamp : %ld\n", timestamp);
+
+				// Copy the available capture data to the audio sink.
+				hr = pMySink->CopyData((char *)pData, numFramesAvailable * pwfx->nBlockAlign, nVolume ,timestamp, &bDone);
 				EXIT_ON_ERROR(hr)
 
-					hr = pCaptureClient->GetNextPacketSize(&packetLength);
+				hr = pCaptureClient->ReleaseBuffer(numFramesAvailable);
+				EXIT_ON_ERROR(hr)
+
+				hr = pCaptureClient->GetNextPacketSize(&packetLength);
 				EXIT_ON_ERROR(hr)
 
 			}
@@ -205,19 +270,19 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 	hr = pAudioClient->Stop();  // Stop recording.
 	EXIT_ON_ERROR(hr)
 
-		Exit:
+Exit:
 	CoTaskMemFree(pwfx);
 	SAFE_RELEASE(pEnumerator)
-		SAFE_RELEASE(pDevice)
-		SAFE_RELEASE(pAudioClient)
-		SAFE_RELEASE(pCaptureClient)
+	SAFE_RELEASE(pDevice)
+	SAFE_RELEASE(pAudioClient)
+	SAFE_RELEASE(pCaptureClient)
 
-		return hr;
+	return hr;
 }
 
 int main()
 {
-#if __SOCKET
+#if _SOCKET
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsadata) != 0) {
 		printf("windows socket initialize failed\n");
@@ -261,7 +326,7 @@ int main()
 	}
 
 	printf("Á¢¼Ó\n");
-#endif //__SOCKET
+#endif //_SOCKET
 
 	///////////////////////////////////////////////////////////////////////////////////
 	fp = fopen("record.pcm", "wb");
@@ -273,12 +338,12 @@ int main()
 
 	fclose(fp);
 	///////////////////////////////////////////////////////////////////////////////////
-#if __SOCKET
+#if _SOCKET
 	closesocket(sock);
 	closesocket(clientsock);
 
 	WSACleanup();
-#endif //__SOCKET
+#endif //_SOCKET
 
 	return 0;
 	return 0;
