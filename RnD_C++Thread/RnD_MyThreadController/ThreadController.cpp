@@ -9,6 +9,23 @@ ThreadController::~ThreadController()
 {
 	std::cout << "[ThreadController Desturtor Call]" << std::endl;
 
+	int iResult;
+	// shutdown the connection since no more data will be sent
+	iResult = shutdown(mControllerListenSocket, SD_BOTH);
+	if (iResult == SOCKET_ERROR) {
+		printf("shutdown failed with mControllerListenSocket error: %d\n", WSAGetLastError());
+		closesocket(mControllerListenSocket);
+	}
+	closesocket(mControllerListenSocket);
+
+	// shutdown the connection since no more data will be sent
+	iResult = shutdown(mControllerAcceptSocket, SD_BOTH);
+	if (iResult == SOCKET_ERROR) {
+		printf("shutdown failed with mControllerAcceptSocket error: %d\n", WSAGetLastError());
+		closesocket(mControllerAcceptSocket);
+	}
+	closesocket(mControllerAcceptSocket);
+
 	JoinThreads();
 
 	delete[] mThreadList;
@@ -36,6 +53,8 @@ bool ThreadController::ControllerSocketStart(const int port)
 {
 
 	int opt;
+	int iResult;
+
 	struct sockaddr_in sockinfo;
 	struct sockaddr_in clientsockinfo;
 
@@ -74,6 +93,13 @@ bool ThreadController::ControllerSocketStart(const int port)
 		return false;
 	}
 
+	
+	// shutdown the connection since no more data will be sent
+	iResult = shutdown(mControllerListenSocket, SD_BOTH);
+	if (iResult == SOCKET_ERROR) {
+		printf("shutdown failed with error: %d\n", WSAGetLastError());
+		closesocket(mControllerListenSocket);
+	}
 	closesocket(mControllerListenSocket);
 
 	mControlThread = std::thread(&ThreadController::mControlThreadFunc, this);

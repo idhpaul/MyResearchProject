@@ -30,7 +30,7 @@ int main() {
 	memset(&clientsockinfo, 0, sizeof(clientsockinfo));
 
 	clientsockinfo.sin_family = AF_INET;
-	inet_pton(AF_INET, "192.168.0.3", &(clientsockinfo.sin_addr));
+	inet_pton(AF_INET, "192.168.0.55", &(clientsockinfo.sin_addr));
 	clientsockinfo.sin_port = htons(9999);
 
 	setsockopt(clientsock, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt, sizeof(opt));
