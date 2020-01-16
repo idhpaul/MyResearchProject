@@ -6,23 +6,15 @@
 int main()
 {
 
-	std::string input;
-
 	ThreadController myController(3);
 
-	myController.Start();
+	myController.WinSocketInit();
 
-	while (true)
+	myController.ControllerSocketStart(9999);
+
+	while (myController.RunCheck(5000));
 	{
-		std::cout << "Input String : ";
-		std::getline(std::cin, input);
-
-		if (!input.compare("stop"))
-		{
-			myController.Stop();
-			break;
-		}
-
+		
 	}
 
 	return 0;
