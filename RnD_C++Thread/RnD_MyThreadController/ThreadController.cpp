@@ -9,26 +9,11 @@ ThreadController::~ThreadController()
 {
 	std::cout << "[ThreadController Desturtor Call]" << std::endl;
 
-	int iResult;
-	// shutdown the connection since no more data will be sent
-	iResult = shutdown(mControllerListenSocket, SD_BOTH);
-	if (iResult == SOCKET_ERROR) {
-		printf("shutdown failed with mControllerListenSocket error: %d\n", WSAGetLastError());
-		closesocket(mControllerListenSocket);
-	}
-	closesocket(mControllerListenSocket);
-
-	// shutdown the connection since no more data will be sent
-	iResult = shutdown(mControllerAcceptSocket, SD_BOTH);
-	if (iResult == SOCKET_ERROR) {
-		printf("shutdown failed with mControllerAcceptSocket error: %d\n", WSAGetLastError());
-		closesocket(mControllerAcceptSocket);
-	}
-	closesocket(mControllerAcceptSocket);
-
 	JoinThreads();
 
 	delete[] mThreadList;
+
+	CloseSockets();
 
 	WSACleanup();
 }
@@ -113,10 +98,12 @@ void ThreadController::ControllerSocketStop()
 }
 
 
-bool ThreadController::Start()
+bool ThreadController::ThreadListStart()
 {
-	mThreadList = new std::thread[mThreadNum];
 
+	mThreadListStop = false;
+
+	mThreadList = new std::thread[mThreadNum];
 
 	mThreadList[0] = std::thread(&ThreadController::mThread1,this);
 	mThreadList[1] = std::thread(&ThreadController::mThread2,this);
@@ -127,14 +114,14 @@ bool ThreadController::Start()
 	return true;
 }
 
-void ThreadController::Stop()
+void ThreadController::ThreadListStop()
 {
-	mThreadStop = true;
+	mThreadListStop = true;
 }
 
 bool ThreadController::RunCheck(const int timeout)
 {
-	if (!mControlStop && !mThreadStop)
+	if (!mControlStop && !mThreadListStop)
 	{
 		std::cout << "Whole Thread is Running" << std::endl;
 		std::this_thread::sleep_for(std::chrono::milliseconds(timeout));
@@ -194,13 +181,13 @@ void ThreadController::mControlThreadFunc()
 
 		if (!strcmp(recvbuf, "ctr_start"))
 		{
-			Start();
+			ThreadListStart();
 		}
 
 		if (!strcmp(recvbuf, "ctr_stop"))
 		{
 			ControllerSocketStop();
-			Stop();
+			ThreadListStop();
 		}
 	}
 
@@ -214,7 +201,7 @@ void ThreadController::mThread1()
 
 	int i = 1;
 
-	while (!mThreadStop)
+	while (!mThreadListStop)
 	{
 		i++;
 	}
@@ -232,7 +219,7 @@ void ThreadController::mThread2()
 	int i = 1;
 
 
-	while (!mThreadStop)
+	while (!mThreadListStop)
 	{
 		i--;
 	}
@@ -250,7 +237,7 @@ void ThreadController::mThread3()
 
 	int i = 1;
 
-	while (!mThreadStop)
+	while (!mThreadListStop)
 	{
 		i++;
 	}
@@ -260,6 +247,29 @@ void ThreadController::mThread3()
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
+
+}
+
+void ThreadController::CloseSockets()
+{
+	int iResult;
+	// shutdown the connection since no more data will be sent
+	iResult = shutdown(mControllerListenSocket, SD_BOTH);
+	if (iResult == SOCKET_ERROR) {
+		printf("shutdown failed with mControllerListenSocket error: %d\n", WSAGetLastError());
+		closesocket(mControllerListenSocket);
+	}
+	closesocket(mControllerListenSocket);
+	mControllerListenSocket = INVALID_SOCKET;
+
+	// shutdown the connection since no more data will be sent
+	iResult = shutdown(mControllerAcceptSocket, SD_BOTH);
+	if (iResult == SOCKET_ERROR) {
+		printf("shutdown failed with mControllerAcceptSocket error: %d\n", WSAGetLastError());
+		closesocket(mControllerAcceptSocket);
+	}
+	closesocket(mControllerAcceptSocket);
+	mControllerAcceptSocket = INVALID_SOCKET;
 
 }
 
