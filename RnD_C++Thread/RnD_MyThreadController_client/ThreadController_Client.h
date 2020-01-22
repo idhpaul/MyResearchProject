@@ -14,15 +14,15 @@ class ThreadController_Client
 public:
 	ThreadController_Client(const int iThreadNum);
 
-	~ThreadController_Client();
+	virtual ~ThreadController_Client();
 
 	bool WinSocketInit();
 
 	bool ControllerSocketStart(const char * ip, const int port);
 	void ControllerSocketStop();
 
-	bool Start();
-	void Stop();
+	bool ThreadListStart();
+	void ThreadListStop();
 
 	bool RunCheck(const int timeout);
 	
@@ -35,13 +35,14 @@ private:
 	SOCKET mConnectSocket;
 
 	std::atomic<bool> mControlStop;
-	std::atomic<bool> mThreadStop;
+	std::atomic<bool> mThreadListStop;
 
 	void mControlThreadFunc();
 	void mThread1();
 	void mThread2();
 	void mThread3();
 
+	void CloseSockets();
 	void JoinThreads();
 
 };

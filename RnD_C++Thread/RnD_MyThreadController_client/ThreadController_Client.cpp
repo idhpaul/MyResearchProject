@@ -9,19 +9,13 @@ ThreadController_Client::~ThreadController_Client()
 {
 	std::cout << "[ThreadController Desturtor Call]" << std::endl;
 
-	int iResult;
-	// shutdown the connection since no more data will be sent
-	iResult = shutdown(mConnectSocket, SD_BOTH);
-	if (iResult == SOCKET_ERROR) {
-		printf("shutdown failed with error: %d\n", WSAGetLastError());
-		closesocket(mConnectSocket);
-	}
-
-	closesocket(mConnectSocket);
+	
 
 	JoinThreads();
 
 	//delete[] mThreadList;
+
+	CloseSockets();
 
 	WSACleanup();
 }
@@ -93,7 +87,7 @@ void ThreadController_Client::ControllerSocketStop()
 }
 
 
-bool ThreadController_Client::Start()
+bool ThreadController_Client::ThreadListStart()
 {
 	mThreadList = new std::thread[mThreadNum];
 
@@ -107,9 +101,9 @@ bool ThreadController_Client::Start()
 	return true;
 }
 
-void ThreadController_Client::Stop()
+void ThreadController_Client::ThreadListStop()
 {
-	mThreadStop = true;
+	mThreadListStop = true;
 }
 
 bool ThreadController_Client::RunCheck(const int timeout)
@@ -130,9 +124,7 @@ bool ThreadController_Client::RunCheck(const int timeout)
 
 void ThreadController_Client::mControlThreadFunc()
 {
-
 	std::cout << "ControlThreadFunc Start" << std::endl;
-
 
 	int iResult;
 
@@ -140,6 +132,7 @@ void ThreadController_Client::mControlThreadFunc()
 	int recvbuflen = 512;
 
 	char sendbuf[64] = "Communcation START\n";
+
 	// Send an initial buffer
 	iResult = send(mConnectSocket, sendbuf, (int)strlen(sendbuf), 0);
 	if (iResult > 0)
@@ -220,7 +213,7 @@ void ThreadController_Client::mThread1()
 
 	int i = 1;
 
-	while (!mThreadStop)
+	while (!mThreadListStop)
 	{
 		i++;
 	}
@@ -238,7 +231,7 @@ void ThreadController_Client::mThread2()
 	int i = 1;
 
 
-	while (!mThreadStop)
+	while (!mThreadListStop)
 	{
 		i--;
 	}
@@ -256,7 +249,7 @@ void ThreadController_Client::mThread3()
 
 	int i = 1;
 
-	while (!mThreadStop)
+	while (!mThreadListStop)
 	{
 		i++;
 	}
@@ -266,6 +259,21 @@ void ThreadController_Client::mThread3()
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
+
+}
+
+void ThreadController_Client::CloseSockets()
+{
+
+	int iResult;
+	// shutdown the connection since no more data will be sent
+	iResult = shutdown(mConnectSocket, SD_BOTH);
+	if (iResult == SOCKET_ERROR) {
+		printf("shutdown failed with error: %d\n", WSAGetLastError());
+		closesocket(mConnectSocket);
+	}
+
+	closesocket(mConnectSocket);
 
 }
 
