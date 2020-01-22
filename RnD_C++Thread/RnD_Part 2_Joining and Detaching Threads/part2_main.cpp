@@ -12,6 +12,17 @@ public:
 	~ThreadRAII()
 	{
 		// Check if thread is joinable then detach the thread
+		// joinable 반환값: 스레드 객체가 활성 실행 스레드를 식별하면 true ,그렇지 않으면 false
+		/*
+			std::thread t
+			std::cout << "before starting, joinable: " << std::boolalpha << t.joinable() << '\n';
+
+			t = std::thread(foo);
+			std::cout << "after starting, joinable: " << t.joinable() << '\n'; => true
+
+			t.join();
+			std::cout << "after joining, joinable: " << t.joinable() << '\n'; => false
+		*/
 		if (m_thread.joinable())
 		{
 			m_thread.detach();
