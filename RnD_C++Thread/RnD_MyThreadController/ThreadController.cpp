@@ -78,13 +78,6 @@ bool ThreadController::ControllerSocketStart(const int port)
 		return false;
 	}
 
-	
-	// shutdown the connection since no more data will be sent
-	iResult = shutdown(mControllerListenSocket, SD_BOTH);
-	if (iResult == SOCKET_ERROR) {
-		printf("shutdown failed with error: %d\n", WSAGetLastError());
-		closesocket(mControllerListenSocket);
-	}
 	closesocket(mControllerListenSocket);
 	mControllerListenSocket = INVALID_SOCKET;
 
@@ -223,10 +216,7 @@ void ThreadController::mThread1()
 		iSendResult = send(mThread1_Socket, (char*)&i, sizeof(int), 0);
 		if (iSendResult > 0)
 		{
-			printf("send failed with error at mThread1 : %d\n", WSAGetLastError());
 
-			ControllerSocketStop();
-			ThreadListStop();
 		}
 		else if (iSendResult == 0)
 		{
@@ -277,10 +267,7 @@ void ThreadController::mThread2()
 		iSendResult = send(mThread2_Socket, (char*)&i, sizeof(int), 0);
 		if (iSendResult > 0)
 		{
-			printf("send failed with error at mThread2 : %d\n", WSAGetLastError());
 
-			ControllerSocketStop();
-			ThreadListStop();
 		}
 		else if (iSendResult == 0)
 		{
@@ -331,10 +318,7 @@ void ThreadController::mThread3()
 		iSendResult = send(mThread3_Socket, (char*)&i, sizeof(int), 0);
 		if (iSendResult > 0)
 		{
-			printf("send failed with error at mThread3 : %d\n", WSAGetLastError());
 
-			ControllerSocketStop();
-			ThreadListStop();
 		}
 		else if (iSendResult == 0)
 		{
@@ -407,17 +391,8 @@ bool ThreadController::MakeThreadSocket(int port, SOCKET& accept_socket)
 		return SOCKET_ERROR;
 	}
 
-
-	// shutdown the connection since no more data will be sent
-	iResult = shutdown(threadListenSocket, SD_BOTH);
-	if (iResult == SOCKET_ERROR) {
-		printf("shutdown failed with error: %d\n", WSAGetLastError());
-		closesocket(threadListenSocket);
-	}
 	closesocket(threadListenSocket);
 	threadListenSocket = INVALID_SOCKET;
-
-	mControlThread = std::thread(&ThreadController::mControlThreadFunc, this);
 
 	return true;
 
