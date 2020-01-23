@@ -6,16 +6,18 @@
 int main()
 {
 
-	ThreadController myController(3);
+	ThreadController myController(9999,3,8090,8091,8092);
 
 	myController.WinSocketInit();
 
-	myController.ControllerSocketStart(9999);
+	myController.ThreadControllerStart();
 
 	while (myController.RunCheck(5000));
 	{
 		
 	}
+
+	myController.ThreadControlStop();
 
 	return 0;
 }

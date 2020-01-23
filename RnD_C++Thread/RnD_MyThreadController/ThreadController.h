@@ -11,39 +11,46 @@
 class ThreadController
 {
 public:
-	ThreadController(const int iThreadNum);
+	ThreadController(const int iControllerPort ,const int iThreadNum, const int iThread1_Port,  const int iThread2_Port, const int iThread3_Port);
 
 	virtual ~ThreadController();
 
 	bool WinSocketInit();
 
-	bool ControllerSocketStart(const int port);
-	void ControllerSocketStop();
-
-	bool ThreadListStart();
-	void ThreadListStop();
+	bool ThreadControllerStart();
 
 	bool RunCheck(const int timeout);
 	
 private:
 
 	std::thread mControlThread;
+
 	const int mThreadNum;
 	std::thread* mThreadList;
+	const int mController_port;
+	const int mThread1_port;
+	const int mThread2_port;
+	const int mThread3_port;
 
 	SOCKET mControllerListenSocket;
 	SOCKET mControllerAcceptSocket;
 
-	std::atomic<bool> mControlStop;
-	std::atomic<bool> mThreadListStop;
+	std::atomic<bool> m_ThreadControlStop;
+	std::atomic<bool> m_ThreadListStop;
 
 	void mControlThreadFunc();
+
+	void ThreadControlStop();
+
+	bool ThreadListStart();
+	void ThreadListStop();
+
 	void mThread1();
 	void mThread2();
 	void mThread3();
 
 	bool MakeThreadSocket(int port, SOCKET& accept_socket);
-	void CloseThreadSocket(SOCKET& accept_socket);
+	void DeleteThreadSocket(SOCKET& accept_socket);
 
 	void CloseSockets();
 	void JoinThreads();
