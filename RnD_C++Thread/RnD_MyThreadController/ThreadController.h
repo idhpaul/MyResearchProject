@@ -42,6 +42,9 @@ private:
 	void mThread2();
 	void mThread3();
 
+	bool MakeThreadSocket(int port, SOCKET& accept_socket);
+	void CloseThreadSocket(SOCKET& accept_socket);
+
 	void CloseSockets();
 	void JoinThreads();
 
