@@ -1,6 +1,6 @@
 #include "ThreadController_Client.h"
 
-ThreadController_Client::ThreadController_Client(const int iThreadNum) : mThreadNum(iThreadNum), mConnectSocket(INVALID_SOCKET)
+ThreadController_Client::ThreadController_Client(const int iThreadNum, const char* ip) : mThreadNum(iThreadNum), ServerIPAddr(ip), mConnectSocket(INVALID_SOCKET)
 {
 	std::cout << "[ThreadController Constructor Call]" << std::endl;
 }
@@ -36,7 +36,7 @@ bool ThreadController_Client::WinSocketInit()
 	return true;
 }
 
-bool ThreadController_Client::ControllerSocketStart(const char * ip, const int port)
+bool ThreadController_Client::ControllerSocketStart(const int port)
 {
 
 	int opt;
@@ -55,7 +55,7 @@ bool ThreadController_Client::ControllerSocketStart(const char * ip, const int p
 	memset(&clientsockinfo, 0, sizeof(clientsockinfo));
 
 	clientsockinfo.sin_family = AF_INET;
-	inet_pton(AF_INET, ip, &(clientsockinfo.sin_addr));
+	inet_pton(AF_INET, ServerIPAddr, &(clientsockinfo.sin_addr));
 	clientsockinfo.sin_port = htons(port);
 
 	setsockopt(mConnectSocket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt, sizeof(opt));
@@ -212,13 +212,49 @@ void ThreadController_Client::mThread1()
 	std::cout << "Thread1 Start" << std::endl;
 
 	int i = 1;
+	bool bResult;
+	int iSendResult;
+
+	SOCKET mThread1_Socket;
+	bResult = MakeThreadSocket(8091, mThread1_Socket);
+	if (false == bResult)
+	{
+		std::cout << "mThread1 make socket failed " << std::endl;
+		ControllerSocketStop();
+		ThreadListStop();
+	}
 
 	while (!mThreadListStop)
 	{
-		i++;
+
+		iSendResult = recv(mThread1_Socket, (char*)&i, sizeof(int), 0);
+		if (iSendResult > 0)
+		{
+			printf("send failed with error at mThread1 : %d\n", WSAGetLastError());
+
+			ControllerSocketStop();
+			ThreadListStop();
+		}
+		else if (iSendResult == 0)
+		{
+			printf("Connection closing...\n");
+
+			ControllerSocketStop();
+			ThreadListStop();
+		}
+		else
+		{
+			// iSendResult == SOKETERROR(-1)
+			printf("Send failed with error at mThread1: %d\n", WSAGetLastError());
+
+			ControllerSocketStop();
+			ThreadListStop();
+		}
 	}
 
-	std::cout << "mThread1 value : " << i << std::endl;
+	std::cout << "Recved mThread1 value : " << i << std::endl;
+
+	CloseThreadSocket(mThread1_Socket);
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
@@ -226,18 +262,50 @@ void ThreadController_Client::mThread1()
 
 void ThreadController_Client::mThread2()
 {
-	std::cout << "Thread2 Start" << std::endl;
-
 	int i = 1;
+	bool bResult;
+	int iSendResult;
 
+	SOCKET mThread2_Socket;
+	bResult = MakeThreadSocket(8092, mThread2_Socket);
+	if (false == bResult)
+	{
+		std::cout << "mThread1 make socket failed " << std::endl;
+		ControllerSocketStop();
+		ThreadListStop();
+	}
 
 	while (!mThreadListStop)
 	{
-		i--;
+
+		iSendResult = recv(mThread2_Socket, (char*)&i, sizeof(int), 0);
+		if (iSendResult > 0)
+		{
+			printf("send failed with error at mThread2 : %d\n", WSAGetLastError());
+
+			ControllerSocketStop();
+			ThreadListStop();
+		}
+		else if (iSendResult == 0)
+		{
+			printf("Connection closing...\n");
+
+			ControllerSocketStop();
+			ThreadListStop();
+		}
+		else
+		{
+			// iSendResult == SOKETERROR(-1)
+			printf("Send failed with error at mThread2: %d\n", WSAGetLastError());
+
+			ControllerSocketStop();
+			ThreadListStop();
+		}
 	}
 
-	std::cout << "mThread2 value : " << i << std::endl;
+	std::cout << "Recved mThread2 value : " << i << std::endl;
 
+	CloseThreadSocket(mThread2_Socket);
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
@@ -245,21 +313,113 @@ void ThreadController_Client::mThread2()
 
 void ThreadController_Client::mThread3()
 {
-	std::cout << "Thread3 Start" << std::endl;
-
 	int i = 1;
+	bool bResult;
+	int iSendResult;
+
+	SOCKET mThread3_Socket;
+	bResult = MakeThreadSocket(8093, mThread3_Socket);
+	if (false == bResult)
+	{
+		std::cout << "mThread3 make socket failed " << std::endl;
+		ControllerSocketStop();
+		ThreadListStop();
+	}
 
 	while (!mThreadListStop)
 	{
-		i++;
+
+		iSendResult = recv(mThread3_Socket, (char*)&i, sizeof(int), 0);
+		if (iSendResult > 0)
+		{
+			printf("send failed with error at mThread3 : %d\n", WSAGetLastError());
+
+			ControllerSocketStop();
+			ThreadListStop();
+		}
+		else if (iSendResult == 0)
+		{
+			printf("Connection closing...\n");
+
+			ControllerSocketStop();
+			ThreadListStop();
+		}
+		else
+		{
+			// iSendResult == SOKETERROR(-1)
+			printf("Send failed with error at mThread3: %d\n", WSAGetLastError());
+
+			ControllerSocketStop();
+			ThreadListStop();
+		}
 	}
 
-	std::cout << "mThread3 value : " << i << std::endl;
+	std::cout << "Recved mThread3 value : " << i << std::endl;
 
+	CloseThreadSocket(mThread3_Socket);
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
 
+}
+
+bool ThreadController_Client::MakeThreadSocket(int port, SOCKET & accept_socket)
+{
+	int opt;
+	int iResult;
+	struct sockaddr_in clientsockinfo;
+
+	int iClientSize;
+	iClientSize = sizeof(clientsockinfo);
+
+	accept_socket = socket(PF_INET, SOCK_STREAM, 0);
+	if (accept_socket == INVALID_SOCKET) {
+		std::cout << "Failed to create socket" << std::endl;
+		return false;
+	}
+
+	memset(&clientsockinfo, 0, sizeof(clientsockinfo));
+
+	clientsockinfo.sin_family = AF_INET;
+	inet_pton(AF_INET, ServerIPAddr, &(clientsockinfo.sin_addr));
+	clientsockinfo.sin_port = htons(port);
+
+	setsockopt(accept_socket, IPPROTO_TCP, TCP_NODELAY, (const char*)&opt, sizeof(opt));
+
+	while (true)
+	{
+
+		iResult = connect(accept_socket, (SOCKADDR*)&clientsockinfo, sizeof(clientsockinfo));
+		if (iResult == SOCKET_ERROR)
+		{
+			std::cout << "Failed to connect" << std::endl;
+		}
+		else
+		{
+			std::cout << "Sucess to connect" << std::endl;
+			break;
+		}
+	}
+
+
+	mControlThread = std::thread(&ThreadController_Client::mControlThreadFunc, this);
+
+	return true;
+}
+
+void ThreadController_Client::CloseThreadSocket(SOCKET & accept_socket)
+{
+	int iResult;
+	// shutdown the connection since no more data will be sent
+	iResult = shutdown(accept_socket, SD_BOTH);
+	if (iResult == SOCKET_ERROR) {
+		printf("shutdown failed with accept_socket error: %d\n", WSAGetLastError());
+		closesocket(accept_socket);
+	}
+	closesocket(accept_socket);
+	accept_socket = INVALID_SOCKET;
+
+	std::cout << "Thread Socket Close" << std::endl;
 }
 
 void ThreadController_Client::CloseSockets()

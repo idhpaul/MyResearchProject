@@ -220,7 +220,7 @@ void ThreadController::mThread1()
 	{
 		i++;
 
-		iSendResult = send(mControllerAcceptSocket, (char*)&i, sizeof(int), 0);
+		iSendResult = send(mThread1_Socket, (char*)&i, sizeof(int), 0);
 		if (iSendResult > 0)
 		{
 			printf("send failed with error at mThread1 : %d\n", WSAGetLastError());
@@ -261,11 +261,11 @@ void ThreadController::mThread2()
 	bool bResult;
 	int iSendResult;
 
-	SOCKET mThread1_Socket;
-	bResult = MakeThreadSocket(8092, mThread1_Socket);
+	SOCKET mThread2_Socket;
+	bResult = MakeThreadSocket(8092, mThread2_Socket);
 	if (false == bResult)
 	{
-		std::cout << "mThread1 make socket failed " << std::endl;
+		std::cout << "mThread2 make socket failed " << std::endl;
 		ControllerSocketStop();
 		ThreadListStop();
 	}
@@ -274,10 +274,10 @@ void ThreadController::mThread2()
 	{
 		i--;
 
-		iSendResult = send(mControllerAcceptSocket, (char*)&i, sizeof(int), 0);
+		iSendResult = send(mThread2_Socket, (char*)&i, sizeof(int), 0);
 		if (iSendResult > 0)
 		{
-			printf("send failed with error at mThread1 : %d\n", WSAGetLastError());
+			printf("send failed with error at mThread2 : %d\n", WSAGetLastError());
 
 			ControllerSocketStop();
 			ThreadListStop();
@@ -292,16 +292,16 @@ void ThreadController::mThread2()
 		else
 		{
 			// iSendResult == SOKETERROR(-1)
-			printf("Send failed with error at mThread1: %d\n", WSAGetLastError());
+			printf("Send failed with error at mThread2: %d\n", WSAGetLastError());
 
 			ControllerSocketStop();
 			ThreadListStop();
 		}
 	}
 
-	std::cout << "mThread1 value : " << i << std::endl;
+	std::cout << "mThread2 value : " << i << std::endl;
 
-	CloseThreadSocket(mThread1_Socket);
+	CloseThreadSocket(mThread2_Socket);
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
@@ -315,8 +315,8 @@ void ThreadController::mThread3()
 	bool bResult;
 	int iSendResult;
 
-	SOCKET mThread1_Socket;
-	bResult = MakeThreadSocket(8093, mThread1_Socket);
+	SOCKET mThread3_Socket;
+	bResult = MakeThreadSocket(8093, mThread3_Socket);
 	if (false == bResult)
 	{
 		std::cout << "mThread1 make socket failed " << std::endl;
@@ -328,10 +328,10 @@ void ThreadController::mThread3()
 	{
 		i++;
 
-		iSendResult = send(mControllerAcceptSocket, (char*)&i, sizeof(int), 0);
+		iSendResult = send(mThread3_Socket, (char*)&i, sizeof(int), 0);
 		if (iSendResult > 0)
 		{
-			printf("send failed with error at mThread1 : %d\n", WSAGetLastError());
+			printf("send failed with error at mThread3 : %d\n", WSAGetLastError());
 
 			ControllerSocketStop();
 			ThreadListStop();
@@ -346,16 +346,16 @@ void ThreadController::mThread3()
 		else
 		{
 			// iSendResult == SOKETERROR(-1)
-			printf("Send failed with error at mThread1: %d\n", WSAGetLastError());
+			printf("Send failed with error at mThread3: %d\n", WSAGetLastError());
 
 			ControllerSocketStop();
 			ThreadListStop();
 		}
 	}
 
-	std::cout << "mThread1 value : " << i << std::endl;
+	std::cout << "mThread3 value : " << i << std::endl;
 
-	CloseThreadSocket(mThread1_Socket);
+	CloseThreadSocket(mThread3_Socket);
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(10));
 

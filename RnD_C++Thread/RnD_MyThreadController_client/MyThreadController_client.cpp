@@ -6,11 +6,11 @@
 int main()
 {
 
-	ThreadController_Client myController(3);
+	ThreadController_Client myController(3, "192.168.0.55");
 
 	myController.WinSocketInit();
 
-	myController.ControllerSocketStart("192.168.0.55", 9999);
+	myController.ControllerSocketStart(9999);
 
 	while (myController.RunCheck(5000));
 	{

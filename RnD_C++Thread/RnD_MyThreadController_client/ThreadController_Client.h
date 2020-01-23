@@ -12,13 +12,13 @@
 class ThreadController_Client
 {
 public:
-	ThreadController_Client(const int iThreadNum);
+	ThreadController_Client(const int iThreadNum, const char* ip);
 
 	virtual ~ThreadController_Client();
 
 	bool WinSocketInit();
 
-	bool ControllerSocketStart(const char * ip, const int port);
+	bool ControllerSocketStart(const int port);
 	void ControllerSocketStop();
 
 	bool ThreadListStart();
@@ -32,6 +32,8 @@ private:
 	const int mThreadNum;
 	std::thread* mThreadList;
 
+	const char* ServerIPAddr;
+
 	SOCKET mConnectSocket;
 
 	std::atomic<bool> mControlStop;
@@ -41,6 +43,9 @@ private:
 	void mThread1();
 	void mThread2();
 	void mThread3();
+
+	bool MakeThreadSocket(int port, SOCKET& accept_socket);
+	void CloseThreadSocket(SOCKET& accept_socket);
 
 	void CloseSockets();
 	void JoinThreads();
