@@ -44,13 +44,14 @@ private:
 
 	bool ThreadListStart();
 	void ThreadListStop();
+	void ThreadListJoin();
 
 	void mThread1();
 	void mThread2();
 	void mThread3();
 
-	bool MakeThreadSocket(int port, SOCKET& accept_socket);
-	void DeleteThreadSocket(SOCKET& accept_socket);
+	bool MakeThreadSocket(int port, SOCKET& listen_socket, SOCKET& accept_socket);
+	void DeleteThreadSocket(SOCKET& listen_socket, SOCKET& accept_socket, const int Thread_socket_port);
 
 	void CloseSockets();
 	void JoinThreads();

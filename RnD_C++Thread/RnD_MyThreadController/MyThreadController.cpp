@@ -17,7 +17,5 @@ int main()
 		
 	}
 
-	myController.ThreadControlStop();
-
 	return 0;
 }
