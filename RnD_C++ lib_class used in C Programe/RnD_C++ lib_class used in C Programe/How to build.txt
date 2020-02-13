@@ -16,6 +16,8 @@
 	// Link all files
 	5. g++ Linux_main.o MyWrapper.o Myrtp.o rtp_packet.o kaitaistream.o
 
+		or
 
+	   gcc Linux_main.cpp MyWrapper.o Myrtp.o rtp_packet.o kaitaistream.o
 
 
