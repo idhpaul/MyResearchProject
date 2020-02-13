@@ -1,0 +1,21 @@
+[How to build]
+
+	// This is C++ file
+	1. g++ -v MyRtp.cpp			=> output is 'Myrtp.o'
+
+	// This is C++ lib source file
+	2. g++ -v rtp_packet.cpp	=> output is 'rtp_packet.o'
+	   g++ -v kaitaistream.cpp	=> output is 'kaitaistream.o'
+
+	// This is not use c++ name mangling to convert c style name mangling to use extern "C"
+	3. g++ -v MyWrapper.cpp		=> output is 'MyWrapper.o'
+
+	// This is C program main in here
+	4. gcc -v Linux_main.c		=> output is 'Linux_main.o'
+
+	// Link all files
+	5. g++ Linux_main.o MyWrapper.o Myrtp.o rtp_packet.o kaitaistream.o
+
+
+
+
