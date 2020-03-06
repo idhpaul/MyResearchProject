@@ -54,6 +54,9 @@ int main(void) {
 		else if (Info.hCursor == arrow_link) {
 			printf("손커서 코드값:%x\n", Info.hCursor);
 		}
+		else if (Info.hCursor == arrow_wait) {
+			printf("모래시계 코드값:%x\n", Info.hCursor);
+		}
 		else {
 			printf("정의 안한 마우스 코드값:%x\n", Info.hCursor);
 		}

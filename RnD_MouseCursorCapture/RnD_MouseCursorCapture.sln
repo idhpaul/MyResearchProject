@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RnD_MouseCapture_Client", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RnD_MouseIcon_compare", "RnD_MouseIcon_compare\RnD_MouseIcon_compare.vcxproj", "{C354EF74-2979-464B-9697-689B3FAF51D9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RnD_MouseCapture_bitmap", "RnD_MouseCapture_bitmap\RnD_MouseCapture_bitmap.vcxproj", "{F2AE32D7-1E32-4B00-A021-91CAAB00E966}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{C354EF74-2979-464B-9697-689B3FAF51D9}.Release|x64.Build.0 = Release|x64
 		{C354EF74-2979-464B-9697-689B3FAF51D9}.Release|x86.ActiveCfg = Release|Win32
 		{C354EF74-2979-464B-9697-689B3FAF51D9}.Release|x86.Build.0 = Release|Win32
+		{F2AE32D7-1E32-4B00-A021-91CAAB00E966}.Debug|x64.ActiveCfg = Debug|x64
+		{F2AE32D7-1E32-4B00-A021-91CAAB00E966}.Debug|x64.Build.0 = Debug|x64
+		{F2AE32D7-1E32-4B00-A021-91CAAB00E966}.Debug|x86.ActiveCfg = Debug|Win32
+		{F2AE32D7-1E32-4B00-A021-91CAAB00E966}.Debug|x86.Build.0 = Debug|Win32
+		{F2AE32D7-1E32-4B00-A021-91CAAB00E966}.Release|x64.ActiveCfg = Release|x64
+		{F2AE32D7-1E32-4B00-A021-91CAAB00E966}.Release|x64.Build.0 = Release|x64
+		{F2AE32D7-1E32-4B00-A021-91CAAB00E966}.Release|x86.ActiveCfg = Release|Win32
+		{F2AE32D7-1E32-4B00-A021-91CAAB00E966}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

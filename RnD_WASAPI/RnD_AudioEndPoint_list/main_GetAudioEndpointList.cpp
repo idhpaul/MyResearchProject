@@ -73,7 +73,8 @@ void PrintEndpointNames()
 		EXIT_ON_ERROR(hr)
 
 			// Print endpoint friendly name and endpoint ID.
-			printf("Endpoint %d: \"%S\" (%S)\n", i, varName.pwszVal, pwszID);
+			printf("Endpoint %d: \"%S\" \n", i, varName.pwszVal);
+
 
 		CoTaskMemFree(pwszID);
 		pwszID = NULL;

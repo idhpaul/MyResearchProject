@@ -172,6 +172,7 @@ HRESULT RecordAudioStream(MyAudioSink *pMySink)
 	hr = pEnumerator->GetDefaultAudioEndpoint(eRender, eConsole, &pDevice);
 	EXIT_ON_ERROR(hr)
 
+
 	hr = pDevice->Activate(IID_IAudioClient, CLSCTX_ALL, NULL, (void**)&pAudioClient);
 	EXIT_ON_ERROR(hr)
 
