@@ -12,6 +12,9 @@
 #define TASK_SCHEDULER_PRIORITY_HIGHEST   3
 #define TASK_SCHEDULER_PRIORITY_REALTIME  4
 
+#define SEND_TEST 0
+#define RECV_TEST 1
+
 
 //// std::string message = std::system_category().message(hr);
 //// PLOG_INFO << "A-GetDefaultAudioEndpoint(c++11) : " << message;
@@ -156,13 +159,13 @@ int main()
     uint32_t recvlen = _msize(recvbuf);
 
 	std::shared_ptr<TCPSocket> tcpSocket(new TCPSocket);
-    SOCKET clientSocketfd;
+    SOCKET clientSocketfd = -1;
 
 	tcpSocket->create();
-	SocketUtil::setReuseAddr(tcpSocket->fd());
-	SocketUtil::setReusePort(tcpSocket->fd());
-	SocketUtil::setNonBlock(tcpSocket->fd());
-    SocketUtil::setKeepAlive(tcpSocket->fd());
+	//SocketUtil::setReuseAddr(tcpSocket->fd());
+	//SocketUtil::setReusePort(tcpSocket->fd());
+	//SocketUtil::setNonBlock(tcpSocket->fd());
+    //SocketUtil::setKeepAlive(tcpSocket->fd());
 
 	bResult = tcpSocket->bind(ip, port);
     if (FALSE == bResult)
@@ -182,6 +185,8 @@ int main()
         goto EXIT;
     }
 
+    std::cout << "Listening........" << std::endl;
+
     clientSocketfd = tcpSocket->accept();
     if (clientSocketfd <= 0)
     {
@@ -191,7 +196,10 @@ int main()
         goto EXIT;
     }
 
-    // Send TEST
+    std::cout << "Accept OK!" << std::endl;
+
+
+#if SEND_TEST
 
     strcpy(sendbuf, "Hello Im TX, This is send test bye!\n");
 
@@ -216,19 +224,19 @@ int main()
     {
         std::cout << "Send ret = 0" << std::endl;
     }
+#endif
 
-    // Recv TEST
+#if RECV_TEST
     ret = ::recv(clientSocketfd, (char*)recvbuf, recvlen, 0);
     if (ret == -1)
     {
         // Error Handling;
-        std::cout << "Error Handling Please" << std::endl;
+        std::cout << "Error Recv return -1, Handling Please" << std::endl;
         goto EXIT;
     }
-
     else if (ret == 0)
     {
-        std::cout << "This socket is dead. close this socket" << std::endl;
+        std::cout << "Recv return 0, This socket is dead. close this socket" << std::endl;
         goto EXIT;
     }
     else // Recv OK
@@ -239,8 +247,11 @@ int main()
         //      return ret;
         //}
         //else
-            std::cout << "All Received!" << std::endl;;
+            std::cout << "All Received!" << std::endl;
+
+        std::cout << "[RECV message] " << recvbuf << std::endl;
     }
+#endif
 
 EXIT:
     free(sendbuf);
