@@ -19,7 +19,7 @@ SDL_Event event;
 Uint32 Hangul = SDL_RegisterEvents(1);
 Uint32 upHangul = SDL_RegisterEvents(2);
 
-#define __SOCKET 1
+#define __SOCKET 0
 #if __SOCKET
 WSADATA wsadata;
 SOCKET clientSocket;
@@ -31,7 +31,6 @@ struct sockaddr_in clientsockinfo;
 #define	SDL_USEREVENT_RENDER_IMAGE		0x0004
 #define	SDL_USEREVENT_RENDER_TEXT		0x0008
 
-SDL_Event event;
 
 SDL_Window *window;
 SDL_Renderer *renderer;
@@ -404,7 +403,7 @@ ProcessEvent(SDL_Event *event) {
 			event->key.keysym.mod,
 			0/*event->key.keysym.unicode*/);
 
-		printf("key up\n");
+		printf("key up :%d\n", event->key.keysym.scancode);
 		break;
 	case SDL_KEYDOWN:
 
@@ -762,9 +761,9 @@ int main()
 	//}
 
 	
-	RegisterHotKey(NULL, 26000, 0,VK_F5);
-	HMODULE hInstance = GetModuleHandle(NULL);
-	hHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardProc, hInstance, NULL);
+	//RegisterHotKey(NULL, 26000, 0,VK_F5);
+	//HMODULE hInstance = GetModuleHandle(NULL);
+	//hHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardProc, hInstance, NULL);
 
 	while (true)
 	{		

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RnD_WindowsCreateSocketForm_basic", "RnD_WindowsCreateSocketForm\RnD_WindowsCreateSocketForm.vcxproj", "{EF627AD9-CC1D-4D93-B731-485D210330EC}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RnD_WinSocketClient", "RnD_WinSocketClient\RnD_WinSocketClient.vcxproj", "{61C0A7C2-A507-4966-87F6-EB2ECE8F848A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RnD_udp", "RnD_udp\RnD_udp.vcxproj", "{29AFBAF5-6247-4F78-A834-BE41428A988A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RnD_TCPSocketServerClass", "RnD_TCPSocketServerClass\RnD_TCPSocketServerClass.vcxproj", "{4627898E-FF8E-4757-85E9-D586D33539D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,14 @@ Global
 		{29AFBAF5-6247-4F78-A834-BE41428A988A}.Release|x64.Build.0 = Release|x64
 		{29AFBAF5-6247-4F78-A834-BE41428A988A}.Release|x86.ActiveCfg = Release|Win32
 		{29AFBAF5-6247-4F78-A834-BE41428A988A}.Release|x86.Build.0 = Release|Win32
+		{4627898E-FF8E-4757-85E9-D586D33539D1}.Debug|x64.ActiveCfg = Debug|x64
+		{4627898E-FF8E-4757-85E9-D586D33539D1}.Debug|x64.Build.0 = Debug|x64
+		{4627898E-FF8E-4757-85E9-D586D33539D1}.Debug|x86.ActiveCfg = Debug|Win32
+		{4627898E-FF8E-4757-85E9-D586D33539D1}.Debug|x86.Build.0 = Debug|Win32
+		{4627898E-FF8E-4757-85E9-D586D33539D1}.Release|x64.ActiveCfg = Release|x64
+		{4627898E-FF8E-4757-85E9-D586D33539D1}.Release|x64.Build.0 = Release|x64
+		{4627898E-FF8E-4757-85E9-D586D33539D1}.Release|x86.ActiveCfg = Release|Win32
+		{4627898E-FF8E-4757-85E9-D586D33539D1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

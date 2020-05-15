@@ -23,7 +23,7 @@
     <ProjectGuid>{6C50C642-5429-4EB0-83B2-381FB3CC6A6A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>RnDRenderingClientkeyboardmouse</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
