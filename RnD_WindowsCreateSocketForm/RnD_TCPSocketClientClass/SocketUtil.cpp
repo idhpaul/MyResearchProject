@@ -48,7 +48,7 @@ void SocketUtil::setBlock(SOCKET fd, int writeTimeout)
         unsigned long ms = (unsigned long)writeTimeout;
         setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, (char*)&ms, sizeof(unsigned long));
 #else
-#endif		
+#endif
 #endif
     }
 }
@@ -64,7 +64,7 @@ void SocketUtil::setReusePort(SOCKET sockfd)
 #ifdef SO_REUSEPORT
     int on = 1;
     setsockopt(sockfd, SOL_SOCKET, SO_REUSEPORT, (const char*)&on, sizeof(on));
-#endif	
+#endif
 }
 
 void SocketUtil::setNoDelay(SOCKET sockfd)
@@ -97,6 +97,11 @@ void SocketUtil::setSendBufSize(SOCKET sockfd, int size)
 void SocketUtil::setRecvBufSize(SOCKET sockfd, int size)
 {
     setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, (char*)&size, sizeof(size));
+}
+
+void SocketUtil::setRecvTimeout(SOCKET sockfd, int timeout)
+{
+    setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
 }
 
 std::string SocketUtil::getPeerIp(SOCKET sockfd)

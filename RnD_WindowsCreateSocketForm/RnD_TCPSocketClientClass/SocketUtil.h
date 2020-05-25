@@ -1,4 +1,3 @@
-#pragma once
 #ifndef SOCKETUTIL_H
 #define SOCKETUTIL_H
 
@@ -18,6 +17,7 @@ public:
     static void setNoSigpipe(SOCKET sockfd);
     static void setSendBufSize(SOCKET sockfd, int size);
     static void setRecvBufSize(SOCKET sockfd, int size);
+    static void setRecvTimeout(SOCKET socfkd, int timeout);
     static std::string getPeerIp(SOCKET sockfd);
     static uint16_t getPeerPort(SOCKET sockfd);
     static int getPeerAddr(SOCKET sockfd, struct sockaddr_in* addr);
