@@ -443,19 +443,19 @@ keyboardHookHandler(WPARAM wParam, LPARAM lParam)
 	// 로컬 앱은 가져올 것입니다.클라이언트 화면에 있다면 
 	// 평소처럼 키를 잡으십시오.클라이언트가 Windows 시스템 인 경우 
 	// 예상되는 문자를 합성합니다.그렇지 않다면 아마 아무 것도하지 않을 것입니다.
-	if (g_mode != kHOOK_RELAY_EVENTS) {
-		// we don't use virtual keys because we don't know what the
-		// state of the numlock key is.  we'll hard code the scan codes
-		// instead.  hopefully this works across all keyboards.
-		// 우리는 numlock 키의 상태를 모르기 때문에 가상 키를 사용하지 않습니다.
-		// 대신에 스캔 코드를 하드 코딩 할 것입니다.
-		// 잘하면이 모든 키보드에서 작동합니다.
-		UINT sc = (lParam & 0x01ff0000u) >> 16;
-		if (menu &&
-			(sc >= 0x47u && sc <= 0x52u && sc != 0x4au && sc != 0x4eu)) {
-			return false;
-		}
-	}
+	//if (g_mode != kHOOK_RELAY_EVENTS) {
+	//	// we don't use virtual keys because we don't know what the
+	//	// state of the numlock key is.  we'll hard code the scan codes
+	//	// instead.  hopefully this works across all keyboards.
+	//	// 우리는 numlock 키의 상태를 모르기 때문에 가상 키를 사용하지 않습니다.
+	//	// 대신에 스캔 코드를 하드 코딩 할 것입니다.
+	//	// 잘하면이 모든 키보드에서 작동합니다.
+	//	UINT sc = (lParam & 0x01ff0000u) >> 16;
+	//	if (menu &&
+	//		(sc >= 0x47u && sc <= 0x52u && sc != 0x4au && sc != 0x4eu)) {
+	//		return false;
+	//	}
+	//}
 
 	WORD c = 0;
 #if 0
