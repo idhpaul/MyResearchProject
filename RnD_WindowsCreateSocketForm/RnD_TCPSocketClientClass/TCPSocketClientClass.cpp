@@ -12,8 +12,8 @@
 #define TASK_SCHEDULER_PRIORITY_HIGHEST   3
 #define TASK_SCHEDULER_PRIORITY_REALTIME  4
 
-#define SEND_TEST 0
-#define RECV_TEST 1
+#define SEND_TEST 1
+#define RECV_TEST 0
 
 
 //// std::string message = std::system_category().message(hr);
@@ -150,7 +150,7 @@ int main()
 	int ret = 0;
 
 	std::string ip = "192.168.0.55";
-	uint16_t port = 8090;
+	uint16_t port = 23654;
 
 	char* sendbuf = (char*)malloc(512);
 	char* recvbuf = (char*)malloc(512);
@@ -166,6 +166,8 @@ int main()
 	//SocketUtil::setReusePort(tcpSocket->fd());
 	//SocketUtil::setNonBlock(tcpSocket->fd());
 	//SocketUtil::setKeepAlive(tcpSocket->fd());
+
+	SocketUtil::setLinger(tcpSocket->fd());
 
 	bResult = tcpSocket->connect(ip, port);
 	if (FALSE == bResult)
@@ -232,6 +234,9 @@ int main()
 #endif
 
 EXIT:
+
+	std::cout << WSAGetLastError() << std::endl;
+
 	free(sendbuf);
 	free(recvbuf);
 

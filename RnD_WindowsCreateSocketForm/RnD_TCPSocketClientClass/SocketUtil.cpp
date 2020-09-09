@@ -104,6 +104,16 @@ void SocketUtil::setRecvTimeout(SOCKET sockfd, int timeout)
     setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
 }
 
+void SocketUtil::setLinger(SOCKET sockfd)
+{
+    struct linger solinger = { 1, 0 };
+
+    if (setsockopt(sockfd, SOL_SOCKET, SO_LINGER, (const char*)&solinger, sizeof(struct linger)) == -1) 
+    {
+        printf("setsockopt(SO_LINGER)");
+    }
+}
+
 std::string SocketUtil::getPeerIp(SOCKET sockfd)
 {
     struct sockaddr_in addr = { 0 };
