@@ -150,7 +150,7 @@ int main()
     int ret = 0;
 
 	std::string ip = GetLocalIPAddress();
-	uint16_t port = 8090;
+	uint16_t port = 23654;
 
     char* sendbuf = (char*)malloc(512);
     char* recvbuf = (char*)malloc(512);
@@ -227,29 +227,35 @@ int main()
 #endif
 
 #if RECV_TEST
-    ret = ::recv(clientSocketfd, (char*)recvbuf, recvlen, 0);
-    if (ret == -1)
+    while (true)
     {
-        // Error Handling;
-        std::cout << "Error Recv return -1, Handling Please" << std::endl;
-        goto EXIT;
-    }
-    else if (ret == 0)
-    {
-        std::cout << "Recv return 0, This socket is dead. close this socket" << std::endl;
-        goto EXIT;
-    }
-    else // Recv OK
-    {
-        //if (ret < wantrecvsize) // This case can not receive hole data
-        //{
-        //      // Return Get Data
-        //      return ret;
-        //}
-        //else
+        ret = ::recv(clientSocketfd, (char*)recvbuf, recvlen, 0);
+        if (ret == -1)
+        {
+            // Error Handling;
+            std::cout << "Error Recv return -1, Handling Please" << std::endl;
+            std::cout << WSAGetLastError() << std::endl;
+            goto EXIT;
+        }
+        else if (ret == 0)
+        {
+            std::cout << "Recv return 0, This socket is dead. close this socket" << std::endl;
+            std::cout << WSAGetLastError() << std::endl;
+            goto EXIT;
+        }
+        else // Recv OK
+        {
+            //if (ret < wantrecvsize) // This case can not receive hole data
+            //{
+            //      // Return Get Data
+            //      return ret;
+            //}
+            //else
             std::cout << "All Received!" << std::endl;
+            std::cout << WSAGetLastError() << std::endl;
 
-        std::cout << "[RECV message] " << recvbuf << std::endl;
+            std::cout << "[RECV message] " << recvbuf << std::endl;
+        }
     }
 #endif
 

@@ -3,6 +3,8 @@
 #define WIN32_LEAN_AND_MEAN						// Do not include external MFC overheader
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
+#define MAX_IP_STRING_LENGTH 16
+
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 #include <iphlpapi.h>
@@ -121,12 +123,54 @@ bool GetLocalIPAddress(std::string& localIPAddr, std::string& localMacAddr)
 #endif
 }
 
+bool GetLocalIP(std::string& strIP)
+{
+    WSADATA wsaData;
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData))
+    {
+        std::cerr << "Win socket start failed" << std::endl;
+        WSACleanup();
+    }
+
+    char host_name[256];
+    if (gethostname(host_name, 256) == SOCKET_ERROR)
+        return false;
+
+    struct addrinfo hints, * res = NULL;
+    char* szRemoteAddress = NULL, * szRemotePort = NULL;
+    int rc; memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_protocol = IPPROTO_TCP;
+
+    rc = getaddrinfo(host_name, szRemotePort, &hints, &res);
+    if (rc == WSANO_DATA) { return false; }
+
+    char szIP[MAX_IP_STRING_LENGTH] = { 0, };
+    sprintf_s(szIP, MAX_IP_STRING_LENGTH, "%d.%d.%d.%d",
+        (unsigned char)res->ai_addr->sa_data[2],
+        (unsigned char)res->ai_addr->sa_data[3],
+        (unsigned char)res->ai_addr->sa_data[4],
+        (unsigned char)res->ai_addr->sa_data[5]);
+
+    strIP = szIP;
+
+    WSACleanup();
+
+    return true;
+}
+
 int main()
 {
     std::string ipAddr;
     std::string macAddr;
 
+    GetLocalIP(ipAddr);
+    std::cout << ipAddr << std::endl;
+
     GetLocalIPAddress(ipAddr, macAddr);
+    std::cout << ipAddr << std::endl;
+
 
     return 0;
 }
