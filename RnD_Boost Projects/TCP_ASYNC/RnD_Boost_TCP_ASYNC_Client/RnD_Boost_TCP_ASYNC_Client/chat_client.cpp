@@ -7,7 +7,6 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-
 // REF : https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/example/cpp11/chat/chat_client.cpp
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -36,6 +35,10 @@ public:
 
     void write(const chat_message& msg)
     {
+
+        // post를 안써도 무방함
+        // io_context에 직접적으로 이벤트를 주는 용도
+        // 윈도우 IOCP 이용
         boost::asio::post(io_context_,
             [this, msg]()
             {
@@ -59,6 +62,8 @@ private:
         boost::asio::async_connect(socket_, endpoints,
             [this](boost::system::error_code ec, tcp::endpoint)
             {
+                std::cout << "do connect" << __FUNCTION__ << __LINE__ << std::endl;
+
                 if (!ec)
                 {
                     do_read_header();
@@ -72,6 +77,7 @@ private:
             boost::asio::buffer(read_msg_.data(), chat_message::header_length),
             [this](boost::system::error_code ec, std::size_t /*length*/)
             {
+                std::cout << "헤더 읽음" << __FUNCTION__ << __LINE__ << std::endl;
                 if (!ec && read_msg_.decode_header())
                 {
                     do_read_body();
@@ -89,6 +95,8 @@ private:
             boost::asio::buffer(read_msg_.body(), read_msg_.body_length()),
             [this](boost::system::error_code ec, std::size_t /*length*/)
             {
+                std::cout << "바디 읽음" << __FUNCTION__ << __LINE__ << std::endl;
+
                 if (!ec)
                 {
                     std::cout.write(read_msg_.body(), read_msg_.body_length());
@@ -130,6 +138,11 @@ private:
     chat_message read_msg_;
     chat_message_queue write_msgs_;
 };
+
+//void ioThread(boost::asio::io_context& ioctx)
+//{
+//    ioctx.run();
+//}
 
 int main(int argc, char* argv[])
 {
