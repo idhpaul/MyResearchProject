@@ -1,0 +1,33 @@
+/*******************************************************************************
+* Created  		Sep 21, 2020
+* Modified  	Sep 21, 2020
+* FILE:			MySession.proto
+* Author:		IDH 
+* DESCRIPTION:	Session Control Message Specific
+* 
+*******************************************************************************/
+
+// Fied Specific
+// 1 ~ 3 : Node information
+// 4 ~ 6 : Session state inforamtion
+// 7 ~ 9 : Message Type information
+
+syntax = "proto3";
+package My_Net;
+
+import "google/protobuf/timestamp.proto";
+
+message Session 
+{
+	string host = 1;							// 
+	string user_agent = 2;						// TX(MAC,WindowsVersion) or RX(MAC,WindowsVersion)
+
+	reserved 4 to 6;							// Session state information
+	reserved "connection";
+
+	reserved 8 to 9;							// Message types filed
+	string content_type = 7;
+
+	google.protobuf.Timestamp date = 14;		// RFC 3339 date string format (2020-01-01T12:00:00.00Z)
+	int32 content_length = 15;					// Body Length
+}
