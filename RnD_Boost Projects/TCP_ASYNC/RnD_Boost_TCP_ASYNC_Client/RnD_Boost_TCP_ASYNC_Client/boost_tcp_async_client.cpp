@@ -24,12 +24,13 @@ public:
 
 	void read()
 	{
+		std::cout << "read read" << std::endl;
 
 		boost::asio::async_read(_socket,
 			boost::asio::buffer(_recvbuffer.get(), 5),
 			[this](boost::system::error_code ec, std::size_t length)
 			{
-				std::cout << "read call" << std::endl;
+				std::cout << "read sjpark" << std::endl;
 
 
 				if (!ec)
@@ -90,7 +91,8 @@ private:
 			{
 				if (!ec)
 				{
-					read();
+					//read();
+					std::cout << "Connect lamda called" << std::endl;
 				}
 				else
 				{

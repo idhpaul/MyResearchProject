@@ -77,8 +77,6 @@ void MySession::read()
 void MySession::write()
 {
 
-	
-
 	boost::asio::async_write(_socket,
 		boost::asio::buffer(tmp_string.c_str(), tmp_string.size()+1),
 		[this](boost::system::error_code ec, std::size_t length)

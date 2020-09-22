@@ -16,6 +16,9 @@
     <Filter Include="boost example">
       <UniqueIdentifier>{750d5140-a00f-427e-9f1f-9197b28ce760}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ProtocolBuffer">
+      <UniqueIdentifier>{9d2d0af8-6bd7-4a51-bd32-3a62da987415}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="chat_client.cpp">
@@ -24,10 +27,25 @@
     <ClCompile Include="boost_tcp_async_client.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="protocol_boost_async_client.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MySession.pb.cc">
+      <Filter>ProtocolBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="MyProto.cpp">
+      <Filter>ProtocolBuffer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chat_message.hpp">
       <Filter>boost example</Filter>
+    </ClInclude>
+    <ClInclude Include="MySession.pb.h">
+      <Filter>ProtocolBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="MyProto.h">
+      <Filter>ProtocolBuffer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
