@@ -1,3 +1,27 @@
+#define PROTOBUF_LIB_NAME	"libprotobuf"
+
+#ifdef _DEBUG
+#define DEBUG_ALLOW			"d"
+#else
+#define DEBUG_ALLOW			""
+#endif // _DEBUG
+
+#if defined _MT && defined _DLL
+
+//! IF you use Dynamic Linkig
+//! Please include '#define PROTOBUF_USE_DLLS' you protocolbuffer header files
+
+#define PROTOBUF_DIR ".\\ThirdParty\\protobuf_3_13_0_shared\\lib\\"
+#else
+#define PROTOBUF_DIR ".\\ThirdParty\\protobuf_3_13_0_static\\lib\\"
+#endif
+
+#pragma comment(lib, PROTOBUF_DIR PROTOBUF_LIB_NAME DEBUG_ALLOW)
+
+
+#include "MySession.pb.h"
+#include "google/protobuf/util/time_util.h"
+
 #include <iostream>
 #include <memory>
 #include <boost/asio.hpp>
@@ -44,6 +68,16 @@ public:
 						std::cout << "[DEBUG] Read Data from Client " << __FUNCTION__ << __LINE__ << std::endl;
 						std::cout << "[DEBUG] Read recv : " << length << std::endl;
 						#endif
+
+
+						My_Net::Session mySessionRead;
+						mySessionRead.ParseFromString(recvbuffer);
+
+						std::cout << mySessionRead.host() << std::endl;
+						std::cout << mySessionRead.user_agent() << std::endl;
+						std::cout << mySessionRead.content_type() << std::endl;
+						std::cout << mySessionRead.date() << std::endl;
+						std::cout << mySessionRead.content_length() << std::endl;
 
 						Write();
 					}
