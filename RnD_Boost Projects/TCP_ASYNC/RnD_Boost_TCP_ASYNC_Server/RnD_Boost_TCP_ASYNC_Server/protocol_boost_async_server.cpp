@@ -26,10 +26,16 @@
 #include <memory>
 #include <boost/asio.hpp>
 
-boost::asio::streambuf buffer_;
+
 
 char sendbuffer[6] = "hello";
 char recvbuffer[19];
+
+std::string make_string(boost::asio::streambuf& streambuf)
+{
+	return { buffers_begin(streambuf.data()),
+			buffers_end(streambuf.data()) };
+}
 
 class Session
 {
@@ -56,12 +62,13 @@ public:
 	};
 
 	void Read()
-	{
-		// TODO: 고정 문자열이 아닌 read_until 활용하기 _ 2020.09.22 IDH
-		boost::asio::async_read(_socket,
-			boost::asio::buffer(recvbuffer, 19),
+	{		
+
+		boost::asio::async_read_until(_socket,
+			buffer_, "\r\n",
 			[this](boost::system::error_code ec, std::size_t length)
 			{
+
 					if (!ec)
 					{
 						#if _DEBUG
@@ -69,15 +76,19 @@ public:
 						std::cout << "[DEBUG] Read recv : " << length << std::endl;
 						#endif
 
+						std::string recvStr = make_string(buffer_);
+						recvStr = recvStr.substr(0, recvStr.size() - 2);
 
 						My_Net::Session mySessionRead;
-						mySessionRead.ParseFromString(recvbuffer);
+						mySessionRead.ParseFromString(recvStr);
 
 						std::cout << mySessionRead.host() << std::endl;
 						std::cout << mySessionRead.user_agent() << std::endl;
 						std::cout << mySessionRead.content_type() << std::endl;
 						std::cout << mySessionRead.date() << std::endl;
 						std::cout << mySessionRead.content_length() << std::endl;
+
+						readSize = length;
 
 						Write();
 					}
@@ -101,6 +112,8 @@ public:
 						std::cout << "[DEBUG] Write length : " << length << std::endl;
 						#endif
 
+						buffer_.consume(readSize);
+
 						Read();
 
 					}
@@ -113,22 +126,34 @@ public:
 
 private:
 	boost::asio::ip::tcp::socket _socket;
+	boost::asio::streambuf buffer_;
+	size_t readSize;
+
 };
 
 class ServerAcceptor
 {
 public:
-	ServerAcceptor(boost::asio::io_context& io_context, const boost::asio::ip::tcp::endpoint& endpoint)
-		: _acceptor(io_context, endpoint)
+	ServerAcceptor(const boost::asio::ip::tcp::endpoint& endpoint)
+		: _work(new boost::asio::io_service::work(_ioCtx)),
+		_acceptor(_ioCtx, endpoint)
 	{
+		_worker = std::thread([&]() {
+			_ioCtx.run();
+			});
+
 		do_accept();
 	}
+
 
 	~ServerAcceptor()
 	{
 #if _DEBUG
 		std::cout << "[DEBUG]  Destructor call" << __FUNCTION__ << __LINE__ << std::endl;
 #endif
+		_ioCtx.stop();
+		_worker.join();
+		_work.reset();
 	}
 
 private:
@@ -147,20 +172,26 @@ private:
 				do_accept();
 			});
 	}
-
+	std::thread _worker;
 	std::unique_ptr<Session> _mySession;
+
+
+	boost::asio::io_context _ioCtx;
 	boost::asio::ip::tcp::acceptor	_acceptor;
+	std::shared_ptr<boost::asio::io_service::work> _work;
 };
 
 int main()
 {
-	boost::asio::io_context io_ctx;
 
 	boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), 8090);
 
-	ServerAcceptor Server(io_ctx, endpoint);
+	ServerAcceptor Server(endpoint);
 
-	io_ctx.run();
+	while (true)
+	{
+
+	}
 
 	return 0;
 }

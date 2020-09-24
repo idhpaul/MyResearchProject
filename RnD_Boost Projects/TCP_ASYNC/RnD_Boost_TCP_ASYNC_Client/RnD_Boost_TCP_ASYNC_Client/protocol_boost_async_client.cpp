@@ -13,18 +13,365 @@ char sendbuffer[3] = "hi";
 class ClientSession
 {
 public:
-	ClientSession(boost::asio::io_context& io_context,
-		const boost::asio::ip::tcp::resolver::results_type& endpoints)
-		: _io_context(io_context),
-		_socket(io_context)
+
+	ClientSession(std::string serverIP, std::string serverPort)
+		: _work(new boost::asio::io_service::work(_ioCtx)),
+		_resolver(_ioCtx),
+		_socket(_ioCtx)
 	{
+		auto endpoints = _resolver.resolve(serverIP, serverPort);
+
+		_worker = std::thread([&]() {
+			_ioCtx.run();
+			});
+
 		do_connect(endpoints);
 	};
 
 	~ClientSession()
 	{
+#if _DEBUG
+		std::cout << "[DEBUG]  Destructor call" << __FUNCTION__ << __LINE__ << std::endl;
+#endif
+		_ioCtx.stop();
+		_worker.join();
+		_work.reset();
+	};
+
+	void do_SESSION_INIT()
+	{
+
+#if _DEBUG
+		std::cout << "[DEBUG] do_SESSION_INIT : " << __FUNCTION__ << __LINE__ << std::endl;
+#endif
+
+		StartProto();
+
+		int bodyLength = 0;
+		My_Net::Session mySession;
+
+		mySession.set_host("MYTX");
+		mySession.set_user_agent("IMM_DONG_HYUN");
+		mySession.set_content_type("MY_SESSION_INIT");
+		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
+
+		/*while (true)
+		{
+			std::string tmp_message;
+
+			std::cout << "Enter message(or leave blank to finish): ";
+			std::getline(std::cin, tmp_message);
+
+			if (tmp_message.empty())
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+			else
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+		}*/
+
+		mySession.set_content_length(100);
+
+		std::string SerializedStringMessage;
+		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
+
+		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
+
+		StopProto();
+
+		Write();
 
 	};
+	void do_SESSION_IDENTIFIED()
+	{
+
+#if _DEBUG
+		std::cout << "[DEBUG] do_SESSION_IDENTIFIED : " << __FUNCTION__ << __LINE__ << std::endl;
+#endif
+
+		StartProto();
+
+		int bodyLength = 20;
+		My_Net::Session mySession;
+
+		mySession.set_host("MYTX");
+		mySession.set_user_agent("IMM_DONG_HYUN");
+		mySession.set_content_type("MY_SESSION_IDENTIFIED");
+		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
+
+		/*while (true)
+		{
+			std::string tmp_message;
+
+			std::cout << "Enter message(or leave blank to finish): ";
+			std::getline(std::cin, tmp_message);
+
+			if (tmp_message.empty())
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+			else
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+		}*/
+
+		mySession.set_content_length(bodyLength);
+
+		std::string SerializedStringMessage;
+		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
+
+		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
+
+		StopProto();
+
+		Write();
+	};
+	void do_SESSION_CREATE()
+	{
+
+#if _DEBUG
+		std::cout << "[DEBUG] do_SESSION_CREATE : " << __FUNCTION__ << __LINE__ << std::endl;
+#endif
+
+		StartProto();
+
+		int bodyLength = 30;
+		My_Net::Session mySession;
+
+		mySession.set_host("MYTX");
+		mySession.set_user_agent("IMM_DONG_HYUN");
+		mySession.set_content_type("MY_SESSION_CREATE");
+		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
+
+		/*while (true)
+		{
+			std::string tmp_message;
+
+			std::cout << "Enter message(or leave blank to finish): ";
+			std::getline(std::cin, tmp_message);
+
+			if (tmp_message.empty())
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+			else
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+		}*/
+
+		mySession.set_content_length(bodyLength);
+
+		std::string SerializedStringMessage;
+		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
+
+		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
+
+		StopProto();
+
+		Write();
+	};
+	void do_SESSION_START()
+	{
+
+#if _DEBUG
+		std::cout << "[DEBUG] do_SESSION_START : " << __FUNCTION__ << __LINE__ << std::endl;
+#endif
+
+		StartProto();
+
+		int bodyLength = 40;
+		My_Net::Session mySession;
+
+		mySession.set_host("MYTX");
+		mySession.set_user_agent("IMM_DONG_HYUN");
+		mySession.set_content_type("MY_SESSION_START");
+		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
+
+		/*while (true)
+		{
+			std::string tmp_message;
+
+			std::cout << "Enter message(or leave blank to finish): ";
+			std::getline(std::cin, tmp_message);
+
+			if (tmp_message.empty())
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+			else
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+		}*/
+
+		mySession.set_content_length(bodyLength);
+
+		std::string SerializedStringMessage;
+		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
+
+		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
+
+		StopProto();
+
+		Write();
+	};
+	void do_SESSION_STOP()
+	{
+
+#if _DEBUG
+		std::cout << "[DEBUG] do_SESSION_STOP : " << __FUNCTION__ << __LINE__ << std::endl;
+#endif
+
+		StartProto();
+
+		int bodyLength = 50;
+		My_Net::Session mySession;
+
+		mySession.set_host("MYTX");
+		mySession.set_user_agent("IMM_DONG_HYUN");
+		mySession.set_content_type("MY_SESSION_STOP");
+		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
+
+		/*while (true)
+		{
+			std::string tmp_message;
+
+			std::cout << "Enter message(or leave blank to finish): ";
+			std::getline(std::cin, tmp_message);
+
+			if (tmp_message.empty())
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+			else
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+		}*/
+
+		mySession.set_content_length(bodyLength);
+
+		std::string SerializedStringMessage;
+		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
+
+		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
+
+		StopProto();
+
+		Write();
+	};
+	void do_SESSION_RESET()
+	{
+
+#if _DEBUG
+		std::cout << "[DEBUG] do_SESSION_RESET : " << __FUNCTION__ << __LINE__ << std::endl;
+#endif
+
+		StartProto();
+
+		int bodyLength = 60;
+		My_Net::Session mySession;
+
+		mySession.set_host("MYTX");
+		mySession.set_user_agent("IMM_DONG_HYUN");
+		mySession.set_content_type("MY_SESSION_RESET");
+		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
+
+		/*while (true)
+		{
+			std::string tmp_message;
+
+			std::cout << "Enter message(or leave blank to finish): ";
+			std::getline(std::cin, tmp_message);
+
+			if (tmp_message.empty())
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+			else
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+		}*/
+
+		mySession.set_content_length(bodyLength);
+
+		std::string SerializedStringMessage;
+		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
+
+		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
+
+		StopProto();
+
+		Write();
+	};
+	void do_SESSION_DELETE()
+	{
+
+#if _DEBUG
+		std::cout << "[DEBUG] do_SESSION_DELETE : " << __FUNCTION__ << __LINE__ << std::endl;
+#endif
+
+		StartProto();
+
+		int bodyLength = 70;
+		My_Net::Session mySession;
+
+		mySession.set_host("MYTX");
+		mySession.set_user_agent("IMM_DONG_HYUN");
+		mySession.set_content_type("MY_SESSION_DELETE");
+		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
+
+		/*while (true)
+		{
+			std::string tmp_message;
+
+			std::cout << "Enter message(or leave blank to finish): ";
+			std::getline(std::cin, tmp_message);
+
+			if (tmp_message.empty())
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+			else
+			{
+				bodyLength = tmp_message.length();
+				break;
+			}
+		}*/
+
+		mySession.set_content_length(bodyLength);
+
+		std::string SerializedStringMessage;
+		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
+
+		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
+
+		StopProto();
+
+		Write();
+	};
+
+	
+
+private:
 
 	void do_connect(const boost::asio::ip::tcp::resolver::results_type& endpoints)
 	{
@@ -35,7 +382,8 @@ public:
 
 				if (!ec)
 				{
-					Read();
+					do_SESSION_INIT(); //write -> read()
+					//Read();
 				}
 			});
 	};
@@ -48,18 +396,17 @@ public:
 			[this](boost::system::error_code ec, std::size_t length)
 			{
 
-					if (!ec)
-					{
+				if (!ec)
+				{
 #if _DEBUG
-						std::cout << "[DEBUG] Read Data from Client " << __FUNCTION__ << __LINE__ << std::endl;
-						std::cout << "[DEBUG] Read recv : " << length << std::endl;
+					std::cout << "[DEBUG] Read Data from Client msg : "<< recvbuffer << __FUNCTION__ << __LINE__ << std::endl;
+					std::cout << "[DEBUG] Read recv : " << length << std::endl;
 #endif
-						Write();
-					}
-					else
-					{
+				}
+				else
+				{
 
-					}
+				}
 			});
 	};
 
@@ -70,75 +417,63 @@ public:
 			[this](boost::system::error_code ec, std::size_t length)
 			{
 
-					if (!ec)
-					{
+				if (!ec)
+				{
 #if _DEBUG
-						std::cout << "[DEBUG] Write Data from Client " << __FUNCTION__ << __LINE__ << std::endl;
-						std::cout << "[DEBUG] Write length : " << length << std::endl;
+					std::cout << "[DEBUG] Write Data from Client " << __FUNCTION__ << __LINE__ << std::endl;
+					std::cout << "[DEBUG] Write length : " << length << std::endl;
 #endif
-						Read();
 
-					}
-					else
-					{
+					Read();
 
-					}
+				}
+				else
+				{
+
+				}
 			});
 	};
 
 	void CopyBuffer(const std::string& str, int length)
 	{
-		_bufferLength = length;
+		std::memset(_buffer, 0x0, 100);
 
-		_buffer = new char[length];
+		_bufferLength = length;
 
 		std::memset(_buffer, 0x0, _bufferLength);
 		std::memcpy(_buffer, str.c_str(), _bufferLength);
 	}
 
-private:
-	char* _buffer;
+	// TODO: 동적 버퍼
+	char _buffer[100];
 	int _bufferLength;
 
-	boost::asio::io_context& _io_context;
+	boost::asio::io_context _ioCtx;
+	boost::asio::ip::tcp::resolver _resolver;
 	boost::asio::ip::tcp::socket _socket;
+
+	std::thread _worker;
+	std::shared_ptr<boost::asio::io_service::work> _work;
 
 };
 
 int main()
 {
 
-	StartProto();
+	ClientSession client("localhost","8090");
 
-	My_Net::Session mySession;
-	InitProtoData(mySession);
+	while (true)
+	{
 
-	std::string SerializedStringMessage;
-	SerializedStringMessage = mySession.SerializeAsString();
+	}
+	//client.do_SESSION_INIT();
+	/*client.do_SESSION_IDENTIFIED();
+	client.do_SESSION_CREATE();
+	client.do_SESSION_START();
+	client.do_SESSION_STOP();
+	client.do_SESSION_RESET();
+	client.do_SESSION_DELETE();*/
 
-
-	boost::asio::io_context io_context;
-
-	boost::asio::ip::tcp::resolver resolver(io_context);
-	auto endpoints = resolver.resolve("localhost", "8090");
-
-	ClientSession client(io_context, endpoints);
-
-	std::thread t([&io_context]() { io_context.run(); });
-
-	std::cout << "Sleep start" << std::endl;
-	Sleep(5000);
-	std::cout << "Sleep end" << std::endl;
-
-
-	client.CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
-	client.Write();
-
-	
-	//client.close();
-	t.join();
-
-	StopProto();
 
 	return 0;
 }
