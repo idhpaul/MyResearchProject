@@ -25,6 +25,7 @@
 
 #include "MySession.pb.h"
 #include "google/protobuf/util/time_util.h"
+#include <google/protobuf/util/json_util.h>
 
 void StartProto();
 void StopProto();

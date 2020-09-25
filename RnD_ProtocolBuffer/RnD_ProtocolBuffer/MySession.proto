@@ -12,10 +12,13 @@
 // 4 ~ 6 : Session state inforamtion
 // 7 ~ 9 : Message Type information
 
+// TODO : Network Bandwidth message protocol
+
 syntax = "proto3";
 package My_Net;
 
 import "google/protobuf/timestamp.proto";
+
 
 message Session 
 {
@@ -28,6 +31,62 @@ message Session
 	reserved 8 to 9;							// Message types filed
 	string content_type = 7;
 
-	google.protobuf.Timestamp date = 14;		// RFC 3339 date string format (2020-01-01T12:00:00.00Z)
-	int32 content_length = 15;					// Body Length
+	google.protobuf.Timestamp date = 13;		// RFC 3339 date string format (2020-01-01T12:00:00.00Z)
+	int32 content_length = 14;					// Body Length
+	string body = 15;
+}
+
+message SessionMessageInit
+{
+	string sessionKey = 1;						// Session crypto key
+}
+
+message SessionMessageIdentified
+{
+	string system_info_one = 1;						// e.g CPU Information
+	string system_info_two = 2;						// e.g Acceptable Resolution Information
+	string system_info_three = 3;						// e.g Memory Infomation
+	string system_info_four = 4;						// e.g Network Information
+
+	string bandwidth = 15;						// e.g Network Bandwidth Check Time
+}
+
+message SessionMessageCreate
+{
+	string setting_info_one = 1;						// e.g CPU Information
+	string setting_info_two = 2;						// e.g Acceptable Resolution Information
+	string setting_info_three = 3;						// e.g Memory Infomation
+	string setting_info_four = 4;						// e.g Network Information
+
+	string ssetting_info_five = 5;					// e.g Audio Samplerate Information
+	string setting_info_six = 6;					// e.g Audio Quantization Information
+}
+
+message SessionMessageDelete
+{
+	string usage_time = 1;						// e.g programe Usage time
+												// ex) "Usage time : [hour]:[minute]"
+}
+
+message SessionMessageStart
+{
+	string LastSate = 1;						// e.g Last programe state Information 
+												// ex) "Video:done / Audio:done / HID:done"
+}
+
+message SessionMessageStop
+{
+	string LastSate = 1;						// e.g Last programe state Information
+												// ex) "Switch Desktop detected"
+}
+
+message SessionMessageReset
+{
+	string SettingInfo1 = 1;					// e.g Codec Information
+	string SettingInfo2 = 2;					// e.g BRC Information
+	string SettingInfo3 = 3;					// e.g Bitrate Information
+	string SettingInfo4 = 4;					// e.g GOP Information
+
+	string SettingInfo5 = 5;					// e.g Audio Samplerate Information
+	string SettingInfo6 = 6;					// e.g Audio Quantization Information
 }

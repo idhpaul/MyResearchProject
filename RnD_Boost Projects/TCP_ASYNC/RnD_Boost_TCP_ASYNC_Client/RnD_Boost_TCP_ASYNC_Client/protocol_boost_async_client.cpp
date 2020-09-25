@@ -5,10 +5,13 @@
 #include <cstring>
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include <string>
 
 char recvbuffer[6];
 char sendbuffer[3] = "hi";
+
+
 
 static void boostErrorHandler(const char* BeforeFucName, const int BeforeFucLine, const boost::system::error_code& ec)
 {
@@ -49,6 +52,7 @@ public:
 #if _DEBUG
 		std::cout << "[DEBUG] do_SESSION_INIT : " << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
 #endif
+		std::lock_guard<std::mutex> lock_guard(_Mutex);
 
 		StartProto();
 
@@ -76,33 +80,23 @@ public:
 		mySession.set_content_type("MY_SESSION_INIT");
 		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
 
-		while (true)
-		{
-			std::string tmp_message;
+		/// <Body>
+		_JsonOutput.clear();
+		My_Net::SessionMessageInit myMessageInit;
+		myMessageInit.set_sessionkey("EXAMPLECRYPTOKEYVALUE");
 
-			std::cout << "Enter message(or leave blank to finish): ";
-			std::getline(std::cin, tmp_message);
+		google::protobuf::util::MessageToJsonString(myMessageInit, &_JsonOutput);
+		/// </Body>
 
-			if (tmp_message.empty())
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-			else
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-		}
-
-		mySession.set_content_length(bodyLength);
+		mySession.set_content_length(_JsonOutput.size());
+		mySession.set_body(_JsonOutput);
 
 		std::string SerializedStringMessage;
 		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
 
 		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
 
-		StopProto();
+		//StopProto();
 
 		Write();
 
@@ -113,6 +107,7 @@ public:
 #if _DEBUG
 		std::cout << "[DEBUG] do_SESSION_IDENTIFIED : " << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
 #endif
+		std::lock_guard<std::mutex> lock_guard(_Mutex);
 
 		StartProto();
 
@@ -140,33 +135,30 @@ public:
 		mySession.set_content_type("MY_SESSION_IDENTIFIED");
 		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
 
-		while (true)
-		{
-			std::string tmp_message;
+		/// <Body>
 
-			std::cout << "Enter message(or leave blank to finish): ";
-			std::getline(std::cin, tmp_message);
+		_JsonOutput.clear();
+		My_Net::SessionMessageIdentified myMessageIdentified;
+		myMessageIdentified.set_system_info_one("Intel(R) Core(TM) i7-7600U CPU @ 2.80GHz");
+		myMessageIdentified.set_system_info_two("1920x1080");
+		myMessageIdentified.set_system_info_three("8g");
+		myMessageIdentified.set_system_info_four("Intel(R) Dual Band Wireless-AC 8265 #2");
+		myMessageIdentified.set_bandwidth("123456"); // Timestamp
 
-			if (tmp_message.empty())
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-			else
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-		}
+		google::protobuf::util::MessageToJsonString(myMessageIdentified, &_JsonOutput);
 
-		mySession.set_content_length(bodyLength);
+
+		/// </Body>
+
+		mySession.set_content_length(_JsonOutput.size());
+		mySession.set_body(_JsonOutput);
 
 		std::string SerializedStringMessage;
 		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
 
 		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
 
-		StopProto();
+		//StopProto();
 
 		Write();
 	};
@@ -176,6 +168,7 @@ public:
 #if _DEBUG
 		std::cout << "[DEBUG] do_SESSION_CREATE : " << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
 #endif
+		std::lock_guard<std::mutex> lock_guard(_Mutex);
 
 		StartProto();
 
@@ -203,214 +196,21 @@ public:
 		mySession.set_content_type("MY_SESSION_CREATE");
 		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
 
-		while (true)
-		{
-			std::string tmp_message;
+		/// <Body>
+		_JsonOutput.clear();
+		My_Net::SessionMessageCreate myMessageCreate;
+		/*myMessageCreate.set_settinginfo1("H264");
+		myMessageCreate.set_settinginfo2("VBR");
+		myMessageCreate.set_settinginfo3("10000");
+		myMessageCreate.set_settinginfo4("30");
+		myMessageCreate.set_settinginfo5("48000");
+		myMessageCreate.set_settinginfo6("24");*/
 
-			std::cout << "Enter message(or leave blank to finish): ";
-			std::getline(std::cin, tmp_message);
+		google::protobuf::util::MessageToJsonString(myMessageCreate, &_JsonOutput);
+		/// </Body>
 
-			if (tmp_message.empty())
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-			else
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-		}
-
-		mySession.set_content_length(bodyLength);
-
-		std::string SerializedStringMessage;
-		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
-
-		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
-
-		StopProto();
-
-		Write();
-	};
-	void do_SESSION_START()
-	{
-
-#if _DEBUG
-		std::cout << "[DEBUG] do_SESSION_START : " << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
-#endif
-
-		StartProto();
-
-		int bodyLength = 0;
-		My_Net::Session mySession;
-
-		mySession.set_host("MYTX");
-
-		auto get_User = []() -> std::string {
-			std::string returnName;
-			char szUserName[100];
-			unsigned long dwNameLength = 100;
-			GetUserNameA(szUserName, &dwNameLength);
-
-			char szComputerName[100];
-			unsigned long dwComputerLength = 100;
-			GetComputerNameA(szComputerName, &dwComputerLength);
-
-			returnName.append(szUserName).append(":").append(szComputerName);
-
-			return returnName;
-		};
-		mySession.set_user_agent(get_User());
-
-		mySession.set_content_type("MY_SESSION_START");
-		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
-
-		while (true)
-		{
-			std::string tmp_message;
-
-			std::cout << "Enter message(or leave blank to finish): ";
-			std::getline(std::cin, tmp_message);
-
-			if (tmp_message.empty())
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-			else
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-		}
-
-		mySession.set_content_length(bodyLength);
-
-		std::string SerializedStringMessage;
-		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
-
-		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
-
-		StopProto();
-
-		Write();
-	};
-	void do_SESSION_STOP()
-	{
-
-#if _DEBUG
-		std::cout << "[DEBUG] do_SESSION_STOP : " << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
-#endif
-
-		StartProto();
-
-		int bodyLength = 0;
-		My_Net::Session mySession;
-
-		mySession.set_host("MYTX");
-
-		auto get_User = []() -> std::string {
-			std::string returnName;
-			char szUserName[100];
-			unsigned long dwNameLength = 100;
-			GetUserNameA(szUserName, &dwNameLength);
-
-			char szComputerName[100];
-			unsigned long dwComputerLength = 100;
-			GetComputerNameA(szComputerName, &dwComputerLength);
-
-			returnName.append(szUserName).append(":").append(szComputerName);
-
-			return returnName;
-		};
-		mySession.set_user_agent(get_User());
-
-		mySession.set_content_type("MY_SESSION_STOP");
-		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
-
-		while (true)
-		{
-			std::string tmp_message;
-
-			std::cout << "Enter message(or leave blank to finish): ";
-			std::getline(std::cin, tmp_message);
-
-			if (tmp_message.empty())
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-			else
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-		}
-
-		mySession.set_content_length(bodyLength);
-
-		std::string SerializedStringMessage;
-		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
-
-		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
-
-		StopProto();
-
-		Write();
-	};
-	void do_SESSION_RESET()
-	{
-
-#if _DEBUG
-		std::cout << "[DEBUG] do_SESSION_RESET : " << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
-#endif
-		StartProto();
-
-		int bodyLength = 0;
-		My_Net::Session mySession;
-
-		mySession.set_host("MYTX");
-
-		auto get_User = []() -> std::string {
-			std::string returnName;
-			char szUserName[100];
-			unsigned long dwNameLength = 100;
-			GetUserNameA(szUserName, &dwNameLength);
-
-			char szComputerName[100];
-			unsigned long dwComputerLength = 100;
-			GetComputerNameA(szComputerName, &dwComputerLength);
-
-			returnName.append(szUserName).append(":").append(szComputerName);
-
-			return returnName;
-		};
-		mySession.set_user_agent(get_User());
-
-		mySession.set_content_type("MY_SESSION_RESET");
-		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
-
-		while (true)
-		{
-			std::string tmp_message;
-
-			std::cout << "Enter message(or leave blank to finish): ";
-			std::getline(std::cin, tmp_message);
-
-			if (tmp_message.empty())
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-			else
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-		}
-
-		mySession.set_content_length(bodyLength);
+		mySession.set_content_length(_JsonOutput.size());
+		mySession.set_body(_JsonOutput);
 
 		std::string SerializedStringMessage;
 		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
@@ -427,6 +227,7 @@ public:
 #if _DEBUG
 		std::cout << "[DEBUG] do_SESSION_DELETE : " << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
 #endif
+		std::lock_guard<std::mutex> lock_guard(_Mutex);
 
 		StartProto();
 
@@ -454,26 +255,16 @@ public:
 		mySession.set_content_type("MY_SESSION_DELETE");
 		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
 
-		while (true)
-		{
-			std::string tmp_message;
+		/// <Body>
+		_JsonOutput.clear();
+		My_Net::SessionMessageDelete myMessageDelete;
+		myMessageDelete.set_usage_time("Usage time(hour:min) : 3:56");
 
-			std::cout << "Enter message(or leave blank to finish): ";
-			std::getline(std::cin, tmp_message);
+		google::protobuf::util::MessageToJsonString(myMessageDelete, &_JsonOutput);
+		/// </Body>
 
-			if (tmp_message.empty())
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-			else
-			{
-				bodyLength = tmp_message.length();
-				break;
-			}
-		}
-
-		mySession.set_content_length(bodyLength);
+		mySession.set_content_length(_JsonOutput.size());
+		mySession.set_body(_JsonOutput);
 
 		std::string SerializedStringMessage;
 		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
@@ -484,8 +275,173 @@ public:
 
 		Write();
 	};
+	void do_SESSION_START()
+	{
 
-	
+#if _DEBUG
+		std::cout << "[DEBUG] do_SESSION_START : " << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
+#endif
+		std::lock_guard<std::mutex> lock_guard(_Mutex);
+
+		StartProto();
+
+		int bodyLength = 0;
+		My_Net::Session mySession;
+
+		mySession.set_host("MYTX");
+
+		auto get_User = []() -> std::string {
+			std::string returnName;
+			char szUserName[100];
+			unsigned long dwNameLength = 100;
+			GetUserNameA(szUserName, &dwNameLength);
+
+			char szComputerName[100];
+			unsigned long dwComputerLength = 100;
+			GetComputerNameA(szComputerName, &dwComputerLength);
+
+			returnName.append(szUserName).append(":").append(szComputerName);
+
+			return returnName;
+		};
+		mySession.set_user_agent(get_User());
+
+		mySession.set_content_type("MY_SESSION_START");
+		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
+
+		/// <Body>
+		_JsonOutput.clear();
+		My_Net::SessionMessageStart myMessageStart;
+		myMessageStart.set_lastsate("TEST-STATE");
+
+		google::protobuf::util::MessageToJsonString(myMessageStart, &_JsonOutput);
+		/// </Body>
+
+		mySession.set_content_length(_JsonOutput.size());
+		mySession.set_body(_JsonOutput);
+
+		std::string SerializedStringMessage;
+		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
+
+		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
+
+		StopProto();
+
+		Write();
+	};
+	void do_SESSION_STOP()
+	{
+
+#if _DEBUG
+		std::cout << "[DEBUG] do_SESSION_STOP : " << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
+#endif
+		std::lock_guard<std::mutex> lock_guard(_Mutex);
+
+		StartProto();
+
+		int bodyLength = 0;
+		My_Net::Session mySession;
+
+		mySession.set_host("MYTX");
+
+		auto get_User = []() -> std::string {
+			std::string returnName;
+			char szUserName[100];
+			unsigned long dwNameLength = 100;
+			GetUserNameA(szUserName, &dwNameLength);
+
+			char szComputerName[100];
+			unsigned long dwComputerLength = 100;
+			GetComputerNameA(szComputerName, &dwComputerLength);
+
+			returnName.append(szUserName).append(":").append(szComputerName);
+
+			return returnName;
+		};
+		mySession.set_user_agent(get_User());
+
+		mySession.set_content_type("MY_SESSION_STOP");
+		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
+
+		/// <Body>
+		_JsonOutput.clear();
+		My_Net::SessionMessageStop myMessageStop;
+		myMessageStop.set_lastsate("TEST-STATE");
+
+		google::protobuf::util::MessageToJsonString(myMessageStop, &_JsonOutput);
+		/// </Body>
+
+		mySession.set_content_length(_JsonOutput.size());
+		mySession.set_body(_JsonOutput);
+
+		std::string SerializedStringMessage;
+		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
+
+		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
+
+		StopProto();
+
+		Write();
+	};
+	void do_SESSION_RESET()
+	{
+
+#if _DEBUG
+		std::cout << "[DEBUG] do_SESSION_RESET : " << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
+#endif
+		std::lock_guard<std::mutex> lock_guard(_Mutex);
+
+		StartProto();
+
+		int bodyLength = 0;
+		My_Net::Session mySession;
+
+		mySession.set_host("MYTX");
+
+		auto get_User = []() -> std::string {
+			std::string returnName;
+			char szUserName[100];
+			unsigned long dwNameLength = 100;
+			GetUserNameA(szUserName, &dwNameLength);
+
+			char szComputerName[100];
+			unsigned long dwComputerLength = 100;
+			GetComputerNameA(szComputerName, &dwComputerLength);
+
+			returnName.append(szUserName).append(":").append(szComputerName);
+
+			return returnName;
+		};
+		mySession.set_user_agent(get_User());
+
+		mySession.set_content_type("MY_SESSION_RESET");
+		*mySession.mutable_date() = google::protobuf::util::TimeUtil::SecondsToTimestamp(time(NULL) + (3600 * 9));
+
+		/// <Body>
+		_JsonOutput.clear();
+		My_Net::SessionMessageReset myMessageReset;
+		myMessageReset.set_settinginfo1("H264");
+		myMessageReset.set_settinginfo2("VBR");
+		myMessageReset.set_settinginfo3("10000");
+		myMessageReset.set_settinginfo4("30");
+		myMessageReset.set_settinginfo5("48000");
+		myMessageReset.set_settinginfo6("24");
+
+		google::protobuf::util::MessageToJsonString(myMessageReset, &_JsonOutput);
+		/// </Body>
+
+		mySession.set_content_length(_JsonOutput.size());
+		mySession.set_body(_JsonOutput);
+
+		std::string SerializedStringMessage;
+		SerializedStringMessage = mySession.SerializeAsString() + "\r\n";
+
+		CopyBuffer(SerializedStringMessage, SerializedStringMessage.length());
+
+		StopProto();
+
+		Write();
+	};
 
 private:
 
@@ -571,11 +527,14 @@ private:
 		std::memcpy(_buffer, str.c_str(), _bufferLength);
 	}
 
+public:
+	std::string _JsonOutput;
 
-
+private:
 	// TODO: 동적 버퍼
 	char _buffer[100];
 	int _bufferLength;
+
 
 	boost::asio::io_context _ioCtx;
 	boost::asio::ip::tcp::resolver _resolver;
@@ -584,33 +543,52 @@ private:
 	std::thread _worker;
 	std::shared_ptr<boost::asio::io_service::work> _work;
 
+	std::mutex _Mutex;
+
 };
 
 int main()
 {
 
+
+	std::string JsonOutput;
+	My_Net::SessionMessageIdentified myMessageIdentified;
+	myMessageIdentified.set_system_info_one("Intel(R) Core(TM) i7-7600U CPU @ 2.80GHz");
+	myMessageIdentified.set_system_info_two("1920x1080");
+	myMessageIdentified.set_system_info_three("8g");
+	myMessageIdentified.set_system_info_four("Intel(R) Dual Band Wireless-AC 8265 #2");
+	myMessageIdentified.set_bandwidth("123456"); // Timestamp
+
+	//google::protobuf::util::JsonPrintOptions options;
+	//options.add_whitespace = true;
+	//options.always_print_primitive_fields = false;
+	google::protobuf::util::MessageToJsonString(myMessageIdentified, &JsonOutput/*, options*/);
+	std::cout << JsonOutput << std::endl;
+
 	ClientSession client("localhost","8090");
 
 	//client.do_SESSION_INIT();
-	Sleep(10000);
-
-	client.do_SESSION_IDENTIFIED();
-	//Sleep(10000);
-
-	client.do_SESSION_CREATE();
-	//Sleep(10000);
-
-	client.do_SESSION_START();
-	//Sleep(10000);
-
-	client.do_SESSION_STOP();
-	//Sleep(10000);
-
-	client.do_SESSION_RESET();
-	//Sleep(10000);
+	Sleep(5000);
 
 	client.do_SESSION_DELETE();
-	//Sleep(10000);
+	Sleep(5000);
+
+	client.do_SESSION_IDENTIFIED();
+	Sleep(5000);
+
+	client.do_SESSION_CREATE();
+	Sleep(5000);
+
+	client.do_SESSION_START();
+	Sleep(5000);
+
+	client.do_SESSION_STOP();
+	Sleep(5000);
+
+	client.do_SESSION_RESET();
+	Sleep(5000);
+
+	
 	while (true)
 	{
 

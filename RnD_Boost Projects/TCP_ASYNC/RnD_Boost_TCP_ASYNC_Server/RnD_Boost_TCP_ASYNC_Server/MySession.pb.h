@@ -48,7 +48,7 @@ struct TableStruct_MySession_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[1]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[8]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -59,9 +59,37 @@ namespace My_Net {
 class Session;
 class SessionDefaultTypeInternal;
 extern SessionDefaultTypeInternal _Session_default_instance_;
+class SessionMessageCreate;
+class SessionMessageCreateDefaultTypeInternal;
+extern SessionMessageCreateDefaultTypeInternal _SessionMessageCreate_default_instance_;
+class SessionMessageDelete;
+class SessionMessageDeleteDefaultTypeInternal;
+extern SessionMessageDeleteDefaultTypeInternal _SessionMessageDelete_default_instance_;
+class SessionMessageIdentified;
+class SessionMessageIdentifiedDefaultTypeInternal;
+extern SessionMessageIdentifiedDefaultTypeInternal _SessionMessageIdentified_default_instance_;
+class SessionMessageInit;
+class SessionMessageInitDefaultTypeInternal;
+extern SessionMessageInitDefaultTypeInternal _SessionMessageInit_default_instance_;
+class SessionMessageReset;
+class SessionMessageResetDefaultTypeInternal;
+extern SessionMessageResetDefaultTypeInternal _SessionMessageReset_default_instance_;
+class SessionMessageStart;
+class SessionMessageStartDefaultTypeInternal;
+extern SessionMessageStartDefaultTypeInternal _SessionMessageStart_default_instance_;
+class SessionMessageStop;
+class SessionMessageStopDefaultTypeInternal;
+extern SessionMessageStopDefaultTypeInternal _SessionMessageStop_default_instance_;
 }  // namespace My_Net
 PROTOBUF_NAMESPACE_OPEN
 template<> ::My_Net::Session* Arena::CreateMaybeMessage<::My_Net::Session>(Arena*);
+template<> ::My_Net::SessionMessageCreate* Arena::CreateMaybeMessage<::My_Net::SessionMessageCreate>(Arena*);
+template<> ::My_Net::SessionMessageDelete* Arena::CreateMaybeMessage<::My_Net::SessionMessageDelete>(Arena*);
+template<> ::My_Net::SessionMessageIdentified* Arena::CreateMaybeMessage<::My_Net::SessionMessageIdentified>(Arena*);
+template<> ::My_Net::SessionMessageInit* Arena::CreateMaybeMessage<::My_Net::SessionMessageInit>(Arena*);
+template<> ::My_Net::SessionMessageReset* Arena::CreateMaybeMessage<::My_Net::SessionMessageReset>(Arena*);
+template<> ::My_Net::SessionMessageStart* Arena::CreateMaybeMessage<::My_Net::SessionMessageStart>(Arena*);
+template<> ::My_Net::SessionMessageStop* Arena::CreateMaybeMessage<::My_Net::SessionMessageStop>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace My_Net {
 
@@ -183,8 +211,9 @@ class Session PROTOBUF_FINAL :
     kHostFieldNumber = 1,
     kUserAgentFieldNumber = 2,
     kContentTypeFieldNumber = 7,
-    kDateFieldNumber = 14,
-    kContentLengthFieldNumber = 15,
+    kBodyFieldNumber = 15,
+    kDateFieldNumber = 13,
+    kContentLengthFieldNumber = 14,
   };
   // string host = 1;
   void clear_host();
@@ -234,7 +263,23 @@ class Session PROTOBUF_FINAL :
   std::string* _internal_mutable_content_type();
   public:
 
-  // .google.protobuf.Timestamp date = 14;
+  // string body = 15;
+  void clear_body();
+  const std::string& body() const;
+  void set_body(const std::string& value);
+  void set_body(std::string&& value);
+  void set_body(const char* value);
+  void set_body(const char* value, size_t size);
+  std::string* mutable_body();
+  std::string* release_body();
+  void set_allocated_body(std::string* body);
+  private:
+  const std::string& _internal_body() const;
+  void _internal_set_body(const std::string& value);
+  std::string* _internal_mutable_body();
+  public:
+
+  // .google.protobuf.Timestamp date = 13;
   bool has_date() const;
   private:
   bool _internal_has_date() const;
@@ -252,7 +297,7 @@ class Session PROTOBUF_FINAL :
       PROTOBUF_NAMESPACE_ID::Timestamp* date);
   PROTOBUF_NAMESPACE_ID::Timestamp* unsafe_arena_release_date();
 
-  // int32 content_length = 15;
+  // int32 content_length = 14;
   void clear_content_length();
   ::PROTOBUF_NAMESPACE_ID::int32 content_length() const;
   void set_content_length(::PROTOBUF_NAMESPACE_ID::int32 value);
@@ -271,8 +316,1269 @@ class Session PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr host_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr user_agent_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr content_type_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr body_;
   PROTOBUF_NAMESPACE_ID::Timestamp* date_;
   ::PROTOBUF_NAMESPACE_ID::int32 content_length_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_MySession_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SessionMessageInit PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:My_Net.SessionMessageInit) */ {
+ public:
+  inline SessionMessageInit() : SessionMessageInit(nullptr) {}
+  virtual ~SessionMessageInit();
+
+  SessionMessageInit(const SessionMessageInit& from);
+  SessionMessageInit(SessionMessageInit&& from) noexcept
+    : SessionMessageInit() {
+    *this = ::std::move(from);
+  }
+
+  inline SessionMessageInit& operator=(const SessionMessageInit& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SessionMessageInit& operator=(SessionMessageInit&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SessionMessageInit& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SessionMessageInit* internal_default_instance() {
+    return reinterpret_cast<const SessionMessageInit*>(
+               &_SessionMessageInit_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  friend void swap(SessionMessageInit& a, SessionMessageInit& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SessionMessageInit* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SessionMessageInit* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SessionMessageInit* New() const final {
+    return CreateMaybeMessage<SessionMessageInit>(nullptr);
+  }
+
+  SessionMessageInit* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SessionMessageInit>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SessionMessageInit& from);
+  void MergeFrom(const SessionMessageInit& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SessionMessageInit* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "My_Net.SessionMessageInit";
+  }
+  protected:
+  explicit SessionMessageInit(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_MySession_2eproto);
+    return ::descriptor_table_MySession_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kSessionKeyFieldNumber = 1,
+  };
+  // string sessionKey = 1;
+  void clear_sessionkey();
+  const std::string& sessionkey() const;
+  void set_sessionkey(const std::string& value);
+  void set_sessionkey(std::string&& value);
+  void set_sessionkey(const char* value);
+  void set_sessionkey(const char* value, size_t size);
+  std::string* mutable_sessionkey();
+  std::string* release_sessionkey();
+  void set_allocated_sessionkey(std::string* sessionkey);
+  private:
+  const std::string& _internal_sessionkey() const;
+  void _internal_set_sessionkey(const std::string& value);
+  std::string* _internal_mutable_sessionkey();
+  public:
+
+  // @@protoc_insertion_point(class_scope:My_Net.SessionMessageInit)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr sessionkey_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_MySession_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SessionMessageIdentified PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:My_Net.SessionMessageIdentified) */ {
+ public:
+  inline SessionMessageIdentified() : SessionMessageIdentified(nullptr) {}
+  virtual ~SessionMessageIdentified();
+
+  SessionMessageIdentified(const SessionMessageIdentified& from);
+  SessionMessageIdentified(SessionMessageIdentified&& from) noexcept
+    : SessionMessageIdentified() {
+    *this = ::std::move(from);
+  }
+
+  inline SessionMessageIdentified& operator=(const SessionMessageIdentified& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SessionMessageIdentified& operator=(SessionMessageIdentified&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SessionMessageIdentified& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SessionMessageIdentified* internal_default_instance() {
+    return reinterpret_cast<const SessionMessageIdentified*>(
+               &_SessionMessageIdentified_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(SessionMessageIdentified& a, SessionMessageIdentified& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SessionMessageIdentified* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SessionMessageIdentified* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SessionMessageIdentified* New() const final {
+    return CreateMaybeMessage<SessionMessageIdentified>(nullptr);
+  }
+
+  SessionMessageIdentified* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SessionMessageIdentified>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SessionMessageIdentified& from);
+  void MergeFrom(const SessionMessageIdentified& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SessionMessageIdentified* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "My_Net.SessionMessageIdentified";
+  }
+  protected:
+  explicit SessionMessageIdentified(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_MySession_2eproto);
+    return ::descriptor_table_MySession_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kSystemInfo1FieldNumber = 1,
+    kSystemInfo2FieldNumber = 2,
+    kSystemInfo3FieldNumber = 3,
+    kSystemInfo4FieldNumber = 4,
+    kBandwidthFieldNumber = 15,
+  };
+  // string systemInfo1 = 1;
+  void clear_systeminfo1();
+  const std::string& systeminfo1() const;
+  void set_systeminfo1(const std::string& value);
+  void set_systeminfo1(std::string&& value);
+  void set_systeminfo1(const char* value);
+  void set_systeminfo1(const char* value, size_t size);
+  std::string* mutable_systeminfo1();
+  std::string* release_systeminfo1();
+  void set_allocated_systeminfo1(std::string* systeminfo1);
+  private:
+  const std::string& _internal_systeminfo1() const;
+  void _internal_set_systeminfo1(const std::string& value);
+  std::string* _internal_mutable_systeminfo1();
+  public:
+
+  // string systemInfo2 = 2;
+  void clear_systeminfo2();
+  const std::string& systeminfo2() const;
+  void set_systeminfo2(const std::string& value);
+  void set_systeminfo2(std::string&& value);
+  void set_systeminfo2(const char* value);
+  void set_systeminfo2(const char* value, size_t size);
+  std::string* mutable_systeminfo2();
+  std::string* release_systeminfo2();
+  void set_allocated_systeminfo2(std::string* systeminfo2);
+  private:
+  const std::string& _internal_systeminfo2() const;
+  void _internal_set_systeminfo2(const std::string& value);
+  std::string* _internal_mutable_systeminfo2();
+  public:
+
+  // string systemInfo3 = 3;
+  void clear_systeminfo3();
+  const std::string& systeminfo3() const;
+  void set_systeminfo3(const std::string& value);
+  void set_systeminfo3(std::string&& value);
+  void set_systeminfo3(const char* value);
+  void set_systeminfo3(const char* value, size_t size);
+  std::string* mutable_systeminfo3();
+  std::string* release_systeminfo3();
+  void set_allocated_systeminfo3(std::string* systeminfo3);
+  private:
+  const std::string& _internal_systeminfo3() const;
+  void _internal_set_systeminfo3(const std::string& value);
+  std::string* _internal_mutable_systeminfo3();
+  public:
+
+  // string systemInfo4 = 4;
+  void clear_systeminfo4();
+  const std::string& systeminfo4() const;
+  void set_systeminfo4(const std::string& value);
+  void set_systeminfo4(std::string&& value);
+  void set_systeminfo4(const char* value);
+  void set_systeminfo4(const char* value, size_t size);
+  std::string* mutable_systeminfo4();
+  std::string* release_systeminfo4();
+  void set_allocated_systeminfo4(std::string* systeminfo4);
+  private:
+  const std::string& _internal_systeminfo4() const;
+  void _internal_set_systeminfo4(const std::string& value);
+  std::string* _internal_mutable_systeminfo4();
+  public:
+
+  // string bandwidth = 15;
+  void clear_bandwidth();
+  const std::string& bandwidth() const;
+  void set_bandwidth(const std::string& value);
+  void set_bandwidth(std::string&& value);
+  void set_bandwidth(const char* value);
+  void set_bandwidth(const char* value, size_t size);
+  std::string* mutable_bandwidth();
+  std::string* release_bandwidth();
+  void set_allocated_bandwidth(std::string* bandwidth);
+  private:
+  const std::string& _internal_bandwidth() const;
+  void _internal_set_bandwidth(const std::string& value);
+  std::string* _internal_mutable_bandwidth();
+  public:
+
+  // @@protoc_insertion_point(class_scope:My_Net.SessionMessageIdentified)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr systeminfo1_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr systeminfo2_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr systeminfo3_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr systeminfo4_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bandwidth_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_MySession_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SessionMessageCreate PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:My_Net.SessionMessageCreate) */ {
+ public:
+  inline SessionMessageCreate() : SessionMessageCreate(nullptr) {}
+  virtual ~SessionMessageCreate();
+
+  SessionMessageCreate(const SessionMessageCreate& from);
+  SessionMessageCreate(SessionMessageCreate&& from) noexcept
+    : SessionMessageCreate() {
+    *this = ::std::move(from);
+  }
+
+  inline SessionMessageCreate& operator=(const SessionMessageCreate& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SessionMessageCreate& operator=(SessionMessageCreate&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SessionMessageCreate& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SessionMessageCreate* internal_default_instance() {
+    return reinterpret_cast<const SessionMessageCreate*>(
+               &_SessionMessageCreate_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(SessionMessageCreate& a, SessionMessageCreate& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SessionMessageCreate* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SessionMessageCreate* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SessionMessageCreate* New() const final {
+    return CreateMaybeMessage<SessionMessageCreate>(nullptr);
+  }
+
+  SessionMessageCreate* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SessionMessageCreate>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SessionMessageCreate& from);
+  void MergeFrom(const SessionMessageCreate& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SessionMessageCreate* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "My_Net.SessionMessageCreate";
+  }
+  protected:
+  explicit SessionMessageCreate(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_MySession_2eproto);
+    return ::descriptor_table_MySession_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kSettingInfo1FieldNumber = 1,
+    kSettingInfo2FieldNumber = 2,
+    kSettingInfo3FieldNumber = 3,
+    kSettingInfo4FieldNumber = 4,
+    kSettingInfo5FieldNumber = 5,
+    kSettingInfo6FieldNumber = 6,
+  };
+  // string settingInfo1 = 1;
+  void clear_settinginfo1();
+  const std::string& settinginfo1() const;
+  void set_settinginfo1(const std::string& value);
+  void set_settinginfo1(std::string&& value);
+  void set_settinginfo1(const char* value);
+  void set_settinginfo1(const char* value, size_t size);
+  std::string* mutable_settinginfo1();
+  std::string* release_settinginfo1();
+  void set_allocated_settinginfo1(std::string* settinginfo1);
+  private:
+  const std::string& _internal_settinginfo1() const;
+  void _internal_set_settinginfo1(const std::string& value);
+  std::string* _internal_mutable_settinginfo1();
+  public:
+
+  // string settingInfo2 = 2;
+  void clear_settinginfo2();
+  const std::string& settinginfo2() const;
+  void set_settinginfo2(const std::string& value);
+  void set_settinginfo2(std::string&& value);
+  void set_settinginfo2(const char* value);
+  void set_settinginfo2(const char* value, size_t size);
+  std::string* mutable_settinginfo2();
+  std::string* release_settinginfo2();
+  void set_allocated_settinginfo2(std::string* settinginfo2);
+  private:
+  const std::string& _internal_settinginfo2() const;
+  void _internal_set_settinginfo2(const std::string& value);
+  std::string* _internal_mutable_settinginfo2();
+  public:
+
+  // string settingInfo3 = 3;
+  void clear_settinginfo3();
+  const std::string& settinginfo3() const;
+  void set_settinginfo3(const std::string& value);
+  void set_settinginfo3(std::string&& value);
+  void set_settinginfo3(const char* value);
+  void set_settinginfo3(const char* value, size_t size);
+  std::string* mutable_settinginfo3();
+  std::string* release_settinginfo3();
+  void set_allocated_settinginfo3(std::string* settinginfo3);
+  private:
+  const std::string& _internal_settinginfo3() const;
+  void _internal_set_settinginfo3(const std::string& value);
+  std::string* _internal_mutable_settinginfo3();
+  public:
+
+  // string settingInfo4 = 4;
+  void clear_settinginfo4();
+  const std::string& settinginfo4() const;
+  void set_settinginfo4(const std::string& value);
+  void set_settinginfo4(std::string&& value);
+  void set_settinginfo4(const char* value);
+  void set_settinginfo4(const char* value, size_t size);
+  std::string* mutable_settinginfo4();
+  std::string* release_settinginfo4();
+  void set_allocated_settinginfo4(std::string* settinginfo4);
+  private:
+  const std::string& _internal_settinginfo4() const;
+  void _internal_set_settinginfo4(const std::string& value);
+  std::string* _internal_mutable_settinginfo4();
+  public:
+
+  // string settingInfo5 = 5;
+  void clear_settinginfo5();
+  const std::string& settinginfo5() const;
+  void set_settinginfo5(const std::string& value);
+  void set_settinginfo5(std::string&& value);
+  void set_settinginfo5(const char* value);
+  void set_settinginfo5(const char* value, size_t size);
+  std::string* mutable_settinginfo5();
+  std::string* release_settinginfo5();
+  void set_allocated_settinginfo5(std::string* settinginfo5);
+  private:
+  const std::string& _internal_settinginfo5() const;
+  void _internal_set_settinginfo5(const std::string& value);
+  std::string* _internal_mutable_settinginfo5();
+  public:
+
+  // string settingInfo6 = 6;
+  void clear_settinginfo6();
+  const std::string& settinginfo6() const;
+  void set_settinginfo6(const std::string& value);
+  void set_settinginfo6(std::string&& value);
+  void set_settinginfo6(const char* value);
+  void set_settinginfo6(const char* value, size_t size);
+  std::string* mutable_settinginfo6();
+  std::string* release_settinginfo6();
+  void set_allocated_settinginfo6(std::string* settinginfo6);
+  private:
+  const std::string& _internal_settinginfo6() const;
+  void _internal_set_settinginfo6(const std::string& value);
+  std::string* _internal_mutable_settinginfo6();
+  public:
+
+  // @@protoc_insertion_point(class_scope:My_Net.SessionMessageCreate)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr settinginfo1_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr settinginfo2_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr settinginfo3_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr settinginfo4_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr settinginfo5_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr settinginfo6_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_MySession_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SessionMessageDelete PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:My_Net.SessionMessageDelete) */ {
+ public:
+  inline SessionMessageDelete() : SessionMessageDelete(nullptr) {}
+  virtual ~SessionMessageDelete();
+
+  SessionMessageDelete(const SessionMessageDelete& from);
+  SessionMessageDelete(SessionMessageDelete&& from) noexcept
+    : SessionMessageDelete() {
+    *this = ::std::move(from);
+  }
+
+  inline SessionMessageDelete& operator=(const SessionMessageDelete& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SessionMessageDelete& operator=(SessionMessageDelete&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SessionMessageDelete& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SessionMessageDelete* internal_default_instance() {
+    return reinterpret_cast<const SessionMessageDelete*>(
+               &_SessionMessageDelete_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(SessionMessageDelete& a, SessionMessageDelete& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SessionMessageDelete* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SessionMessageDelete* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SessionMessageDelete* New() const final {
+    return CreateMaybeMessage<SessionMessageDelete>(nullptr);
+  }
+
+  SessionMessageDelete* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SessionMessageDelete>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SessionMessageDelete& from);
+  void MergeFrom(const SessionMessageDelete& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SessionMessageDelete* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "My_Net.SessionMessageDelete";
+  }
+  protected:
+  explicit SessionMessageDelete(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_MySession_2eproto);
+    return ::descriptor_table_MySession_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kUsageTimeFieldNumber = 1,
+  };
+  // string usage_time = 1;
+  void clear_usage_time();
+  const std::string& usage_time() const;
+  void set_usage_time(const std::string& value);
+  void set_usage_time(std::string&& value);
+  void set_usage_time(const char* value);
+  void set_usage_time(const char* value, size_t size);
+  std::string* mutable_usage_time();
+  std::string* release_usage_time();
+  void set_allocated_usage_time(std::string* usage_time);
+  private:
+  const std::string& _internal_usage_time() const;
+  void _internal_set_usage_time(const std::string& value);
+  std::string* _internal_mutable_usage_time();
+  public:
+
+  // @@protoc_insertion_point(class_scope:My_Net.SessionMessageDelete)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr usage_time_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_MySession_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SessionMessageStart PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:My_Net.SessionMessageStart) */ {
+ public:
+  inline SessionMessageStart() : SessionMessageStart(nullptr) {}
+  virtual ~SessionMessageStart();
+
+  SessionMessageStart(const SessionMessageStart& from);
+  SessionMessageStart(SessionMessageStart&& from) noexcept
+    : SessionMessageStart() {
+    *this = ::std::move(from);
+  }
+
+  inline SessionMessageStart& operator=(const SessionMessageStart& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SessionMessageStart& operator=(SessionMessageStart&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SessionMessageStart& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SessionMessageStart* internal_default_instance() {
+    return reinterpret_cast<const SessionMessageStart*>(
+               &_SessionMessageStart_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  friend void swap(SessionMessageStart& a, SessionMessageStart& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SessionMessageStart* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SessionMessageStart* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SessionMessageStart* New() const final {
+    return CreateMaybeMessage<SessionMessageStart>(nullptr);
+  }
+
+  SessionMessageStart* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SessionMessageStart>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SessionMessageStart& from);
+  void MergeFrom(const SessionMessageStart& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SessionMessageStart* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "My_Net.SessionMessageStart";
+  }
+  protected:
+  explicit SessionMessageStart(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_MySession_2eproto);
+    return ::descriptor_table_MySession_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kLastSateFieldNumber = 1,
+  };
+  // string LastSate = 1;
+  void clear_lastsate();
+  const std::string& lastsate() const;
+  void set_lastsate(const std::string& value);
+  void set_lastsate(std::string&& value);
+  void set_lastsate(const char* value);
+  void set_lastsate(const char* value, size_t size);
+  std::string* mutable_lastsate();
+  std::string* release_lastsate();
+  void set_allocated_lastsate(std::string* lastsate);
+  private:
+  const std::string& _internal_lastsate() const;
+  void _internal_set_lastsate(const std::string& value);
+  std::string* _internal_mutable_lastsate();
+  public:
+
+  // @@protoc_insertion_point(class_scope:My_Net.SessionMessageStart)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr lastsate_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_MySession_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SessionMessageStop PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:My_Net.SessionMessageStop) */ {
+ public:
+  inline SessionMessageStop() : SessionMessageStop(nullptr) {}
+  virtual ~SessionMessageStop();
+
+  SessionMessageStop(const SessionMessageStop& from);
+  SessionMessageStop(SessionMessageStop&& from) noexcept
+    : SessionMessageStop() {
+    *this = ::std::move(from);
+  }
+
+  inline SessionMessageStop& operator=(const SessionMessageStop& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SessionMessageStop& operator=(SessionMessageStop&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SessionMessageStop& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SessionMessageStop* internal_default_instance() {
+    return reinterpret_cast<const SessionMessageStop*>(
+               &_SessionMessageStop_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  friend void swap(SessionMessageStop& a, SessionMessageStop& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SessionMessageStop* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SessionMessageStop* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SessionMessageStop* New() const final {
+    return CreateMaybeMessage<SessionMessageStop>(nullptr);
+  }
+
+  SessionMessageStop* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SessionMessageStop>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SessionMessageStop& from);
+  void MergeFrom(const SessionMessageStop& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SessionMessageStop* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "My_Net.SessionMessageStop";
+  }
+  protected:
+  explicit SessionMessageStop(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_MySession_2eproto);
+    return ::descriptor_table_MySession_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kLastSateFieldNumber = 1,
+  };
+  // string LastSate = 1;
+  void clear_lastsate();
+  const std::string& lastsate() const;
+  void set_lastsate(const std::string& value);
+  void set_lastsate(std::string&& value);
+  void set_lastsate(const char* value);
+  void set_lastsate(const char* value, size_t size);
+  std::string* mutable_lastsate();
+  std::string* release_lastsate();
+  void set_allocated_lastsate(std::string* lastsate);
+  private:
+  const std::string& _internal_lastsate() const;
+  void _internal_set_lastsate(const std::string& value);
+  std::string* _internal_mutable_lastsate();
+  public:
+
+  // @@protoc_insertion_point(class_scope:My_Net.SessionMessageStop)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr lastsate_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_MySession_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SessionMessageReset PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:My_Net.SessionMessageReset) */ {
+ public:
+  inline SessionMessageReset() : SessionMessageReset(nullptr) {}
+  virtual ~SessionMessageReset();
+
+  SessionMessageReset(const SessionMessageReset& from);
+  SessionMessageReset(SessionMessageReset&& from) noexcept
+    : SessionMessageReset() {
+    *this = ::std::move(from);
+  }
+
+  inline SessionMessageReset& operator=(const SessionMessageReset& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SessionMessageReset& operator=(SessionMessageReset&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SessionMessageReset& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SessionMessageReset* internal_default_instance() {
+    return reinterpret_cast<const SessionMessageReset*>(
+               &_SessionMessageReset_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    7;
+
+  friend void swap(SessionMessageReset& a, SessionMessageReset& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SessionMessageReset* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SessionMessageReset* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SessionMessageReset* New() const final {
+    return CreateMaybeMessage<SessionMessageReset>(nullptr);
+  }
+
+  SessionMessageReset* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SessionMessageReset>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SessionMessageReset& from);
+  void MergeFrom(const SessionMessageReset& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SessionMessageReset* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "My_Net.SessionMessageReset";
+  }
+  protected:
+  explicit SessionMessageReset(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_MySession_2eproto);
+    return ::descriptor_table_MySession_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kSettingInfo1FieldNumber = 1,
+    kSettingInfo2FieldNumber = 2,
+    kSettingInfo3FieldNumber = 3,
+    kSettingInfo4FieldNumber = 4,
+    kSettingInfo5FieldNumber = 5,
+    kSettingInfo6FieldNumber = 6,
+  };
+  // string SettingInfo1 = 1;
+  void clear_settinginfo1();
+  const std::string& settinginfo1() const;
+  void set_settinginfo1(const std::string& value);
+  void set_settinginfo1(std::string&& value);
+  void set_settinginfo1(const char* value);
+  void set_settinginfo1(const char* value, size_t size);
+  std::string* mutable_settinginfo1();
+  std::string* release_settinginfo1();
+  void set_allocated_settinginfo1(std::string* settinginfo1);
+  private:
+  const std::string& _internal_settinginfo1() const;
+  void _internal_set_settinginfo1(const std::string& value);
+  std::string* _internal_mutable_settinginfo1();
+  public:
+
+  // string SettingInfo2 = 2;
+  void clear_settinginfo2();
+  const std::string& settinginfo2() const;
+  void set_settinginfo2(const std::string& value);
+  void set_settinginfo2(std::string&& value);
+  void set_settinginfo2(const char* value);
+  void set_settinginfo2(const char* value, size_t size);
+  std::string* mutable_settinginfo2();
+  std::string* release_settinginfo2();
+  void set_allocated_settinginfo2(std::string* settinginfo2);
+  private:
+  const std::string& _internal_settinginfo2() const;
+  void _internal_set_settinginfo2(const std::string& value);
+  std::string* _internal_mutable_settinginfo2();
+  public:
+
+  // string SettingInfo3 = 3;
+  void clear_settinginfo3();
+  const std::string& settinginfo3() const;
+  void set_settinginfo3(const std::string& value);
+  void set_settinginfo3(std::string&& value);
+  void set_settinginfo3(const char* value);
+  void set_settinginfo3(const char* value, size_t size);
+  std::string* mutable_settinginfo3();
+  std::string* release_settinginfo3();
+  void set_allocated_settinginfo3(std::string* settinginfo3);
+  private:
+  const std::string& _internal_settinginfo3() const;
+  void _internal_set_settinginfo3(const std::string& value);
+  std::string* _internal_mutable_settinginfo3();
+  public:
+
+  // string SettingInfo4 = 4;
+  void clear_settinginfo4();
+  const std::string& settinginfo4() const;
+  void set_settinginfo4(const std::string& value);
+  void set_settinginfo4(std::string&& value);
+  void set_settinginfo4(const char* value);
+  void set_settinginfo4(const char* value, size_t size);
+  std::string* mutable_settinginfo4();
+  std::string* release_settinginfo4();
+  void set_allocated_settinginfo4(std::string* settinginfo4);
+  private:
+  const std::string& _internal_settinginfo4() const;
+  void _internal_set_settinginfo4(const std::string& value);
+  std::string* _internal_mutable_settinginfo4();
+  public:
+
+  // string SettingInfo5 = 5;
+  void clear_settinginfo5();
+  const std::string& settinginfo5() const;
+  void set_settinginfo5(const std::string& value);
+  void set_settinginfo5(std::string&& value);
+  void set_settinginfo5(const char* value);
+  void set_settinginfo5(const char* value, size_t size);
+  std::string* mutable_settinginfo5();
+  std::string* release_settinginfo5();
+  void set_allocated_settinginfo5(std::string* settinginfo5);
+  private:
+  const std::string& _internal_settinginfo5() const;
+  void _internal_set_settinginfo5(const std::string& value);
+  std::string* _internal_mutable_settinginfo5();
+  public:
+
+  // string SettingInfo6 = 6;
+  void clear_settinginfo6();
+  const std::string& settinginfo6() const;
+  void set_settinginfo6(const std::string& value);
+  void set_settinginfo6(std::string&& value);
+  void set_settinginfo6(const char* value);
+  void set_settinginfo6(const char* value, size_t size);
+  std::string* mutable_settinginfo6();
+  std::string* release_settinginfo6();
+  void set_allocated_settinginfo6(std::string* settinginfo6);
+  private:
+  const std::string& _internal_settinginfo6() const;
+  void _internal_set_settinginfo6(const std::string& value);
+  std::string* _internal_mutable_settinginfo6();
+  public:
+
+  // @@protoc_insertion_point(class_scope:My_Net.SessionMessageReset)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr settinginfo1_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr settinginfo2_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr settinginfo3_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr settinginfo4_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr settinginfo5_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr settinginfo6_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_MySession_2eproto;
 };
@@ -473,7 +1779,7 @@ inline void Session::set_allocated_content_type(std::string* content_type) {
   // @@protoc_insertion_point(field_set_allocated:My_Net.Session.content_type)
 }
 
-// .google.protobuf.Timestamp date = 14;
+// .google.protobuf.Timestamp date = 13;
 inline bool Session::_internal_has_date() const {
   return this != internal_default_instance() && date_ != nullptr;
 }
@@ -550,7 +1856,7 @@ inline void Session::set_allocated_date(PROTOBUF_NAMESPACE_ID::Timestamp* date) 
   // @@protoc_insertion_point(field_set_allocated:My_Net.Session.date)
 }
 
-// int32 content_length = 15;
+// int32 content_length = 14;
 inline void Session::clear_content_length() {
   content_length_ = 0;
 }
@@ -570,9 +1876,1415 @@ inline void Session::set_content_length(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:My_Net.Session.content_length)
 }
 
+// string body = 15;
+inline void Session::clear_body() {
+  body_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& Session::body() const {
+  // @@protoc_insertion_point(field_get:My_Net.Session.body)
+  return _internal_body();
+}
+inline void Session::set_body(const std::string& value) {
+  _internal_set_body(value);
+  // @@protoc_insertion_point(field_set:My_Net.Session.body)
+}
+inline std::string* Session::mutable_body() {
+  // @@protoc_insertion_point(field_mutable:My_Net.Session.body)
+  return _internal_mutable_body();
+}
+inline const std::string& Session::_internal_body() const {
+  return body_.Get();
+}
+inline void Session::_internal_set_body(const std::string& value) {
+  
+  body_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void Session::set_body(std::string&& value) {
+  
+  body_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.Session.body)
+}
+inline void Session::set_body(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  body_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.Session.body)
+}
+inline void Session::set_body(const char* value,
+    size_t size) {
+  
+  body_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.Session.body)
+}
+inline std::string* Session::_internal_mutable_body() {
+  
+  return body_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* Session::release_body() {
+  // @@protoc_insertion_point(field_release:My_Net.Session.body)
+  return body_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void Session::set_allocated_body(std::string* body) {
+  if (body != nullptr) {
+    
+  } else {
+    
+  }
+  body_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), body,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.Session.body)
+}
+
+// -------------------------------------------------------------------
+
+// SessionMessageInit
+
+// string sessionKey = 1;
+inline void SessionMessageInit::clear_sessionkey() {
+  sessionkey_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageInit::sessionkey() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageInit.sessionKey)
+  return _internal_sessionkey();
+}
+inline void SessionMessageInit::set_sessionkey(const std::string& value) {
+  _internal_set_sessionkey(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageInit.sessionKey)
+}
+inline std::string* SessionMessageInit::mutable_sessionkey() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageInit.sessionKey)
+  return _internal_mutable_sessionkey();
+}
+inline const std::string& SessionMessageInit::_internal_sessionkey() const {
+  return sessionkey_.Get();
+}
+inline void SessionMessageInit::_internal_set_sessionkey(const std::string& value) {
+  
+  sessionkey_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageInit::set_sessionkey(std::string&& value) {
+  
+  sessionkey_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageInit.sessionKey)
+}
+inline void SessionMessageInit::set_sessionkey(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  sessionkey_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageInit.sessionKey)
+}
+inline void SessionMessageInit::set_sessionkey(const char* value,
+    size_t size) {
+  
+  sessionkey_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageInit.sessionKey)
+}
+inline std::string* SessionMessageInit::_internal_mutable_sessionkey() {
+  
+  return sessionkey_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageInit::release_sessionkey() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageInit.sessionKey)
+  return sessionkey_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageInit::set_allocated_sessionkey(std::string* sessionkey) {
+  if (sessionkey != nullptr) {
+    
+  } else {
+    
+  }
+  sessionkey_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), sessionkey,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageInit.sessionKey)
+}
+
+// -------------------------------------------------------------------
+
+// SessionMessageIdentified
+
+// string systemInfo1 = 1;
+inline void SessionMessageIdentified::clear_systeminfo1() {
+  systeminfo1_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageIdentified::systeminfo1() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageIdentified.systemInfo1)
+  return _internal_systeminfo1();
+}
+inline void SessionMessageIdentified::set_systeminfo1(const std::string& value) {
+  _internal_set_systeminfo1(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageIdentified.systemInfo1)
+}
+inline std::string* SessionMessageIdentified::mutable_systeminfo1() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageIdentified.systemInfo1)
+  return _internal_mutable_systeminfo1();
+}
+inline const std::string& SessionMessageIdentified::_internal_systeminfo1() const {
+  return systeminfo1_.Get();
+}
+inline void SessionMessageIdentified::_internal_set_systeminfo1(const std::string& value) {
+  
+  systeminfo1_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageIdentified::set_systeminfo1(std::string&& value) {
+  
+  systeminfo1_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageIdentified.systemInfo1)
+}
+inline void SessionMessageIdentified::set_systeminfo1(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  systeminfo1_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageIdentified.systemInfo1)
+}
+inline void SessionMessageIdentified::set_systeminfo1(const char* value,
+    size_t size) {
+  
+  systeminfo1_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageIdentified.systemInfo1)
+}
+inline std::string* SessionMessageIdentified::_internal_mutable_systeminfo1() {
+  
+  return systeminfo1_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageIdentified::release_systeminfo1() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageIdentified.systemInfo1)
+  return systeminfo1_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageIdentified::set_allocated_systeminfo1(std::string* systeminfo1) {
+  if (systeminfo1 != nullptr) {
+    
+  } else {
+    
+  }
+  systeminfo1_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), systeminfo1,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageIdentified.systemInfo1)
+}
+
+// string systemInfo2 = 2;
+inline void SessionMessageIdentified::clear_systeminfo2() {
+  systeminfo2_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageIdentified::systeminfo2() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageIdentified.systemInfo2)
+  return _internal_systeminfo2();
+}
+inline void SessionMessageIdentified::set_systeminfo2(const std::string& value) {
+  _internal_set_systeminfo2(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageIdentified.systemInfo2)
+}
+inline std::string* SessionMessageIdentified::mutable_systeminfo2() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageIdentified.systemInfo2)
+  return _internal_mutable_systeminfo2();
+}
+inline const std::string& SessionMessageIdentified::_internal_systeminfo2() const {
+  return systeminfo2_.Get();
+}
+inline void SessionMessageIdentified::_internal_set_systeminfo2(const std::string& value) {
+  
+  systeminfo2_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageIdentified::set_systeminfo2(std::string&& value) {
+  
+  systeminfo2_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageIdentified.systemInfo2)
+}
+inline void SessionMessageIdentified::set_systeminfo2(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  systeminfo2_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageIdentified.systemInfo2)
+}
+inline void SessionMessageIdentified::set_systeminfo2(const char* value,
+    size_t size) {
+  
+  systeminfo2_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageIdentified.systemInfo2)
+}
+inline std::string* SessionMessageIdentified::_internal_mutable_systeminfo2() {
+  
+  return systeminfo2_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageIdentified::release_systeminfo2() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageIdentified.systemInfo2)
+  return systeminfo2_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageIdentified::set_allocated_systeminfo2(std::string* systeminfo2) {
+  if (systeminfo2 != nullptr) {
+    
+  } else {
+    
+  }
+  systeminfo2_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), systeminfo2,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageIdentified.systemInfo2)
+}
+
+// string systemInfo3 = 3;
+inline void SessionMessageIdentified::clear_systeminfo3() {
+  systeminfo3_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageIdentified::systeminfo3() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageIdentified.systemInfo3)
+  return _internal_systeminfo3();
+}
+inline void SessionMessageIdentified::set_systeminfo3(const std::string& value) {
+  _internal_set_systeminfo3(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageIdentified.systemInfo3)
+}
+inline std::string* SessionMessageIdentified::mutable_systeminfo3() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageIdentified.systemInfo3)
+  return _internal_mutable_systeminfo3();
+}
+inline const std::string& SessionMessageIdentified::_internal_systeminfo3() const {
+  return systeminfo3_.Get();
+}
+inline void SessionMessageIdentified::_internal_set_systeminfo3(const std::string& value) {
+  
+  systeminfo3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageIdentified::set_systeminfo3(std::string&& value) {
+  
+  systeminfo3_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageIdentified.systemInfo3)
+}
+inline void SessionMessageIdentified::set_systeminfo3(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  systeminfo3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageIdentified.systemInfo3)
+}
+inline void SessionMessageIdentified::set_systeminfo3(const char* value,
+    size_t size) {
+  
+  systeminfo3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageIdentified.systemInfo3)
+}
+inline std::string* SessionMessageIdentified::_internal_mutable_systeminfo3() {
+  
+  return systeminfo3_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageIdentified::release_systeminfo3() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageIdentified.systemInfo3)
+  return systeminfo3_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageIdentified::set_allocated_systeminfo3(std::string* systeminfo3) {
+  if (systeminfo3 != nullptr) {
+    
+  } else {
+    
+  }
+  systeminfo3_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), systeminfo3,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageIdentified.systemInfo3)
+}
+
+// string systemInfo4 = 4;
+inline void SessionMessageIdentified::clear_systeminfo4() {
+  systeminfo4_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageIdentified::systeminfo4() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageIdentified.systemInfo4)
+  return _internal_systeminfo4();
+}
+inline void SessionMessageIdentified::set_systeminfo4(const std::string& value) {
+  _internal_set_systeminfo4(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageIdentified.systemInfo4)
+}
+inline std::string* SessionMessageIdentified::mutable_systeminfo4() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageIdentified.systemInfo4)
+  return _internal_mutable_systeminfo4();
+}
+inline const std::string& SessionMessageIdentified::_internal_systeminfo4() const {
+  return systeminfo4_.Get();
+}
+inline void SessionMessageIdentified::_internal_set_systeminfo4(const std::string& value) {
+  
+  systeminfo4_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageIdentified::set_systeminfo4(std::string&& value) {
+  
+  systeminfo4_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageIdentified.systemInfo4)
+}
+inline void SessionMessageIdentified::set_systeminfo4(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  systeminfo4_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageIdentified.systemInfo4)
+}
+inline void SessionMessageIdentified::set_systeminfo4(const char* value,
+    size_t size) {
+  
+  systeminfo4_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageIdentified.systemInfo4)
+}
+inline std::string* SessionMessageIdentified::_internal_mutable_systeminfo4() {
+  
+  return systeminfo4_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageIdentified::release_systeminfo4() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageIdentified.systemInfo4)
+  return systeminfo4_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageIdentified::set_allocated_systeminfo4(std::string* systeminfo4) {
+  if (systeminfo4 != nullptr) {
+    
+  } else {
+    
+  }
+  systeminfo4_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), systeminfo4,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageIdentified.systemInfo4)
+}
+
+// string bandwidth = 15;
+inline void SessionMessageIdentified::clear_bandwidth() {
+  bandwidth_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageIdentified::bandwidth() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageIdentified.bandwidth)
+  return _internal_bandwidth();
+}
+inline void SessionMessageIdentified::set_bandwidth(const std::string& value) {
+  _internal_set_bandwidth(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageIdentified.bandwidth)
+}
+inline std::string* SessionMessageIdentified::mutable_bandwidth() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageIdentified.bandwidth)
+  return _internal_mutable_bandwidth();
+}
+inline const std::string& SessionMessageIdentified::_internal_bandwidth() const {
+  return bandwidth_.Get();
+}
+inline void SessionMessageIdentified::_internal_set_bandwidth(const std::string& value) {
+  
+  bandwidth_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageIdentified::set_bandwidth(std::string&& value) {
+  
+  bandwidth_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageIdentified.bandwidth)
+}
+inline void SessionMessageIdentified::set_bandwidth(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  bandwidth_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageIdentified.bandwidth)
+}
+inline void SessionMessageIdentified::set_bandwidth(const char* value,
+    size_t size) {
+  
+  bandwidth_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageIdentified.bandwidth)
+}
+inline std::string* SessionMessageIdentified::_internal_mutable_bandwidth() {
+  
+  return bandwidth_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageIdentified::release_bandwidth() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageIdentified.bandwidth)
+  return bandwidth_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageIdentified::set_allocated_bandwidth(std::string* bandwidth) {
+  if (bandwidth != nullptr) {
+    
+  } else {
+    
+  }
+  bandwidth_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), bandwidth,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageIdentified.bandwidth)
+}
+
+// -------------------------------------------------------------------
+
+// SessionMessageCreate
+
+// string settingInfo1 = 1;
+inline void SessionMessageCreate::clear_settinginfo1() {
+  settinginfo1_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageCreate::settinginfo1() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageCreate.settingInfo1)
+  return _internal_settinginfo1();
+}
+inline void SessionMessageCreate::set_settinginfo1(const std::string& value) {
+  _internal_set_settinginfo1(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageCreate.settingInfo1)
+}
+inline std::string* SessionMessageCreate::mutable_settinginfo1() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageCreate.settingInfo1)
+  return _internal_mutable_settinginfo1();
+}
+inline const std::string& SessionMessageCreate::_internal_settinginfo1() const {
+  return settinginfo1_.Get();
+}
+inline void SessionMessageCreate::_internal_set_settinginfo1(const std::string& value) {
+  
+  settinginfo1_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageCreate::set_settinginfo1(std::string&& value) {
+  
+  settinginfo1_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageCreate.settingInfo1)
+}
+inline void SessionMessageCreate::set_settinginfo1(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  settinginfo1_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageCreate.settingInfo1)
+}
+inline void SessionMessageCreate::set_settinginfo1(const char* value,
+    size_t size) {
+  
+  settinginfo1_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageCreate.settingInfo1)
+}
+inline std::string* SessionMessageCreate::_internal_mutable_settinginfo1() {
+  
+  return settinginfo1_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageCreate::release_settinginfo1() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageCreate.settingInfo1)
+  return settinginfo1_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageCreate::set_allocated_settinginfo1(std::string* settinginfo1) {
+  if (settinginfo1 != nullptr) {
+    
+  } else {
+    
+  }
+  settinginfo1_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), settinginfo1,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageCreate.settingInfo1)
+}
+
+// string settingInfo2 = 2;
+inline void SessionMessageCreate::clear_settinginfo2() {
+  settinginfo2_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageCreate::settinginfo2() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageCreate.settingInfo2)
+  return _internal_settinginfo2();
+}
+inline void SessionMessageCreate::set_settinginfo2(const std::string& value) {
+  _internal_set_settinginfo2(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageCreate.settingInfo2)
+}
+inline std::string* SessionMessageCreate::mutable_settinginfo2() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageCreate.settingInfo2)
+  return _internal_mutable_settinginfo2();
+}
+inline const std::string& SessionMessageCreate::_internal_settinginfo2() const {
+  return settinginfo2_.Get();
+}
+inline void SessionMessageCreate::_internal_set_settinginfo2(const std::string& value) {
+  
+  settinginfo2_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageCreate::set_settinginfo2(std::string&& value) {
+  
+  settinginfo2_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageCreate.settingInfo2)
+}
+inline void SessionMessageCreate::set_settinginfo2(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  settinginfo2_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageCreate.settingInfo2)
+}
+inline void SessionMessageCreate::set_settinginfo2(const char* value,
+    size_t size) {
+  
+  settinginfo2_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageCreate.settingInfo2)
+}
+inline std::string* SessionMessageCreate::_internal_mutable_settinginfo2() {
+  
+  return settinginfo2_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageCreate::release_settinginfo2() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageCreate.settingInfo2)
+  return settinginfo2_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageCreate::set_allocated_settinginfo2(std::string* settinginfo2) {
+  if (settinginfo2 != nullptr) {
+    
+  } else {
+    
+  }
+  settinginfo2_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), settinginfo2,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageCreate.settingInfo2)
+}
+
+// string settingInfo3 = 3;
+inline void SessionMessageCreate::clear_settinginfo3() {
+  settinginfo3_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageCreate::settinginfo3() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageCreate.settingInfo3)
+  return _internal_settinginfo3();
+}
+inline void SessionMessageCreate::set_settinginfo3(const std::string& value) {
+  _internal_set_settinginfo3(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageCreate.settingInfo3)
+}
+inline std::string* SessionMessageCreate::mutable_settinginfo3() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageCreate.settingInfo3)
+  return _internal_mutable_settinginfo3();
+}
+inline const std::string& SessionMessageCreate::_internal_settinginfo3() const {
+  return settinginfo3_.Get();
+}
+inline void SessionMessageCreate::_internal_set_settinginfo3(const std::string& value) {
+  
+  settinginfo3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageCreate::set_settinginfo3(std::string&& value) {
+  
+  settinginfo3_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageCreate.settingInfo3)
+}
+inline void SessionMessageCreate::set_settinginfo3(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  settinginfo3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageCreate.settingInfo3)
+}
+inline void SessionMessageCreate::set_settinginfo3(const char* value,
+    size_t size) {
+  
+  settinginfo3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageCreate.settingInfo3)
+}
+inline std::string* SessionMessageCreate::_internal_mutable_settinginfo3() {
+  
+  return settinginfo3_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageCreate::release_settinginfo3() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageCreate.settingInfo3)
+  return settinginfo3_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageCreate::set_allocated_settinginfo3(std::string* settinginfo3) {
+  if (settinginfo3 != nullptr) {
+    
+  } else {
+    
+  }
+  settinginfo3_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), settinginfo3,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageCreate.settingInfo3)
+}
+
+// string settingInfo4 = 4;
+inline void SessionMessageCreate::clear_settinginfo4() {
+  settinginfo4_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageCreate::settinginfo4() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageCreate.settingInfo4)
+  return _internal_settinginfo4();
+}
+inline void SessionMessageCreate::set_settinginfo4(const std::string& value) {
+  _internal_set_settinginfo4(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageCreate.settingInfo4)
+}
+inline std::string* SessionMessageCreate::mutable_settinginfo4() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageCreate.settingInfo4)
+  return _internal_mutable_settinginfo4();
+}
+inline const std::string& SessionMessageCreate::_internal_settinginfo4() const {
+  return settinginfo4_.Get();
+}
+inline void SessionMessageCreate::_internal_set_settinginfo4(const std::string& value) {
+  
+  settinginfo4_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageCreate::set_settinginfo4(std::string&& value) {
+  
+  settinginfo4_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageCreate.settingInfo4)
+}
+inline void SessionMessageCreate::set_settinginfo4(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  settinginfo4_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageCreate.settingInfo4)
+}
+inline void SessionMessageCreate::set_settinginfo4(const char* value,
+    size_t size) {
+  
+  settinginfo4_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageCreate.settingInfo4)
+}
+inline std::string* SessionMessageCreate::_internal_mutable_settinginfo4() {
+  
+  return settinginfo4_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageCreate::release_settinginfo4() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageCreate.settingInfo4)
+  return settinginfo4_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageCreate::set_allocated_settinginfo4(std::string* settinginfo4) {
+  if (settinginfo4 != nullptr) {
+    
+  } else {
+    
+  }
+  settinginfo4_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), settinginfo4,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageCreate.settingInfo4)
+}
+
+// string settingInfo5 = 5;
+inline void SessionMessageCreate::clear_settinginfo5() {
+  settinginfo5_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageCreate::settinginfo5() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageCreate.settingInfo5)
+  return _internal_settinginfo5();
+}
+inline void SessionMessageCreate::set_settinginfo5(const std::string& value) {
+  _internal_set_settinginfo5(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageCreate.settingInfo5)
+}
+inline std::string* SessionMessageCreate::mutable_settinginfo5() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageCreate.settingInfo5)
+  return _internal_mutable_settinginfo5();
+}
+inline const std::string& SessionMessageCreate::_internal_settinginfo5() const {
+  return settinginfo5_.Get();
+}
+inline void SessionMessageCreate::_internal_set_settinginfo5(const std::string& value) {
+  
+  settinginfo5_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageCreate::set_settinginfo5(std::string&& value) {
+  
+  settinginfo5_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageCreate.settingInfo5)
+}
+inline void SessionMessageCreate::set_settinginfo5(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  settinginfo5_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageCreate.settingInfo5)
+}
+inline void SessionMessageCreate::set_settinginfo5(const char* value,
+    size_t size) {
+  
+  settinginfo5_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageCreate.settingInfo5)
+}
+inline std::string* SessionMessageCreate::_internal_mutable_settinginfo5() {
+  
+  return settinginfo5_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageCreate::release_settinginfo5() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageCreate.settingInfo5)
+  return settinginfo5_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageCreate::set_allocated_settinginfo5(std::string* settinginfo5) {
+  if (settinginfo5 != nullptr) {
+    
+  } else {
+    
+  }
+  settinginfo5_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), settinginfo5,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageCreate.settingInfo5)
+}
+
+// string settingInfo6 = 6;
+inline void SessionMessageCreate::clear_settinginfo6() {
+  settinginfo6_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageCreate::settinginfo6() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageCreate.settingInfo6)
+  return _internal_settinginfo6();
+}
+inline void SessionMessageCreate::set_settinginfo6(const std::string& value) {
+  _internal_set_settinginfo6(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageCreate.settingInfo6)
+}
+inline std::string* SessionMessageCreate::mutable_settinginfo6() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageCreate.settingInfo6)
+  return _internal_mutable_settinginfo6();
+}
+inline const std::string& SessionMessageCreate::_internal_settinginfo6() const {
+  return settinginfo6_.Get();
+}
+inline void SessionMessageCreate::_internal_set_settinginfo6(const std::string& value) {
+  
+  settinginfo6_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageCreate::set_settinginfo6(std::string&& value) {
+  
+  settinginfo6_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageCreate.settingInfo6)
+}
+inline void SessionMessageCreate::set_settinginfo6(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  settinginfo6_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageCreate.settingInfo6)
+}
+inline void SessionMessageCreate::set_settinginfo6(const char* value,
+    size_t size) {
+  
+  settinginfo6_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageCreate.settingInfo6)
+}
+inline std::string* SessionMessageCreate::_internal_mutable_settinginfo6() {
+  
+  return settinginfo6_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageCreate::release_settinginfo6() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageCreate.settingInfo6)
+  return settinginfo6_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageCreate::set_allocated_settinginfo6(std::string* settinginfo6) {
+  if (settinginfo6 != nullptr) {
+    
+  } else {
+    
+  }
+  settinginfo6_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), settinginfo6,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageCreate.settingInfo6)
+}
+
+// -------------------------------------------------------------------
+
+// SessionMessageDelete
+
+// string usage_time = 1;
+inline void SessionMessageDelete::clear_usage_time() {
+  usage_time_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageDelete::usage_time() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageDelete.usage_time)
+  return _internal_usage_time();
+}
+inline void SessionMessageDelete::set_usage_time(const std::string& value) {
+  _internal_set_usage_time(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageDelete.usage_time)
+}
+inline std::string* SessionMessageDelete::mutable_usage_time() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageDelete.usage_time)
+  return _internal_mutable_usage_time();
+}
+inline const std::string& SessionMessageDelete::_internal_usage_time() const {
+  return usage_time_.Get();
+}
+inline void SessionMessageDelete::_internal_set_usage_time(const std::string& value) {
+  
+  usage_time_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageDelete::set_usage_time(std::string&& value) {
+  
+  usage_time_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageDelete.usage_time)
+}
+inline void SessionMessageDelete::set_usage_time(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  usage_time_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageDelete.usage_time)
+}
+inline void SessionMessageDelete::set_usage_time(const char* value,
+    size_t size) {
+  
+  usage_time_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageDelete.usage_time)
+}
+inline std::string* SessionMessageDelete::_internal_mutable_usage_time() {
+  
+  return usage_time_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageDelete::release_usage_time() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageDelete.usage_time)
+  return usage_time_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageDelete::set_allocated_usage_time(std::string* usage_time) {
+  if (usage_time != nullptr) {
+    
+  } else {
+    
+  }
+  usage_time_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), usage_time,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageDelete.usage_time)
+}
+
+// -------------------------------------------------------------------
+
+// SessionMessageStart
+
+// string LastSate = 1;
+inline void SessionMessageStart::clear_lastsate() {
+  lastsate_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageStart::lastsate() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageStart.LastSate)
+  return _internal_lastsate();
+}
+inline void SessionMessageStart::set_lastsate(const std::string& value) {
+  _internal_set_lastsate(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageStart.LastSate)
+}
+inline std::string* SessionMessageStart::mutable_lastsate() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageStart.LastSate)
+  return _internal_mutable_lastsate();
+}
+inline const std::string& SessionMessageStart::_internal_lastsate() const {
+  return lastsate_.Get();
+}
+inline void SessionMessageStart::_internal_set_lastsate(const std::string& value) {
+  
+  lastsate_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageStart::set_lastsate(std::string&& value) {
+  
+  lastsate_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageStart.LastSate)
+}
+inline void SessionMessageStart::set_lastsate(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  lastsate_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageStart.LastSate)
+}
+inline void SessionMessageStart::set_lastsate(const char* value,
+    size_t size) {
+  
+  lastsate_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageStart.LastSate)
+}
+inline std::string* SessionMessageStart::_internal_mutable_lastsate() {
+  
+  return lastsate_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageStart::release_lastsate() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageStart.LastSate)
+  return lastsate_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageStart::set_allocated_lastsate(std::string* lastsate) {
+  if (lastsate != nullptr) {
+    
+  } else {
+    
+  }
+  lastsate_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), lastsate,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageStart.LastSate)
+}
+
+// -------------------------------------------------------------------
+
+// SessionMessageStop
+
+// string LastSate = 1;
+inline void SessionMessageStop::clear_lastsate() {
+  lastsate_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageStop::lastsate() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageStop.LastSate)
+  return _internal_lastsate();
+}
+inline void SessionMessageStop::set_lastsate(const std::string& value) {
+  _internal_set_lastsate(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageStop.LastSate)
+}
+inline std::string* SessionMessageStop::mutable_lastsate() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageStop.LastSate)
+  return _internal_mutable_lastsate();
+}
+inline const std::string& SessionMessageStop::_internal_lastsate() const {
+  return lastsate_.Get();
+}
+inline void SessionMessageStop::_internal_set_lastsate(const std::string& value) {
+  
+  lastsate_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageStop::set_lastsate(std::string&& value) {
+  
+  lastsate_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageStop.LastSate)
+}
+inline void SessionMessageStop::set_lastsate(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  lastsate_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageStop.LastSate)
+}
+inline void SessionMessageStop::set_lastsate(const char* value,
+    size_t size) {
+  
+  lastsate_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageStop.LastSate)
+}
+inline std::string* SessionMessageStop::_internal_mutable_lastsate() {
+  
+  return lastsate_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageStop::release_lastsate() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageStop.LastSate)
+  return lastsate_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageStop::set_allocated_lastsate(std::string* lastsate) {
+  if (lastsate != nullptr) {
+    
+  } else {
+    
+  }
+  lastsate_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), lastsate,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageStop.LastSate)
+}
+
+// -------------------------------------------------------------------
+
+// SessionMessageReset
+
+// string SettingInfo1 = 1;
+inline void SessionMessageReset::clear_settinginfo1() {
+  settinginfo1_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageReset::settinginfo1() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageReset.SettingInfo1)
+  return _internal_settinginfo1();
+}
+inline void SessionMessageReset::set_settinginfo1(const std::string& value) {
+  _internal_set_settinginfo1(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageReset.SettingInfo1)
+}
+inline std::string* SessionMessageReset::mutable_settinginfo1() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageReset.SettingInfo1)
+  return _internal_mutable_settinginfo1();
+}
+inline const std::string& SessionMessageReset::_internal_settinginfo1() const {
+  return settinginfo1_.Get();
+}
+inline void SessionMessageReset::_internal_set_settinginfo1(const std::string& value) {
+  
+  settinginfo1_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageReset::set_settinginfo1(std::string&& value) {
+  
+  settinginfo1_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageReset.SettingInfo1)
+}
+inline void SessionMessageReset::set_settinginfo1(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  settinginfo1_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageReset.SettingInfo1)
+}
+inline void SessionMessageReset::set_settinginfo1(const char* value,
+    size_t size) {
+  
+  settinginfo1_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageReset.SettingInfo1)
+}
+inline std::string* SessionMessageReset::_internal_mutable_settinginfo1() {
+  
+  return settinginfo1_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageReset::release_settinginfo1() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageReset.SettingInfo1)
+  return settinginfo1_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageReset::set_allocated_settinginfo1(std::string* settinginfo1) {
+  if (settinginfo1 != nullptr) {
+    
+  } else {
+    
+  }
+  settinginfo1_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), settinginfo1,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageReset.SettingInfo1)
+}
+
+// string SettingInfo2 = 2;
+inline void SessionMessageReset::clear_settinginfo2() {
+  settinginfo2_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageReset::settinginfo2() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageReset.SettingInfo2)
+  return _internal_settinginfo2();
+}
+inline void SessionMessageReset::set_settinginfo2(const std::string& value) {
+  _internal_set_settinginfo2(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageReset.SettingInfo2)
+}
+inline std::string* SessionMessageReset::mutable_settinginfo2() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageReset.SettingInfo2)
+  return _internal_mutable_settinginfo2();
+}
+inline const std::string& SessionMessageReset::_internal_settinginfo2() const {
+  return settinginfo2_.Get();
+}
+inline void SessionMessageReset::_internal_set_settinginfo2(const std::string& value) {
+  
+  settinginfo2_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageReset::set_settinginfo2(std::string&& value) {
+  
+  settinginfo2_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageReset.SettingInfo2)
+}
+inline void SessionMessageReset::set_settinginfo2(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  settinginfo2_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageReset.SettingInfo2)
+}
+inline void SessionMessageReset::set_settinginfo2(const char* value,
+    size_t size) {
+  
+  settinginfo2_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageReset.SettingInfo2)
+}
+inline std::string* SessionMessageReset::_internal_mutable_settinginfo2() {
+  
+  return settinginfo2_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageReset::release_settinginfo2() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageReset.SettingInfo2)
+  return settinginfo2_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageReset::set_allocated_settinginfo2(std::string* settinginfo2) {
+  if (settinginfo2 != nullptr) {
+    
+  } else {
+    
+  }
+  settinginfo2_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), settinginfo2,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageReset.SettingInfo2)
+}
+
+// string SettingInfo3 = 3;
+inline void SessionMessageReset::clear_settinginfo3() {
+  settinginfo3_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageReset::settinginfo3() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageReset.SettingInfo3)
+  return _internal_settinginfo3();
+}
+inline void SessionMessageReset::set_settinginfo3(const std::string& value) {
+  _internal_set_settinginfo3(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageReset.SettingInfo3)
+}
+inline std::string* SessionMessageReset::mutable_settinginfo3() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageReset.SettingInfo3)
+  return _internal_mutable_settinginfo3();
+}
+inline const std::string& SessionMessageReset::_internal_settinginfo3() const {
+  return settinginfo3_.Get();
+}
+inline void SessionMessageReset::_internal_set_settinginfo3(const std::string& value) {
+  
+  settinginfo3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageReset::set_settinginfo3(std::string&& value) {
+  
+  settinginfo3_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageReset.SettingInfo3)
+}
+inline void SessionMessageReset::set_settinginfo3(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  settinginfo3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageReset.SettingInfo3)
+}
+inline void SessionMessageReset::set_settinginfo3(const char* value,
+    size_t size) {
+  
+  settinginfo3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageReset.SettingInfo3)
+}
+inline std::string* SessionMessageReset::_internal_mutable_settinginfo3() {
+  
+  return settinginfo3_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageReset::release_settinginfo3() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageReset.SettingInfo3)
+  return settinginfo3_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageReset::set_allocated_settinginfo3(std::string* settinginfo3) {
+  if (settinginfo3 != nullptr) {
+    
+  } else {
+    
+  }
+  settinginfo3_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), settinginfo3,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageReset.SettingInfo3)
+}
+
+// string SettingInfo4 = 4;
+inline void SessionMessageReset::clear_settinginfo4() {
+  settinginfo4_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageReset::settinginfo4() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageReset.SettingInfo4)
+  return _internal_settinginfo4();
+}
+inline void SessionMessageReset::set_settinginfo4(const std::string& value) {
+  _internal_set_settinginfo4(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageReset.SettingInfo4)
+}
+inline std::string* SessionMessageReset::mutable_settinginfo4() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageReset.SettingInfo4)
+  return _internal_mutable_settinginfo4();
+}
+inline const std::string& SessionMessageReset::_internal_settinginfo4() const {
+  return settinginfo4_.Get();
+}
+inline void SessionMessageReset::_internal_set_settinginfo4(const std::string& value) {
+  
+  settinginfo4_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageReset::set_settinginfo4(std::string&& value) {
+  
+  settinginfo4_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageReset.SettingInfo4)
+}
+inline void SessionMessageReset::set_settinginfo4(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  settinginfo4_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageReset.SettingInfo4)
+}
+inline void SessionMessageReset::set_settinginfo4(const char* value,
+    size_t size) {
+  
+  settinginfo4_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageReset.SettingInfo4)
+}
+inline std::string* SessionMessageReset::_internal_mutable_settinginfo4() {
+  
+  return settinginfo4_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageReset::release_settinginfo4() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageReset.SettingInfo4)
+  return settinginfo4_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageReset::set_allocated_settinginfo4(std::string* settinginfo4) {
+  if (settinginfo4 != nullptr) {
+    
+  } else {
+    
+  }
+  settinginfo4_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), settinginfo4,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageReset.SettingInfo4)
+}
+
+// string SettingInfo5 = 5;
+inline void SessionMessageReset::clear_settinginfo5() {
+  settinginfo5_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageReset::settinginfo5() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageReset.SettingInfo5)
+  return _internal_settinginfo5();
+}
+inline void SessionMessageReset::set_settinginfo5(const std::string& value) {
+  _internal_set_settinginfo5(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageReset.SettingInfo5)
+}
+inline std::string* SessionMessageReset::mutable_settinginfo5() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageReset.SettingInfo5)
+  return _internal_mutable_settinginfo5();
+}
+inline const std::string& SessionMessageReset::_internal_settinginfo5() const {
+  return settinginfo5_.Get();
+}
+inline void SessionMessageReset::_internal_set_settinginfo5(const std::string& value) {
+  
+  settinginfo5_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageReset::set_settinginfo5(std::string&& value) {
+  
+  settinginfo5_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageReset.SettingInfo5)
+}
+inline void SessionMessageReset::set_settinginfo5(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  settinginfo5_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageReset.SettingInfo5)
+}
+inline void SessionMessageReset::set_settinginfo5(const char* value,
+    size_t size) {
+  
+  settinginfo5_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageReset.SettingInfo5)
+}
+inline std::string* SessionMessageReset::_internal_mutable_settinginfo5() {
+  
+  return settinginfo5_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageReset::release_settinginfo5() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageReset.SettingInfo5)
+  return settinginfo5_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageReset::set_allocated_settinginfo5(std::string* settinginfo5) {
+  if (settinginfo5 != nullptr) {
+    
+  } else {
+    
+  }
+  settinginfo5_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), settinginfo5,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageReset.SettingInfo5)
+}
+
+// string SettingInfo6 = 6;
+inline void SessionMessageReset::clear_settinginfo6() {
+  settinginfo6_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& SessionMessageReset::settinginfo6() const {
+  // @@protoc_insertion_point(field_get:My_Net.SessionMessageReset.SettingInfo6)
+  return _internal_settinginfo6();
+}
+inline void SessionMessageReset::set_settinginfo6(const std::string& value) {
+  _internal_set_settinginfo6(value);
+  // @@protoc_insertion_point(field_set:My_Net.SessionMessageReset.SettingInfo6)
+}
+inline std::string* SessionMessageReset::mutable_settinginfo6() {
+  // @@protoc_insertion_point(field_mutable:My_Net.SessionMessageReset.SettingInfo6)
+  return _internal_mutable_settinginfo6();
+}
+inline const std::string& SessionMessageReset::_internal_settinginfo6() const {
+  return settinginfo6_.Get();
+}
+inline void SessionMessageReset::_internal_set_settinginfo6(const std::string& value) {
+  
+  settinginfo6_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void SessionMessageReset::set_settinginfo6(std::string&& value) {
+  
+  settinginfo6_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:My_Net.SessionMessageReset.SettingInfo6)
+}
+inline void SessionMessageReset::set_settinginfo6(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  settinginfo6_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:My_Net.SessionMessageReset.SettingInfo6)
+}
+inline void SessionMessageReset::set_settinginfo6(const char* value,
+    size_t size) {
+  
+  settinginfo6_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:My_Net.SessionMessageReset.SettingInfo6)
+}
+inline std::string* SessionMessageReset::_internal_mutable_settinginfo6() {
+  
+  return settinginfo6_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* SessionMessageReset::release_settinginfo6() {
+  // @@protoc_insertion_point(field_release:My_Net.SessionMessageReset.SettingInfo6)
+  return settinginfo6_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void SessionMessageReset::set_allocated_settinginfo6(std::string* settinginfo6) {
+  if (settinginfo6 != nullptr) {
+    
+  } else {
+    
+  }
+  settinginfo6_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), settinginfo6,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:My_Net.SessionMessageReset.SettingInfo6)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 

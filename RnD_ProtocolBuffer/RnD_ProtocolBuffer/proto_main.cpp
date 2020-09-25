@@ -29,6 +29,7 @@
 
 #include "MySession.pb.h"
 #include "google/protobuf/util/time_util.h"
+#include <google/protobuf/util/json_util.h>
 
 #include <iostream>
 #include <string>
@@ -88,11 +89,22 @@ int main()
 	mySession.set_content_length(bodyLength);
 
 	std::string SerializedStringMessage;
+	std::string JsonOutput;
+
+	google::protobuf::util::JsonPrintOptions options;
+	options.add_whitespace = true;
+	options.always_print_primitive_fields = false;
+	google::protobuf::util::MessageToJsonString(mySession, &JsonOutput);
+
+	std::cout << JsonOutput << std::endl;
+
+
 	SerializedStringMessage = mySession.SerializeAsString();
 
 	std::cout << SerializedStringMessage << std::endl;
 	std::cout << "Size of Serialized : " << SerializedStringMessage.size() << std::endl;
 	std::cout << "length of Serialized : " << SerializedStringMessage.length() << std::endl;
+
 
 	My_Net::Session mySessionRead;
 	mySessionRead.ParseFromString(SerializedStringMessage);

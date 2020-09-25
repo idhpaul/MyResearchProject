@@ -21,6 +21,7 @@
 
 #include "MySession.pb.h"
 #include "google/protobuf/util/time_util.h"
+#include <google/protobuf/util/json_util.h>
 
 #include <iostream>
 #include <memory>
@@ -31,6 +32,11 @@ char sendbuffer[6] = "hello";
 char recvbuffer[19];
 
 static std::mutex g_Mutex;
+
+constexpr unsigned int HashCode(const char* str)
+{
+	return str[0] ? static_cast<unsigned int>(str[0]) + 0xEDB8832Full * HashCode(str + 1) : 8603;
+}
 
 std::string make_string(boost::asio::streambuf& streambuf)
 {
@@ -92,6 +98,8 @@ public:
 						std::cout << "[DEBUG] Read recv : " << length << std::endl;
 						#endif
 
+						readSize = length;
+
 						std::string recvStr = make_string(buffer_);
 						recvStr = recvStr.substr(0, recvStr.size() - 2);
 
@@ -104,7 +112,92 @@ public:
 						std::cout << mySessionRead.date() << std::endl;
 						std::cout << mySessionRead.content_length() << std::endl;
 
-						readSize = length;
+						/// <Body>
+						/// // REF : https://m.blog.naver.com/PostView.nhn?blogId=devmachine&logNo=220952781191&proxyReferer=https:%2F%2Fwww.google.com%2F
+						switch (HashCode(mySessionRead.content_type().c_str()))
+						{
+						case HashCode("MY_SESSION_INIT"):
+							{
+								My_Net::SessionMessageInit myMessageInit;
+								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageInit);
+
+								std::cout << myMessageInit.sessionkey() << std::endl;
+								break;
+							}
+
+						case HashCode("MY_SESSION_IDENTIFIED"):
+							{
+								My_Net::SessionMessageIdentified myMessageIdentified;
+								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageIdentified);
+
+								std::cout << myMessageIdentified.systeminfo1() << std::endl;
+								std::cout << myMessageIdentified.systeminfo2() << std::endl;
+								std::cout << myMessageIdentified.systeminfo3() << std::endl;
+								std::cout << myMessageIdentified.systeminfo4() << std::endl;
+								std::cout << myMessageIdentified.bandwidth() << std::endl;
+								break;
+							}
+
+						case HashCode("MY_SESSION_CREATE"):
+							{
+								My_Net::SessionMessageCreate myMessageCreate;
+								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageCreate);
+
+								std::cout << myMessageCreate.settinginfo1() << std::endl;
+								std::cout << myMessageCreate.settinginfo2() << std::endl;
+								std::cout << myMessageCreate.settinginfo3() << std::endl;
+								std::cout << myMessageCreate.settinginfo4() << std::endl;
+								std::cout << myMessageCreate.settinginfo5() << std::endl;
+								std::cout << myMessageCreate.settinginfo6() << std::endl;
+								break;
+							}
+
+						case HashCode("MY_SESSION_DELETE"):
+							{
+								My_Net::SessionMessageDelete myMessageDelete;
+								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageDelete);
+
+								std::cout << myMessageDelete.usage_time() << std::endl;
+								break;
+							}
+
+						case HashCode("MY_SESSION_START"):
+							{
+								My_Net::SessionMessageStart myMessageStart;
+								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageStart);
+
+								std::cout << myMessageStart.lastsate() << std::endl;
+								break;
+							}
+
+						case HashCode("MY_SESSION_STOP"):
+							{
+								My_Net::SessionMessageStop myMessageStop;
+								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageStop);
+
+								std::cout << myMessageStop.lastsate() << std::endl;
+								break;
+							}
+						case HashCode("MY_SESSION_RESET"):
+							{
+								My_Net::SessionMessageReset myMessageReset;
+								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageReset);
+
+								std::cout << myMessageReset.settinginfo1() << std::endl;
+								std::cout << myMessageReset.settinginfo2() << std::endl;
+								std::cout << myMessageReset.settinginfo3() << std::endl;
+								std::cout << myMessageReset.settinginfo4() << std::endl;
+								std::cout << myMessageReset.settinginfo5() << std::endl;
+								std::cout << myMessageReset.settinginfo6() << std::endl;
+								break;
+							}
+
+						default:
+							std::cerr << "Message type is out of range" << std::endl;
+							break;
+						}
+						/// </Body
+
 
 						Write();
 					}
@@ -144,11 +237,11 @@ private:
 
 	void set_SocketOption()
 	{
-		boost::asio::socket_base::keep_alive option(true);
-		_socket.set_option(option);
+		boost::asio::socket_base::keep_alive keepAliveOption(true);
+		_socket.set_option(keepAliveOption);
 
-		boost::asio::socket_base::linger option(true, 30);
-		_socket.set_option(option);
+		boost::asio::socket_base::linger ligerOption(true, 30);
+		_socket.set_option(ligerOption);
 	};
 
 	boost::asio::ip::tcp::socket _socket;
