@@ -177,34 +177,34 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_MySession_2eproto::offsets[] P
   PROTOBUF_FIELD_OFFSET(::My_Net::Session, content_type_),
   PROTOBUF_FIELD_OFFSET(::My_Net::Session, date_),
   PROTOBUF_FIELD_OFFSET(::My_Net::Session, content_length_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::Session, body_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::Session, message_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageInit, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageInit, sessionkey_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageInit, session_key_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageIdentified, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageIdentified, systeminfo1_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageIdentified, systeminfo2_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageIdentified, systeminfo3_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageIdentified, systeminfo4_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageIdentified, cpu_info_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageIdentified, res_info_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageIdentified, mem_info_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageIdentified, net_info_),
   PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageIdentified, bandwidth_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, settinginfo1_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, settinginfo2_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, settinginfo3_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, settinginfo4_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, settinginfo5_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, settinginfo6_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, v_codec_info_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, v_brc_info_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, v_bitrate_info_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, v_gop_info_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, a_samplerate_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageCreate, a_quantization_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageDelete, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -216,24 +216,24 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_MySession_2eproto::offsets[] P
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageStart, lastsate_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageStart, last_sate_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageStop, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageStop, lastsate_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageStop, last_sate_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, settinginfo1_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, settinginfo2_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, settinginfo3_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, settinginfo4_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, settinginfo5_),
-  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, settinginfo6_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, reset_v_codec_info_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, reset_v_brc_info_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, reset_v_bitrate_info_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, reset_v_gop_info_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, reset_a_samplerate_),
+  PROTOBUF_FIELD_OFFSET(::My_Net::SessionMessageReset, reset_a_quantization_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::My_Net::Session)},
@@ -259,27 +259,27 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 
 const char descriptor_table_protodef_MySession_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\017MySession.proto\022\006My_Net\032\037google/protob"
-  "uf/timestamp.proto\"\251\001\n\007Session\022\014\n\004host\030\001"
+  "uf/timestamp.proto\"\254\001\n\007Session\022\014\n\004host\030\001"
   " \001(\t\022\022\n\nuser_agent\030\002 \001(\t\022\024\n\014content_type"
   "\030\007 \001(\t\022(\n\004date\030\r \001(\0132\032.google.protobuf.T"
-  "imestamp\022\026\n\016content_length\030\016 \001(\005\022\014\n\004body"
-  "\030\017 \001(\tJ\004\010\004\020\007J\004\010\010\020\nR\nconnection\"(\n\022Sessio"
-  "nMessageInit\022\022\n\nsessionKey\030\001 \001(\t\"\201\001\n\030Ses"
-  "sionMessageIdentified\022\023\n\013systemInfo1\030\001 \001"
-  "(\t\022\023\n\013systemInfo2\030\002 \001(\t\022\023\n\013systemInfo3\030\003"
-  " \001(\t\022\023\n\013systemInfo4\030\004 \001(\t\022\021\n\tbandwidth\030\017"
-  " \001(\t\"\232\001\n\024SessionMessageCreate\022\024\n\014setting"
-  "Info1\030\001 \001(\t\022\024\n\014settingInfo2\030\002 \001(\t\022\024\n\014set"
-  "tingInfo3\030\003 \001(\t\022\024\n\014settingInfo4\030\004 \001(\t\022\024\n"
-  "\014settingInfo5\030\005 \001(\t\022\024\n\014settingInfo6\030\006 \001("
-  "\t\"*\n\024SessionMessageDelete\022\022\n\nusage_time\030"
-  "\001 \001(\t\"\'\n\023SessionMessageStart\022\020\n\010LastSate"
-  "\030\001 \001(\t\"&\n\022SessionMessageStop\022\020\n\010LastSate"
-  "\030\001 \001(\t\"\231\001\n\023SessionMessageReset\022\024\n\014Settin"
-  "gInfo1\030\001 \001(\t\022\024\n\014SettingInfo2\030\002 \001(\t\022\024\n\014Se"
-  "ttingInfo3\030\003 \001(\t\022\024\n\014SettingInfo4\030\004 \001(\t\022\024"
-  "\n\014SettingInfo5\030\005 \001(\t\022\024\n\014SettingInfo6\030\006 \001"
-  "(\tb\006proto3"
+  "imestamp\022\026\n\016content_length\030\016 \001(\005\022\017\n\007mess"
+  "age\030\017 \001(\tJ\004\010\004\020\007J\004\010\010\020\nR\nconnection\")\n\022Ses"
+  "sionMessageInit\022\023\n\013session_key\030\001 \001(\t\"u\n\030"
+  "SessionMessageIdentified\022\020\n\010cpu_info\030\001 \001"
+  "(\t\022\020\n\010res_info\030\002 \001(\t\022\020\n\010mem_info\030\003 \001(\t\022\020"
+  "\n\010net_info\030\004 \001(\t\022\021\n\tbandwidth\030\005 \001(\t\"\232\001\n\024"
+  "SessionMessageCreate\022\024\n\014v_codec_info\030\001 \001"
+  "(\t\022\022\n\nv_brc_info\030\002 \001(\t\022\026\n\016v_bitrate_info"
+  "\030\003 \001(\t\022\022\n\nv_gop_info\030\004 \001(\t\022\024\n\014a_samplera"
+  "te\030\005 \001(\t\022\026\n\016a_quantization\030\006 \001(\t\"*\n\024Sess"
+  "ionMessageDelete\022\022\n\nusage_time\030\001 \001(\t\"(\n\023"
+  "SessionMessageStart\022\021\n\tlast_sate\030\001 \001(\t\"\'"
+  "\n\022SessionMessageStop\022\021\n\tlast_sate\030\001 \001(\t\""
+  "\275\001\n\023SessionMessageReset\022\032\n\022reset_v_codec"
+  "_info\030\001 \001(\t\022\030\n\020reset_v_brc_info\030\002 \001(\t\022\034\n"
+  "\024reset_v_bitrate_info\030\003 \001(\t\022\030\n\020reset_v_g"
+  "op_info\030\004 \001(\t\022\032\n\022reset_a_samplerate\030\005 \001("
+  "\t\022\034\n\024reset_a_quantization\030\006 \001(\tb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_MySession_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2ftimestamp_2eproto,
@@ -296,7 +296,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_MyS
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_MySession_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_MySession_2eproto = {
-  false, false, descriptor_table_protodef_MySession_2eproto, "MySession.proto", 850,
+  false, false, descriptor_table_protodef_MySession_2eproto, "MySession.proto", 879,
   &descriptor_table_MySession_2eproto_once, descriptor_table_MySession_2eproto_sccs, descriptor_table_MySession_2eproto_deps, 8, 1,
   schemas, file_default_instances, TableStruct_MySession_2eproto::offsets,
   file_level_metadata_MySession_2eproto, 8, file_level_enum_descriptors_MySession_2eproto, file_level_service_descriptors_MySession_2eproto,
@@ -351,9 +351,9 @@ Session::Session(const Session& from)
     content_type_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_content_type(),
       GetArena());
   }
-  body_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_body().empty()) {
-    body_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_body(),
+  message_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_message().empty()) {
+    message_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_message(),
       GetArena());
   }
   if (from._internal_has_date()) {
@@ -370,7 +370,7 @@ void Session::SharedCtor() {
   host_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   user_agent_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   content_type_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  body_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  message_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&date_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&content_length_) -
       reinterpret_cast<char*>(&date_)) + sizeof(content_length_));
@@ -387,7 +387,7 @@ void Session::SharedDtor() {
   host_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   user_agent_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   content_type_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  body_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  message_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete date_;
 }
 
@@ -415,7 +415,7 @@ void Session::Clear() {
   host_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   user_agent_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   content_type_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  body_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  message_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   if (GetArena() == nullptr && date_ != nullptr) {
     delete date_;
   }
@@ -473,12 +473,12 @@ const char* Session::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string body = 15;
+      // string message = 15;
       case 15:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 122)) {
-          auto str = _internal_mutable_body();
+          auto str = _internal_mutable_message();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.Session.body"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.Session.message"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -554,14 +554,14 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(14, this->_internal_content_length(), target);
   }
 
-  // string body = 15;
-  if (this->body().size() > 0) {
+  // string message = 15;
+  if (this->message().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_body().data(), static_cast<int>(this->_internal_body().length()),
+      this->_internal_message().data(), static_cast<int>(this->_internal_message().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.Session.body");
+      "My_Net.Session.message");
     target = stream->WriteStringMaybeAliased(
-        15, this->_internal_body(), target);
+        15, this->_internal_message(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -601,11 +601,11 @@ size_t Session::ByteSizeLong() const {
         this->_internal_content_type());
   }
 
-  // string body = 15;
-  if (this->body().size() > 0) {
+  // string message = 15;
+  if (this->message().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_body());
+        this->_internal_message());
   }
 
   // .google.protobuf.Timestamp date = 13;
@@ -662,8 +662,8 @@ void Session::MergeFrom(const Session& from) {
   if (from.content_type().size() > 0) {
     _internal_set_content_type(from._internal_content_type());
   }
-  if (from.body().size() > 0) {
-    _internal_set_body(from._internal_body());
+  if (from.message().size() > 0) {
+    _internal_set_message(from._internal_message());
   }
   if (from.has_date()) {
     _internal_mutable_date()->PROTOBUF_NAMESPACE_ID::Timestamp::MergeFrom(from._internal_date());
@@ -697,7 +697,7 @@ void Session::InternalSwap(Session* other) {
   host_.Swap(&other->host_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   user_agent_.Swap(&other->user_agent_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   content_type_.Swap(&other->content_type_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  body_.Swap(&other->body_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  message_.Swap(&other->message_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Session, content_length_)
       + sizeof(Session::content_length_)
@@ -728,9 +728,9 @@ SessionMessageInit::SessionMessageInit(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 SessionMessageInit::SessionMessageInit(const SessionMessageInit& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  sessionkey_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_sessionkey().empty()) {
-    sessionkey_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_sessionkey(),
+  session_key_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_session_key().empty()) {
+    session_key_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_session_key(),
       GetArena());
   }
   // @@protoc_insertion_point(copy_constructor:My_Net.SessionMessageInit)
@@ -738,7 +738,7 @@ SessionMessageInit::SessionMessageInit(const SessionMessageInit& from)
 
 void SessionMessageInit::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SessionMessageInit_MySession_2eproto.base);
-  sessionkey_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  session_key_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 SessionMessageInit::~SessionMessageInit() {
@@ -749,7 +749,7 @@ SessionMessageInit::~SessionMessageInit() {
 
 void SessionMessageInit::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  sessionkey_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  session_key_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void SessionMessageInit::ArenaDtor(void* object) {
@@ -773,7 +773,7 @@ void SessionMessageInit::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  sessionkey_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  session_key_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -785,12 +785,12 @@ const char* SessionMessageInit::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string sessionKey = 1;
+      // string session_key = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_sessionkey();
+          auto str = _internal_mutable_session_key();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageInit.sessionKey"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageInit.session_key"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -822,14 +822,14 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string sessionKey = 1;
-  if (this->sessionkey().size() > 0) {
+  // string session_key = 1;
+  if (this->session_key().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_sessionkey().data(), static_cast<int>(this->_internal_sessionkey().length()),
+      this->_internal_session_key().data(), static_cast<int>(this->_internal_session_key().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageInit.sessionKey");
+      "My_Net.SessionMessageInit.session_key");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_sessionkey(), target);
+        1, this->_internal_session_key(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -848,11 +848,11 @@ size_t SessionMessageInit::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string sessionKey = 1;
-  if (this->sessionkey().size() > 0) {
+  // string session_key = 1;
+  if (this->session_key().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_sessionkey());
+        this->_internal_session_key());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -886,8 +886,8 @@ void SessionMessageInit::MergeFrom(const SessionMessageInit& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.sessionkey().size() > 0) {
-    _internal_set_sessionkey(from._internal_sessionkey());
+  if (from.session_key().size() > 0) {
+    _internal_set_session_key(from._internal_session_key());
   }
 }
 
@@ -912,7 +912,7 @@ bool SessionMessageInit::IsInitialized() const {
 void SessionMessageInit::InternalSwap(SessionMessageInit* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  sessionkey_.Swap(&other->sessionkey_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  session_key_.Swap(&other->session_key_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SessionMessageInit::GetMetadata() const {
@@ -937,24 +937,24 @@ SessionMessageIdentified::SessionMessageIdentified(::PROTOBUF_NAMESPACE_ID::Aren
 SessionMessageIdentified::SessionMessageIdentified(const SessionMessageIdentified& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  systeminfo1_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_systeminfo1().empty()) {
-    systeminfo1_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_systeminfo1(),
+  cpu_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_cpu_info().empty()) {
+    cpu_info_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_cpu_info(),
       GetArena());
   }
-  systeminfo2_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_systeminfo2().empty()) {
-    systeminfo2_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_systeminfo2(),
+  res_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_res_info().empty()) {
+    res_info_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_res_info(),
       GetArena());
   }
-  systeminfo3_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_systeminfo3().empty()) {
-    systeminfo3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_systeminfo3(),
+  mem_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_mem_info().empty()) {
+    mem_info_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_mem_info(),
       GetArena());
   }
-  systeminfo4_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_systeminfo4().empty()) {
-    systeminfo4_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_systeminfo4(),
+  net_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_net_info().empty()) {
+    net_info_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_net_info(),
       GetArena());
   }
   bandwidth_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
@@ -967,10 +967,10 @@ SessionMessageIdentified::SessionMessageIdentified(const SessionMessageIdentifie
 
 void SessionMessageIdentified::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SessionMessageIdentified_MySession_2eproto.base);
-  systeminfo1_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  systeminfo2_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  systeminfo3_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  systeminfo4_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  cpu_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  res_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  mem_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  net_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   bandwidth_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -982,10 +982,10 @@ SessionMessageIdentified::~SessionMessageIdentified() {
 
 void SessionMessageIdentified::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  systeminfo1_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  systeminfo2_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  systeminfo3_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  systeminfo4_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  cpu_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  res_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  mem_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  net_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   bandwidth_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -1010,10 +1010,10 @@ void SessionMessageIdentified::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  systeminfo1_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  systeminfo2_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  systeminfo3_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  systeminfo4_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  cpu_info_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  res_info_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  mem_info_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  net_info_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   bandwidth_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -1026,45 +1026,45 @@ const char* SessionMessageIdentified::_InternalParse(const char* ptr, ::PROTOBUF
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string systemInfo1 = 1;
+      // string cpu_info = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_systeminfo1();
+          auto str = _internal_mutable_cpu_info();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageIdentified.systemInfo1"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageIdentified.cpu_info"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string systemInfo2 = 2;
+      // string res_info = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          auto str = _internal_mutable_systeminfo2();
+          auto str = _internal_mutable_res_info();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageIdentified.systemInfo2"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageIdentified.res_info"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string systemInfo3 = 3;
+      // string mem_info = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          auto str = _internal_mutable_systeminfo3();
+          auto str = _internal_mutable_mem_info();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageIdentified.systemInfo3"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageIdentified.mem_info"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string systemInfo4 = 4;
+      // string net_info = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          auto str = _internal_mutable_systeminfo4();
+          auto str = _internal_mutable_net_info();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageIdentified.systemInfo4"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageIdentified.net_info"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string bandwidth = 15;
-      case 15:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 122)) {
+      // string bandwidth = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
           auto str = _internal_mutable_bandwidth();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageIdentified.bandwidth"));
@@ -1099,54 +1099,54 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string systemInfo1 = 1;
-  if (this->systeminfo1().size() > 0) {
+  // string cpu_info = 1;
+  if (this->cpu_info().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_systeminfo1().data(), static_cast<int>(this->_internal_systeminfo1().length()),
+      this->_internal_cpu_info().data(), static_cast<int>(this->_internal_cpu_info().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageIdentified.systemInfo1");
+      "My_Net.SessionMessageIdentified.cpu_info");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_systeminfo1(), target);
+        1, this->_internal_cpu_info(), target);
   }
 
-  // string systemInfo2 = 2;
-  if (this->systeminfo2().size() > 0) {
+  // string res_info = 2;
+  if (this->res_info().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_systeminfo2().data(), static_cast<int>(this->_internal_systeminfo2().length()),
+      this->_internal_res_info().data(), static_cast<int>(this->_internal_res_info().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageIdentified.systemInfo2");
+      "My_Net.SessionMessageIdentified.res_info");
     target = stream->WriteStringMaybeAliased(
-        2, this->_internal_systeminfo2(), target);
+        2, this->_internal_res_info(), target);
   }
 
-  // string systemInfo3 = 3;
-  if (this->systeminfo3().size() > 0) {
+  // string mem_info = 3;
+  if (this->mem_info().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_systeminfo3().data(), static_cast<int>(this->_internal_systeminfo3().length()),
+      this->_internal_mem_info().data(), static_cast<int>(this->_internal_mem_info().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageIdentified.systemInfo3");
+      "My_Net.SessionMessageIdentified.mem_info");
     target = stream->WriteStringMaybeAliased(
-        3, this->_internal_systeminfo3(), target);
+        3, this->_internal_mem_info(), target);
   }
 
-  // string systemInfo4 = 4;
-  if (this->systeminfo4().size() > 0) {
+  // string net_info = 4;
+  if (this->net_info().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_systeminfo4().data(), static_cast<int>(this->_internal_systeminfo4().length()),
+      this->_internal_net_info().data(), static_cast<int>(this->_internal_net_info().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageIdentified.systemInfo4");
+      "My_Net.SessionMessageIdentified.net_info");
     target = stream->WriteStringMaybeAliased(
-        4, this->_internal_systeminfo4(), target);
+        4, this->_internal_net_info(), target);
   }
 
-  // string bandwidth = 15;
+  // string bandwidth = 5;
   if (this->bandwidth().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_bandwidth().data(), static_cast<int>(this->_internal_bandwidth().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "My_Net.SessionMessageIdentified.bandwidth");
     target = stream->WriteStringMaybeAliased(
-        15, this->_internal_bandwidth(), target);
+        5, this->_internal_bandwidth(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1165,35 +1165,35 @@ size_t SessionMessageIdentified::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string systemInfo1 = 1;
-  if (this->systeminfo1().size() > 0) {
+  // string cpu_info = 1;
+  if (this->cpu_info().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_systeminfo1());
+        this->_internal_cpu_info());
   }
 
-  // string systemInfo2 = 2;
-  if (this->systeminfo2().size() > 0) {
+  // string res_info = 2;
+  if (this->res_info().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_systeminfo2());
+        this->_internal_res_info());
   }
 
-  // string systemInfo3 = 3;
-  if (this->systeminfo3().size() > 0) {
+  // string mem_info = 3;
+  if (this->mem_info().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_systeminfo3());
+        this->_internal_mem_info());
   }
 
-  // string systemInfo4 = 4;
-  if (this->systeminfo4().size() > 0) {
+  // string net_info = 4;
+  if (this->net_info().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_systeminfo4());
+        this->_internal_net_info());
   }
 
-  // string bandwidth = 15;
+  // string bandwidth = 5;
   if (this->bandwidth().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
@@ -1231,17 +1231,17 @@ void SessionMessageIdentified::MergeFrom(const SessionMessageIdentified& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.systeminfo1().size() > 0) {
-    _internal_set_systeminfo1(from._internal_systeminfo1());
+  if (from.cpu_info().size() > 0) {
+    _internal_set_cpu_info(from._internal_cpu_info());
   }
-  if (from.systeminfo2().size() > 0) {
-    _internal_set_systeminfo2(from._internal_systeminfo2());
+  if (from.res_info().size() > 0) {
+    _internal_set_res_info(from._internal_res_info());
   }
-  if (from.systeminfo3().size() > 0) {
-    _internal_set_systeminfo3(from._internal_systeminfo3());
+  if (from.mem_info().size() > 0) {
+    _internal_set_mem_info(from._internal_mem_info());
   }
-  if (from.systeminfo4().size() > 0) {
-    _internal_set_systeminfo4(from._internal_systeminfo4());
+  if (from.net_info().size() > 0) {
+    _internal_set_net_info(from._internal_net_info());
   }
   if (from.bandwidth().size() > 0) {
     _internal_set_bandwidth(from._internal_bandwidth());
@@ -1269,10 +1269,10 @@ bool SessionMessageIdentified::IsInitialized() const {
 void SessionMessageIdentified::InternalSwap(SessionMessageIdentified* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  systeminfo1_.Swap(&other->systeminfo1_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  systeminfo2_.Swap(&other->systeminfo2_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  systeminfo3_.Swap(&other->systeminfo3_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  systeminfo4_.Swap(&other->systeminfo4_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  cpu_info_.Swap(&other->cpu_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  res_info_.Swap(&other->res_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  mem_info_.Swap(&other->mem_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  net_info_.Swap(&other->net_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   bandwidth_.Swap(&other->bandwidth_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 
@@ -1298,34 +1298,34 @@ SessionMessageCreate::SessionMessageCreate(::PROTOBUF_NAMESPACE_ID::Arena* arena
 SessionMessageCreate::SessionMessageCreate(const SessionMessageCreate& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  settinginfo1_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_settinginfo1().empty()) {
-    settinginfo1_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_settinginfo1(),
+  v_codec_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_v_codec_info().empty()) {
+    v_codec_info_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_v_codec_info(),
       GetArena());
   }
-  settinginfo2_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_settinginfo2().empty()) {
-    settinginfo2_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_settinginfo2(),
+  v_brc_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_v_brc_info().empty()) {
+    v_brc_info_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_v_brc_info(),
       GetArena());
   }
-  settinginfo3_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_settinginfo3().empty()) {
-    settinginfo3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_settinginfo3(),
+  v_bitrate_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_v_bitrate_info().empty()) {
+    v_bitrate_info_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_v_bitrate_info(),
       GetArena());
   }
-  settinginfo4_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_settinginfo4().empty()) {
-    settinginfo4_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_settinginfo4(),
+  v_gop_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_v_gop_info().empty()) {
+    v_gop_info_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_v_gop_info(),
       GetArena());
   }
-  settinginfo5_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_settinginfo5().empty()) {
-    settinginfo5_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_settinginfo5(),
+  a_samplerate_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_a_samplerate().empty()) {
+    a_samplerate_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_a_samplerate(),
       GetArena());
   }
-  settinginfo6_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_settinginfo6().empty()) {
-    settinginfo6_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_settinginfo6(),
+  a_quantization_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_a_quantization().empty()) {
+    a_quantization_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_a_quantization(),
       GetArena());
   }
   // @@protoc_insertion_point(copy_constructor:My_Net.SessionMessageCreate)
@@ -1333,12 +1333,12 @@ SessionMessageCreate::SessionMessageCreate(const SessionMessageCreate& from)
 
 void SessionMessageCreate::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SessionMessageCreate_MySession_2eproto.base);
-  settinginfo1_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo2_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo3_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo4_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo5_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo6_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  v_codec_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  v_brc_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  v_bitrate_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  v_gop_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  a_samplerate_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  a_quantization_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 SessionMessageCreate::~SessionMessageCreate() {
@@ -1349,12 +1349,12 @@ SessionMessageCreate::~SessionMessageCreate() {
 
 void SessionMessageCreate::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  settinginfo1_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo2_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo3_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo4_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo5_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo6_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  v_codec_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  v_brc_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  v_bitrate_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  v_gop_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  a_samplerate_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  a_quantization_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void SessionMessageCreate::ArenaDtor(void* object) {
@@ -1378,12 +1378,12 @@ void SessionMessageCreate::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  settinginfo1_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo2_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo3_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo4_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo5_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo6_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  v_codec_info_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  v_brc_info_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  v_bitrate_info_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  v_gop_info_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  a_samplerate_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  a_quantization_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1395,57 +1395,57 @@ const char* SessionMessageCreate::_InternalParse(const char* ptr, ::PROTOBUF_NAM
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string settingInfo1 = 1;
+      // string v_codec_info = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_settinginfo1();
+          auto str = _internal_mutable_v_codec_info();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageCreate.settingInfo1"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageCreate.v_codec_info"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string settingInfo2 = 2;
+      // string v_brc_info = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          auto str = _internal_mutable_settinginfo2();
+          auto str = _internal_mutable_v_brc_info();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageCreate.settingInfo2"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageCreate.v_brc_info"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string settingInfo3 = 3;
+      // string v_bitrate_info = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          auto str = _internal_mutable_settinginfo3();
+          auto str = _internal_mutable_v_bitrate_info();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageCreate.settingInfo3"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageCreate.v_bitrate_info"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string settingInfo4 = 4;
+      // string v_gop_info = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          auto str = _internal_mutable_settinginfo4();
+          auto str = _internal_mutable_v_gop_info();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageCreate.settingInfo4"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageCreate.v_gop_info"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string settingInfo5 = 5;
+      // string a_samplerate = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
-          auto str = _internal_mutable_settinginfo5();
+          auto str = _internal_mutable_a_samplerate();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageCreate.settingInfo5"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageCreate.a_samplerate"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string settingInfo6 = 6;
+      // string a_quantization = 6;
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
-          auto str = _internal_mutable_settinginfo6();
+          auto str = _internal_mutable_a_quantization();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageCreate.settingInfo6"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageCreate.a_quantization"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1477,64 +1477,64 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string settingInfo1 = 1;
-  if (this->settinginfo1().size() > 0) {
+  // string v_codec_info = 1;
+  if (this->v_codec_info().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_settinginfo1().data(), static_cast<int>(this->_internal_settinginfo1().length()),
+      this->_internal_v_codec_info().data(), static_cast<int>(this->_internal_v_codec_info().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageCreate.settingInfo1");
+      "My_Net.SessionMessageCreate.v_codec_info");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_settinginfo1(), target);
+        1, this->_internal_v_codec_info(), target);
   }
 
-  // string settingInfo2 = 2;
-  if (this->settinginfo2().size() > 0) {
+  // string v_brc_info = 2;
+  if (this->v_brc_info().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_settinginfo2().data(), static_cast<int>(this->_internal_settinginfo2().length()),
+      this->_internal_v_brc_info().data(), static_cast<int>(this->_internal_v_brc_info().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageCreate.settingInfo2");
+      "My_Net.SessionMessageCreate.v_brc_info");
     target = stream->WriteStringMaybeAliased(
-        2, this->_internal_settinginfo2(), target);
+        2, this->_internal_v_brc_info(), target);
   }
 
-  // string settingInfo3 = 3;
-  if (this->settinginfo3().size() > 0) {
+  // string v_bitrate_info = 3;
+  if (this->v_bitrate_info().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_settinginfo3().data(), static_cast<int>(this->_internal_settinginfo3().length()),
+      this->_internal_v_bitrate_info().data(), static_cast<int>(this->_internal_v_bitrate_info().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageCreate.settingInfo3");
+      "My_Net.SessionMessageCreate.v_bitrate_info");
     target = stream->WriteStringMaybeAliased(
-        3, this->_internal_settinginfo3(), target);
+        3, this->_internal_v_bitrate_info(), target);
   }
 
-  // string settingInfo4 = 4;
-  if (this->settinginfo4().size() > 0) {
+  // string v_gop_info = 4;
+  if (this->v_gop_info().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_settinginfo4().data(), static_cast<int>(this->_internal_settinginfo4().length()),
+      this->_internal_v_gop_info().data(), static_cast<int>(this->_internal_v_gop_info().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageCreate.settingInfo4");
+      "My_Net.SessionMessageCreate.v_gop_info");
     target = stream->WriteStringMaybeAliased(
-        4, this->_internal_settinginfo4(), target);
+        4, this->_internal_v_gop_info(), target);
   }
 
-  // string settingInfo5 = 5;
-  if (this->settinginfo5().size() > 0) {
+  // string a_samplerate = 5;
+  if (this->a_samplerate().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_settinginfo5().data(), static_cast<int>(this->_internal_settinginfo5().length()),
+      this->_internal_a_samplerate().data(), static_cast<int>(this->_internal_a_samplerate().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageCreate.settingInfo5");
+      "My_Net.SessionMessageCreate.a_samplerate");
     target = stream->WriteStringMaybeAliased(
-        5, this->_internal_settinginfo5(), target);
+        5, this->_internal_a_samplerate(), target);
   }
 
-  // string settingInfo6 = 6;
-  if (this->settinginfo6().size() > 0) {
+  // string a_quantization = 6;
+  if (this->a_quantization().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_settinginfo6().data(), static_cast<int>(this->_internal_settinginfo6().length()),
+      this->_internal_a_quantization().data(), static_cast<int>(this->_internal_a_quantization().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageCreate.settingInfo6");
+      "My_Net.SessionMessageCreate.a_quantization");
     target = stream->WriteStringMaybeAliased(
-        6, this->_internal_settinginfo6(), target);
+        6, this->_internal_a_quantization(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1553,46 +1553,46 @@ size_t SessionMessageCreate::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string settingInfo1 = 1;
-  if (this->settinginfo1().size() > 0) {
+  // string v_codec_info = 1;
+  if (this->v_codec_info().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_settinginfo1());
+        this->_internal_v_codec_info());
   }
 
-  // string settingInfo2 = 2;
-  if (this->settinginfo2().size() > 0) {
+  // string v_brc_info = 2;
+  if (this->v_brc_info().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_settinginfo2());
+        this->_internal_v_brc_info());
   }
 
-  // string settingInfo3 = 3;
-  if (this->settinginfo3().size() > 0) {
+  // string v_bitrate_info = 3;
+  if (this->v_bitrate_info().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_settinginfo3());
+        this->_internal_v_bitrate_info());
   }
 
-  // string settingInfo4 = 4;
-  if (this->settinginfo4().size() > 0) {
+  // string v_gop_info = 4;
+  if (this->v_gop_info().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_settinginfo4());
+        this->_internal_v_gop_info());
   }
 
-  // string settingInfo5 = 5;
-  if (this->settinginfo5().size() > 0) {
+  // string a_samplerate = 5;
+  if (this->a_samplerate().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_settinginfo5());
+        this->_internal_a_samplerate());
   }
 
-  // string settingInfo6 = 6;
-  if (this->settinginfo6().size() > 0) {
+  // string a_quantization = 6;
+  if (this->a_quantization().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_settinginfo6());
+        this->_internal_a_quantization());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1626,23 +1626,23 @@ void SessionMessageCreate::MergeFrom(const SessionMessageCreate& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.settinginfo1().size() > 0) {
-    _internal_set_settinginfo1(from._internal_settinginfo1());
+  if (from.v_codec_info().size() > 0) {
+    _internal_set_v_codec_info(from._internal_v_codec_info());
   }
-  if (from.settinginfo2().size() > 0) {
-    _internal_set_settinginfo2(from._internal_settinginfo2());
+  if (from.v_brc_info().size() > 0) {
+    _internal_set_v_brc_info(from._internal_v_brc_info());
   }
-  if (from.settinginfo3().size() > 0) {
-    _internal_set_settinginfo3(from._internal_settinginfo3());
+  if (from.v_bitrate_info().size() > 0) {
+    _internal_set_v_bitrate_info(from._internal_v_bitrate_info());
   }
-  if (from.settinginfo4().size() > 0) {
-    _internal_set_settinginfo4(from._internal_settinginfo4());
+  if (from.v_gop_info().size() > 0) {
+    _internal_set_v_gop_info(from._internal_v_gop_info());
   }
-  if (from.settinginfo5().size() > 0) {
-    _internal_set_settinginfo5(from._internal_settinginfo5());
+  if (from.a_samplerate().size() > 0) {
+    _internal_set_a_samplerate(from._internal_a_samplerate());
   }
-  if (from.settinginfo6().size() > 0) {
-    _internal_set_settinginfo6(from._internal_settinginfo6());
+  if (from.a_quantization().size() > 0) {
+    _internal_set_a_quantization(from._internal_a_quantization());
   }
 }
 
@@ -1667,12 +1667,12 @@ bool SessionMessageCreate::IsInitialized() const {
 void SessionMessageCreate::InternalSwap(SessionMessageCreate* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  settinginfo1_.Swap(&other->settinginfo1_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo2_.Swap(&other->settinginfo2_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo3_.Swap(&other->settinginfo3_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo4_.Swap(&other->settinginfo4_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo5_.Swap(&other->settinginfo5_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo6_.Swap(&other->settinginfo6_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  v_codec_info_.Swap(&other->v_codec_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  v_brc_info_.Swap(&other->v_brc_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  v_bitrate_info_.Swap(&other->v_bitrate_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  v_gop_info_.Swap(&other->v_gop_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  a_samplerate_.Swap(&other->a_samplerate_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  a_quantization_.Swap(&other->a_quantization_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SessionMessageCreate::GetMetadata() const {
@@ -1906,9 +1906,9 @@ SessionMessageStart::SessionMessageStart(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 SessionMessageStart::SessionMessageStart(const SessionMessageStart& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  lastsate_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_lastsate().empty()) {
-    lastsate_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_lastsate(),
+  last_sate_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_last_sate().empty()) {
+    last_sate_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_last_sate(),
       GetArena());
   }
   // @@protoc_insertion_point(copy_constructor:My_Net.SessionMessageStart)
@@ -1916,7 +1916,7 @@ SessionMessageStart::SessionMessageStart(const SessionMessageStart& from)
 
 void SessionMessageStart::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SessionMessageStart_MySession_2eproto.base);
-  lastsate_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  last_sate_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 SessionMessageStart::~SessionMessageStart() {
@@ -1927,7 +1927,7 @@ SessionMessageStart::~SessionMessageStart() {
 
 void SessionMessageStart::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  lastsate_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  last_sate_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void SessionMessageStart::ArenaDtor(void* object) {
@@ -1951,7 +1951,7 @@ void SessionMessageStart::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  lastsate_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  last_sate_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1963,12 +1963,12 @@ const char* SessionMessageStart::_InternalParse(const char* ptr, ::PROTOBUF_NAME
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string LastSate = 1;
+      // string last_sate = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_lastsate();
+          auto str = _internal_mutable_last_sate();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageStart.LastSate"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageStart.last_sate"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2000,14 +2000,14 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string LastSate = 1;
-  if (this->lastsate().size() > 0) {
+  // string last_sate = 1;
+  if (this->last_sate().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_lastsate().data(), static_cast<int>(this->_internal_lastsate().length()),
+      this->_internal_last_sate().data(), static_cast<int>(this->_internal_last_sate().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageStart.LastSate");
+      "My_Net.SessionMessageStart.last_sate");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_lastsate(), target);
+        1, this->_internal_last_sate(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2026,11 +2026,11 @@ size_t SessionMessageStart::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string LastSate = 1;
-  if (this->lastsate().size() > 0) {
+  // string last_sate = 1;
+  if (this->last_sate().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_lastsate());
+        this->_internal_last_sate());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2064,8 +2064,8 @@ void SessionMessageStart::MergeFrom(const SessionMessageStart& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.lastsate().size() > 0) {
-    _internal_set_lastsate(from._internal_lastsate());
+  if (from.last_sate().size() > 0) {
+    _internal_set_last_sate(from._internal_last_sate());
   }
 }
 
@@ -2090,7 +2090,7 @@ bool SessionMessageStart::IsInitialized() const {
 void SessionMessageStart::InternalSwap(SessionMessageStart* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  lastsate_.Swap(&other->lastsate_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  last_sate_.Swap(&other->last_sate_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SessionMessageStart::GetMetadata() const {
@@ -2115,9 +2115,9 @@ SessionMessageStop::SessionMessageStop(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 SessionMessageStop::SessionMessageStop(const SessionMessageStop& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  lastsate_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_lastsate().empty()) {
-    lastsate_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_lastsate(),
+  last_sate_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_last_sate().empty()) {
+    last_sate_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_last_sate(),
       GetArena());
   }
   // @@protoc_insertion_point(copy_constructor:My_Net.SessionMessageStop)
@@ -2125,7 +2125,7 @@ SessionMessageStop::SessionMessageStop(const SessionMessageStop& from)
 
 void SessionMessageStop::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SessionMessageStop_MySession_2eproto.base);
-  lastsate_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  last_sate_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 SessionMessageStop::~SessionMessageStop() {
@@ -2136,7 +2136,7 @@ SessionMessageStop::~SessionMessageStop() {
 
 void SessionMessageStop::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  lastsate_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  last_sate_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void SessionMessageStop::ArenaDtor(void* object) {
@@ -2160,7 +2160,7 @@ void SessionMessageStop::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  lastsate_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  last_sate_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2172,12 +2172,12 @@ const char* SessionMessageStop::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string LastSate = 1;
+      // string last_sate = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_lastsate();
+          auto str = _internal_mutable_last_sate();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageStop.LastSate"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageStop.last_sate"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2209,14 +2209,14 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string LastSate = 1;
-  if (this->lastsate().size() > 0) {
+  // string last_sate = 1;
+  if (this->last_sate().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_lastsate().data(), static_cast<int>(this->_internal_lastsate().length()),
+      this->_internal_last_sate().data(), static_cast<int>(this->_internal_last_sate().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageStop.LastSate");
+      "My_Net.SessionMessageStop.last_sate");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_lastsate(), target);
+        1, this->_internal_last_sate(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2235,11 +2235,11 @@ size_t SessionMessageStop::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string LastSate = 1;
-  if (this->lastsate().size() > 0) {
+  // string last_sate = 1;
+  if (this->last_sate().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_lastsate());
+        this->_internal_last_sate());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2273,8 +2273,8 @@ void SessionMessageStop::MergeFrom(const SessionMessageStop& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.lastsate().size() > 0) {
-    _internal_set_lastsate(from._internal_lastsate());
+  if (from.last_sate().size() > 0) {
+    _internal_set_last_sate(from._internal_last_sate());
   }
 }
 
@@ -2299,7 +2299,7 @@ bool SessionMessageStop::IsInitialized() const {
 void SessionMessageStop::InternalSwap(SessionMessageStop* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  lastsate_.Swap(&other->lastsate_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  last_sate_.Swap(&other->last_sate_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SessionMessageStop::GetMetadata() const {
@@ -2324,34 +2324,34 @@ SessionMessageReset::SessionMessageReset(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 SessionMessageReset::SessionMessageReset(const SessionMessageReset& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  settinginfo1_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_settinginfo1().empty()) {
-    settinginfo1_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_settinginfo1(),
+  reset_v_codec_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_reset_v_codec_info().empty()) {
+    reset_v_codec_info_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_reset_v_codec_info(),
       GetArena());
   }
-  settinginfo2_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_settinginfo2().empty()) {
-    settinginfo2_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_settinginfo2(),
+  reset_v_brc_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_reset_v_brc_info().empty()) {
+    reset_v_brc_info_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_reset_v_brc_info(),
       GetArena());
   }
-  settinginfo3_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_settinginfo3().empty()) {
-    settinginfo3_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_settinginfo3(),
+  reset_v_bitrate_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_reset_v_bitrate_info().empty()) {
+    reset_v_bitrate_info_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_reset_v_bitrate_info(),
       GetArena());
   }
-  settinginfo4_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_settinginfo4().empty()) {
-    settinginfo4_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_settinginfo4(),
+  reset_v_gop_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_reset_v_gop_info().empty()) {
+    reset_v_gop_info_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_reset_v_gop_info(),
       GetArena());
   }
-  settinginfo5_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_settinginfo5().empty()) {
-    settinginfo5_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_settinginfo5(),
+  reset_a_samplerate_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_reset_a_samplerate().empty()) {
+    reset_a_samplerate_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_reset_a_samplerate(),
       GetArena());
   }
-  settinginfo6_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_settinginfo6().empty()) {
-    settinginfo6_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_settinginfo6(),
+  reset_a_quantization_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_reset_a_quantization().empty()) {
+    reset_a_quantization_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_reset_a_quantization(),
       GetArena());
   }
   // @@protoc_insertion_point(copy_constructor:My_Net.SessionMessageReset)
@@ -2359,12 +2359,12 @@ SessionMessageReset::SessionMessageReset(const SessionMessageReset& from)
 
 void SessionMessageReset::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SessionMessageReset_MySession_2eproto.base);
-  settinginfo1_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo2_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo3_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo4_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo5_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo6_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  reset_v_codec_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  reset_v_brc_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  reset_v_bitrate_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  reset_v_gop_info_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  reset_a_samplerate_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  reset_a_quantization_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 SessionMessageReset::~SessionMessageReset() {
@@ -2375,12 +2375,12 @@ SessionMessageReset::~SessionMessageReset() {
 
 void SessionMessageReset::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  settinginfo1_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo2_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo3_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo4_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo5_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  settinginfo6_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  reset_v_codec_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  reset_v_brc_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  reset_v_bitrate_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  reset_v_gop_info_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  reset_a_samplerate_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  reset_a_quantization_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void SessionMessageReset::ArenaDtor(void* object) {
@@ -2404,12 +2404,12 @@ void SessionMessageReset::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  settinginfo1_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo2_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo3_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo4_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo5_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo6_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  reset_v_codec_info_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  reset_v_brc_info_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  reset_v_bitrate_info_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  reset_v_gop_info_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  reset_a_samplerate_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  reset_a_quantization_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2421,57 +2421,57 @@ const char* SessionMessageReset::_InternalParse(const char* ptr, ::PROTOBUF_NAME
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string SettingInfo1 = 1;
+      // string reset_v_codec_info = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_settinginfo1();
+          auto str = _internal_mutable_reset_v_codec_info();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageReset.SettingInfo1"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageReset.reset_v_codec_info"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string SettingInfo2 = 2;
+      // string reset_v_brc_info = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          auto str = _internal_mutable_settinginfo2();
+          auto str = _internal_mutable_reset_v_brc_info();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageReset.SettingInfo2"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageReset.reset_v_brc_info"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string SettingInfo3 = 3;
+      // string reset_v_bitrate_info = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          auto str = _internal_mutable_settinginfo3();
+          auto str = _internal_mutable_reset_v_bitrate_info();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageReset.SettingInfo3"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageReset.reset_v_bitrate_info"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string SettingInfo4 = 4;
+      // string reset_v_gop_info = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          auto str = _internal_mutable_settinginfo4();
+          auto str = _internal_mutable_reset_v_gop_info();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageReset.SettingInfo4"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageReset.reset_v_gop_info"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string SettingInfo5 = 5;
+      // string reset_a_samplerate = 5;
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
-          auto str = _internal_mutable_settinginfo5();
+          auto str = _internal_mutable_reset_a_samplerate();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageReset.SettingInfo5"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageReset.reset_a_samplerate"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string SettingInfo6 = 6;
+      // string reset_a_quantization = 6;
       case 6:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
-          auto str = _internal_mutable_settinginfo6();
+          auto str = _internal_mutable_reset_a_quantization();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageReset.SettingInfo6"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "My_Net.SessionMessageReset.reset_a_quantization"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2503,64 +2503,64 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string SettingInfo1 = 1;
-  if (this->settinginfo1().size() > 0) {
+  // string reset_v_codec_info = 1;
+  if (this->reset_v_codec_info().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_settinginfo1().data(), static_cast<int>(this->_internal_settinginfo1().length()),
+      this->_internal_reset_v_codec_info().data(), static_cast<int>(this->_internal_reset_v_codec_info().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageReset.SettingInfo1");
+      "My_Net.SessionMessageReset.reset_v_codec_info");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_settinginfo1(), target);
+        1, this->_internal_reset_v_codec_info(), target);
   }
 
-  // string SettingInfo2 = 2;
-  if (this->settinginfo2().size() > 0) {
+  // string reset_v_brc_info = 2;
+  if (this->reset_v_brc_info().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_settinginfo2().data(), static_cast<int>(this->_internal_settinginfo2().length()),
+      this->_internal_reset_v_brc_info().data(), static_cast<int>(this->_internal_reset_v_brc_info().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageReset.SettingInfo2");
+      "My_Net.SessionMessageReset.reset_v_brc_info");
     target = stream->WriteStringMaybeAliased(
-        2, this->_internal_settinginfo2(), target);
+        2, this->_internal_reset_v_brc_info(), target);
   }
 
-  // string SettingInfo3 = 3;
-  if (this->settinginfo3().size() > 0) {
+  // string reset_v_bitrate_info = 3;
+  if (this->reset_v_bitrate_info().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_settinginfo3().data(), static_cast<int>(this->_internal_settinginfo3().length()),
+      this->_internal_reset_v_bitrate_info().data(), static_cast<int>(this->_internal_reset_v_bitrate_info().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageReset.SettingInfo3");
+      "My_Net.SessionMessageReset.reset_v_bitrate_info");
     target = stream->WriteStringMaybeAliased(
-        3, this->_internal_settinginfo3(), target);
+        3, this->_internal_reset_v_bitrate_info(), target);
   }
 
-  // string SettingInfo4 = 4;
-  if (this->settinginfo4().size() > 0) {
+  // string reset_v_gop_info = 4;
+  if (this->reset_v_gop_info().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_settinginfo4().data(), static_cast<int>(this->_internal_settinginfo4().length()),
+      this->_internal_reset_v_gop_info().data(), static_cast<int>(this->_internal_reset_v_gop_info().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageReset.SettingInfo4");
+      "My_Net.SessionMessageReset.reset_v_gop_info");
     target = stream->WriteStringMaybeAliased(
-        4, this->_internal_settinginfo4(), target);
+        4, this->_internal_reset_v_gop_info(), target);
   }
 
-  // string SettingInfo5 = 5;
-  if (this->settinginfo5().size() > 0) {
+  // string reset_a_samplerate = 5;
+  if (this->reset_a_samplerate().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_settinginfo5().data(), static_cast<int>(this->_internal_settinginfo5().length()),
+      this->_internal_reset_a_samplerate().data(), static_cast<int>(this->_internal_reset_a_samplerate().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageReset.SettingInfo5");
+      "My_Net.SessionMessageReset.reset_a_samplerate");
     target = stream->WriteStringMaybeAliased(
-        5, this->_internal_settinginfo5(), target);
+        5, this->_internal_reset_a_samplerate(), target);
   }
 
-  // string SettingInfo6 = 6;
-  if (this->settinginfo6().size() > 0) {
+  // string reset_a_quantization = 6;
+  if (this->reset_a_quantization().size() > 0) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_settinginfo6().data(), static_cast<int>(this->_internal_settinginfo6().length()),
+      this->_internal_reset_a_quantization().data(), static_cast<int>(this->_internal_reset_a_quantization().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "My_Net.SessionMessageReset.SettingInfo6");
+      "My_Net.SessionMessageReset.reset_a_quantization");
     target = stream->WriteStringMaybeAliased(
-        6, this->_internal_settinginfo6(), target);
+        6, this->_internal_reset_a_quantization(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2579,46 +2579,46 @@ size_t SessionMessageReset::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string SettingInfo1 = 1;
-  if (this->settinginfo1().size() > 0) {
+  // string reset_v_codec_info = 1;
+  if (this->reset_v_codec_info().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_settinginfo1());
+        this->_internal_reset_v_codec_info());
   }
 
-  // string SettingInfo2 = 2;
-  if (this->settinginfo2().size() > 0) {
+  // string reset_v_brc_info = 2;
+  if (this->reset_v_brc_info().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_settinginfo2());
+        this->_internal_reset_v_brc_info());
   }
 
-  // string SettingInfo3 = 3;
-  if (this->settinginfo3().size() > 0) {
+  // string reset_v_bitrate_info = 3;
+  if (this->reset_v_bitrate_info().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_settinginfo3());
+        this->_internal_reset_v_bitrate_info());
   }
 
-  // string SettingInfo4 = 4;
-  if (this->settinginfo4().size() > 0) {
+  // string reset_v_gop_info = 4;
+  if (this->reset_v_gop_info().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_settinginfo4());
+        this->_internal_reset_v_gop_info());
   }
 
-  // string SettingInfo5 = 5;
-  if (this->settinginfo5().size() > 0) {
+  // string reset_a_samplerate = 5;
+  if (this->reset_a_samplerate().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_settinginfo5());
+        this->_internal_reset_a_samplerate());
   }
 
-  // string SettingInfo6 = 6;
-  if (this->settinginfo6().size() > 0) {
+  // string reset_a_quantization = 6;
+  if (this->reset_a_quantization().size() > 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_settinginfo6());
+        this->_internal_reset_a_quantization());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2652,23 +2652,23 @@ void SessionMessageReset::MergeFrom(const SessionMessageReset& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.settinginfo1().size() > 0) {
-    _internal_set_settinginfo1(from._internal_settinginfo1());
+  if (from.reset_v_codec_info().size() > 0) {
+    _internal_set_reset_v_codec_info(from._internal_reset_v_codec_info());
   }
-  if (from.settinginfo2().size() > 0) {
-    _internal_set_settinginfo2(from._internal_settinginfo2());
+  if (from.reset_v_brc_info().size() > 0) {
+    _internal_set_reset_v_brc_info(from._internal_reset_v_brc_info());
   }
-  if (from.settinginfo3().size() > 0) {
-    _internal_set_settinginfo3(from._internal_settinginfo3());
+  if (from.reset_v_bitrate_info().size() > 0) {
+    _internal_set_reset_v_bitrate_info(from._internal_reset_v_bitrate_info());
   }
-  if (from.settinginfo4().size() > 0) {
-    _internal_set_settinginfo4(from._internal_settinginfo4());
+  if (from.reset_v_gop_info().size() > 0) {
+    _internal_set_reset_v_gop_info(from._internal_reset_v_gop_info());
   }
-  if (from.settinginfo5().size() > 0) {
-    _internal_set_settinginfo5(from._internal_settinginfo5());
+  if (from.reset_a_samplerate().size() > 0) {
+    _internal_set_reset_a_samplerate(from._internal_reset_a_samplerate());
   }
-  if (from.settinginfo6().size() > 0) {
-    _internal_set_settinginfo6(from._internal_settinginfo6());
+  if (from.reset_a_quantization().size() > 0) {
+    _internal_set_reset_a_quantization(from._internal_reset_a_quantization());
   }
 }
 
@@ -2693,12 +2693,12 @@ bool SessionMessageReset::IsInitialized() const {
 void SessionMessageReset::InternalSwap(SessionMessageReset* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  settinginfo1_.Swap(&other->settinginfo1_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo2_.Swap(&other->settinginfo2_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo3_.Swap(&other->settinginfo3_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo4_.Swap(&other->settinginfo4_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo5_.Swap(&other->settinginfo5_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  settinginfo6_.Swap(&other->settinginfo6_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  reset_v_codec_info_.Swap(&other->reset_v_codec_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  reset_v_brc_info_.Swap(&other->reset_v_brc_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  reset_v_bitrate_info_.Swap(&other->reset_v_bitrate_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  reset_v_gop_info_.Swap(&other->reset_v_gop_info_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  reset_a_samplerate_.Swap(&other->reset_a_samplerate_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  reset_a_quantization_.Swap(&other->reset_a_quantization_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SessionMessageReset::GetMetadata() const {

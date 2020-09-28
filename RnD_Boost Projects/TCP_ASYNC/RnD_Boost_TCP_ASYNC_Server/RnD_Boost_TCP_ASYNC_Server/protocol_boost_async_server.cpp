@@ -23,13 +23,11 @@
 #include "google/protobuf/util/time_util.h"
 #include <google/protobuf/util/json_util.h>
 
+#include <deque>
 #include <iostream>
 #include <memory>
 #include <mutex>
 #include <boost/asio.hpp>
-
-char sendbuffer[6] = "hello";
-char recvbuffer[19];
 
 static std::mutex g_Mutex;
 
@@ -87,7 +85,7 @@ public:
 	{		
 
 		boost::asio::async_read_until(_socket,
-			buffer_, "\r\n",
+			_read_buffer, "\r\n",
 			[this](boost::system::error_code ec, std::size_t length)
 			{
 
@@ -98,10 +96,11 @@ public:
 						std::cout << "[DEBUG] Read recv : " << length << std::endl;
 						#endif
 
-						readSize = length;
 
-						std::string recvStr = make_string(buffer_);
+						std::string recvStr = make_string(_read_buffer);
 						recvStr = recvStr.substr(0, recvStr.size() - 2);
+						_read_buffer.consume(length);
+
 
 						My_Net::Session mySessionRead;
 						mySessionRead.ParseFromString(recvStr);
@@ -111,6 +110,7 @@ public:
 						std::cout << mySessionRead.content_type() << std::endl;
 						std::cout << mySessionRead.date() << std::endl;
 						std::cout << mySessionRead.content_length() << std::endl;
+						std::cout << mySessionRead.message() << std::endl;
 
 						/// <Body>
 						/// // REF : https://m.blog.naver.com/PostView.nhn?blogId=devmachine&logNo=220952781191&proxyReferer=https:%2F%2Fwww.google.com%2F
@@ -119,21 +119,21 @@ public:
 						case HashCode("MY_SESSION_INIT"):
 							{
 								My_Net::SessionMessageInit myMessageInit;
-								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageInit);
+								google::protobuf::util::JsonStringToMessage(mySessionRead.message(), &myMessageInit);
 
-								std::cout << myMessageInit.sessionkey() << std::endl;
+								std::cout << myMessageInit.session_key() << std::endl;
 								break;
 							}
 
 						case HashCode("MY_SESSION_IDENTIFIED"):
 							{
 								My_Net::SessionMessageIdentified myMessageIdentified;
-								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageIdentified);
+								google::protobuf::util::JsonStringToMessage(mySessionRead.message(), &myMessageIdentified);
 
-								std::cout << myMessageIdentified.systeminfo1() << std::endl;
-								std::cout << myMessageIdentified.systeminfo2() << std::endl;
-								std::cout << myMessageIdentified.systeminfo3() << std::endl;
-								std::cout << myMessageIdentified.systeminfo4() << std::endl;
+								std::cout << myMessageIdentified.cpu_info() << std::endl;
+								std::cout << myMessageIdentified.res_info() << std::endl;
+								std::cout << myMessageIdentified.mem_info() << std::endl;
+								std::cout << myMessageIdentified.net_info() << std::endl;
 								std::cout << myMessageIdentified.bandwidth() << std::endl;
 								break;
 							}
@@ -141,21 +141,21 @@ public:
 						case HashCode("MY_SESSION_CREATE"):
 							{
 								My_Net::SessionMessageCreate myMessageCreate;
-								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageCreate);
+								google::protobuf::util::JsonStringToMessage(mySessionRead.message(), &myMessageCreate);
 
-								std::cout << myMessageCreate.settinginfo1() << std::endl;
-								std::cout << myMessageCreate.settinginfo2() << std::endl;
-								std::cout << myMessageCreate.settinginfo3() << std::endl;
-								std::cout << myMessageCreate.settinginfo4() << std::endl;
-								std::cout << myMessageCreate.settinginfo5() << std::endl;
-								std::cout << myMessageCreate.settinginfo6() << std::endl;
+								std::cout << myMessageCreate.v_codec_info() << std::endl;
+								std::cout << myMessageCreate.v_brc_info() << std::endl;
+								std::cout << myMessageCreate.v_bitrate_info() << std::endl;
+								std::cout << myMessageCreate.v_gop_info() << std::endl;
+								std::cout << myMessageCreate.a_samplerate() << std::endl;
+								std::cout << myMessageCreate.a_quantization() << std::endl;
 								break;
 							}
 
 						case HashCode("MY_SESSION_DELETE"):
 							{
 								My_Net::SessionMessageDelete myMessageDelete;
-								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageDelete);
+								google::protobuf::util::JsonStringToMessage(mySessionRead.message(), &myMessageDelete);
 
 								std::cout << myMessageDelete.usage_time() << std::endl;
 								break;
@@ -164,31 +164,31 @@ public:
 						case HashCode("MY_SESSION_START"):
 							{
 								My_Net::SessionMessageStart myMessageStart;
-								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageStart);
+								google::protobuf::util::JsonStringToMessage(mySessionRead.message(), &myMessageStart);
 
-								std::cout << myMessageStart.lastsate() << std::endl;
+								std::cout << myMessageStart.last_sate() << std::endl;
 								break;
 							}
 
 						case HashCode("MY_SESSION_STOP"):
 							{
 								My_Net::SessionMessageStop myMessageStop;
-								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageStop);
+								google::protobuf::util::JsonStringToMessage(mySessionRead.message(), &myMessageStop);
 
-								std::cout << myMessageStop.lastsate() << std::endl;
+								std::cout << myMessageStop.last_sate() << std::endl;
 								break;
 							}
 						case HashCode("MY_SESSION_RESET"):
 							{
 								My_Net::SessionMessageReset myMessageReset;
-								google::protobuf::util::JsonStringToMessage(mySessionRead.body(), &myMessageReset);
+								google::protobuf::util::JsonStringToMessage(mySessionRead.message(), &myMessageReset);
 
-								std::cout << myMessageReset.settinginfo1() << std::endl;
-								std::cout << myMessageReset.settinginfo2() << std::endl;
-								std::cout << myMessageReset.settinginfo3() << std::endl;
-								std::cout << myMessageReset.settinginfo4() << std::endl;
-								std::cout << myMessageReset.settinginfo5() << std::endl;
-								std::cout << myMessageReset.settinginfo6() << std::endl;
+								std::cout << myMessageReset.reset_v_codec_info() << std::endl;
+								std::cout << myMessageReset.reset_v_brc_info() << std::endl;
+								std::cout << myMessageReset.reset_v_bitrate_info() << std::endl;
+								std::cout << myMessageReset.reset_v_gop_info() << std::endl;
+								std::cout << myMessageReset.reset_a_samplerate() << std::endl;
+								std::cout << myMessageReset.reset_a_quantization() << std::endl;
 								break;
 							}
 
@@ -196,8 +196,11 @@ public:
 							std::cerr << "Message type is out of range" << std::endl;
 							break;
 						}
-						/// </Body
+						// </Body>
 
+
+						std::string writeMessage = "resp for " + mySessionRead.content_type() + "\r\n";
+						_write_msgs.push_back(writeMessage);
 
 						Write();
 					}
@@ -211,19 +214,28 @@ public:
 	void Write()
 	{
 		boost::asio::async_write(_socket,
-			boost::asio::buffer(sendbuffer, 6),
+			boost::asio::buffer(_write_msgs.front().data(),
+				_write_msgs.front().length()),
 			[this](boost::system::error_code ec, std::size_t length)
 			{
 					if (!ec)
 					{
-						#if _DEBUG
+#if _DEBUG
 						std::cout << "[DEBUG] Write Data from Client " << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
 						std::cout << "[DEBUG] Write length : " << length << std::endl;
-						#endif
+#endif
 
-						buffer_.consume(readSize);
-
-						Read();
+						_write_msgs.pop_front();
+						if (_write_msgs.empty())
+						{
+							Read();
+						}
+						else
+						{
+#if _DEBUG
+							std::cout << "[DEBUG] Write is not empty " << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
+#endif
+						}
 
 					}
 					else
@@ -245,8 +257,10 @@ private:
 	};
 
 	boost::asio::ip::tcp::socket _socket;
-	boost::asio::streambuf buffer_;
-	size_t readSize;
+
+
+	boost::asio::streambuf _read_buffer;
+	std::deque<std::string> _write_msgs;
 
 };
 
@@ -298,9 +312,6 @@ private:
 				do_accept();
 			});
 	}
-
-	
-
 	std::thread _worker;
 	std::unique_ptr<Session> _mySession;
 

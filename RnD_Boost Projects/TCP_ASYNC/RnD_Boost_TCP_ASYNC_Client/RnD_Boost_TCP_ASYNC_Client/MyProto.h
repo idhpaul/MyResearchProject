@@ -32,4 +32,12 @@ void StopProto();
 
 void InitProtoData(My_Net::Session& data);
 
+void MakeMessageInit(std::string& outStr, int* strlength);
+void MakeMessageIdentified(std::string& outStr, int* strlength);
+void MakeMessageCreate(std::string& outStr, int* strlength);
+void MakeMessageDelete(std::string& outStr, int* strlength);
+void MakeMessageStart(std::string& outStr, int* strlength);
+void MakeMessageStop(std::string& outStr, int* strlength);
+void MakeMessageReset(std::string& outStr, int* strlength);
+
 #endif // !MYPROTO_H

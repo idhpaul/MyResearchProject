@@ -1,6 +1,6 @@
 /*******************************************************************************
 * Created  		Sep 21, 2020
-* Modified  	Sep 21, 2020
+* Modified  		Sep 21, 2020
 * FILE:			MySession.proto
 * Author:		IDH 
 * DESCRIPTION:	Session Control Message Specific
@@ -11,8 +11,6 @@
 // 1 ~ 3 : Node information
 // 4 ~ 6 : Session state inforamtion
 // 7 ~ 9 : Message Type information
-
-// TODO : Network Bandwidth message protocol
 
 syntax = "proto3";
 package My_Net;
@@ -33,33 +31,31 @@ message Session
 
 	google.protobuf.Timestamp date = 13;		// RFC 3339 date string format (2020-01-01T12:00:00.00Z)
 	int32 content_length = 14;					// Body Length
-	string body = 15;
+	string message = 15;
 }
 
 message SessionMessageInit
 {
-	string sessionKey = 1;						// Session crypto key
+	string session_key = 1;						// Session crypto key
 }
 
 message SessionMessageIdentified
 {
-	string system_info_one = 1;						// e.g CPU Information
-	string system_info_two = 2;						// e.g Acceptable Resolution Information
-	string system_info_three = 3;						// e.g Memory Infomation
-	string system_info_four = 4;						// e.g Network Information
-
-	string bandwidth = 15;						// e.g Network Bandwidth Check Time
+	string cpu_info = 1;						// e.g CPU Information
+	string res_info = 2;						// e.g Acceptable Resolution Information
+	string mem_info = 3;						// e.g Memory Infomation
+	string net_info = 4;						// e.g Network Information
+	string bandwidth = 5;							// e.g Network Bandwidth Check Time
 }
 
 message SessionMessageCreate
 {
-	string setting_info_one = 1;						// e.g CPU Information
-	string setting_info_two = 2;						// e.g Acceptable Resolution Information
-	string setting_info_three = 3;						// e.g Memory Infomation
-	string setting_info_four = 4;						// e.g Network Information
-
-	string ssetting_info_five = 5;					// e.g Audio Samplerate Information
-	string setting_info_six = 6;					// e.g Audio Quantization Information
+	string v_codec_info = 1;						// e.g CPU Information
+	string v_brc_info = 2;						// e.g Acceptable Resolution Information
+	string v_bitrate_info = 3;						// e.g Memory Infomation
+	string v_gop_info = 4;						// e.g Network Information
+	string a_samplerate = 5;					// e.g Audio Samplerate Information
+	string a_quantization = 6;					// e.g Audio Quantization Information
 }
 
 message SessionMessageDelete
@@ -70,23 +66,20 @@ message SessionMessageDelete
 
 message SessionMessageStart
 {
-	string LastSate = 1;						// e.g Last programe state Information 
-												// ex) "Video:done / Audio:done / HID:done"
+	string last_sate = 1;						// e.g Last programe state Information ex) "Video:done / Audio:done / HID:done"
 }
 
 message SessionMessageStop
 {
-	string LastSate = 1;						// e.g Last programe state Information
-												// ex) "Switch Desktop detected"
+	string last_sate = 1;						// e.g Last programe state Information ex) "Switch Desktop detected"
 }
 
 message SessionMessageReset
 {
-	string SettingInfo1 = 1;					// e.g Codec Information
-	string SettingInfo2 = 2;					// e.g BRC Information
-	string SettingInfo3 = 3;					// e.g Bitrate Information
-	string SettingInfo4 = 4;					// e.g GOP Information
-
-	string SettingInfo5 = 5;					// e.g Audio Samplerate Information
-	string SettingInfo6 = 6;					// e.g Audio Quantization Information
+	string reset_v_codec_info = 1;					// e.g Codec Information
+	string reset_v_brc_info = 2;					// e.g BRC Information
+	string reset_v_bitrate_info = 3;					// e.g Bitrate Information
+	string reset_v_gop_info = 4;					// e.g GOP Information
+	string reset_a_samplerate = 5;					// e.g Audio Samplerate Information
+	string reset_a_quantization = 6;					// e.g Audio Quantization Information
 }
