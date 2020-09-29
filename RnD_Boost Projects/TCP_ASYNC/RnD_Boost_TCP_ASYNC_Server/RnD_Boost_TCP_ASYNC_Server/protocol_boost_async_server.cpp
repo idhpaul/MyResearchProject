@@ -140,6 +140,7 @@ public:
 
 						case HashCode("MY_SESSION_CREATE"):
 							{
+
 								My_Net::SessionMessageCreate myMessageCreate;
 								google::protobuf::util::JsonStringToMessage(mySessionRead.message(), &myMessageCreate);
 
@@ -149,6 +150,7 @@ public:
 								std::cout << myMessageCreate.v_gop_info() << std::endl;
 								std::cout << myMessageCreate.a_samplerate() << std::endl;
 								std::cout << myMessageCreate.a_quantization() << std::endl;
+
 								break;
 							}
 
@@ -167,6 +169,9 @@ public:
 								google::protobuf::util::JsonStringToMessage(mySessionRead.message(), &myMessageStart);
 
 								std::cout << myMessageStart.last_sate() << std::endl;
+
+								// connect message to SA
+
 								break;
 							}
 
@@ -323,6 +328,9 @@ private:
 
 int main()
 {
+
+	// Get TX setting
+	// message : tx-info , ready
 
 	boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), 8090);
 

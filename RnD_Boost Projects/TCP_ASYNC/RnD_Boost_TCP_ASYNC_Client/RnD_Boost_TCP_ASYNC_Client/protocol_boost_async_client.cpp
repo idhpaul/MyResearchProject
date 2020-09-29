@@ -396,7 +396,7 @@ private:
 	void do_connect(const boost::asio::ip::tcp::resolver::results_type& endpoints)
 	{
 		boost::asio::async_connect(_socket, endpoints,
-			[this](boost::system::error_code ec, boost::asio::ip::tcp::endpoint)
+			[this, &endpoints](boost::system::error_code ec, boost::asio::ip::tcp::endpoint)
 			{
 				std::cout << "do connect" << "(" << __FUNCTION__ << " : " << __LINE__ << ")" << std::endl;
 
@@ -406,6 +406,10 @@ private:
 					set_SocketOption();
 
 					do_SESSION_INIT();
+				}
+				else
+				{
+					do_connect(endpoints);
 				}
 			});
 	};
@@ -499,9 +503,6 @@ int main()
 {
 
 	ClientSession client("localhost","8090");
-
-	//client.do_SESSION_INIT();
-	Sleep(5000);
 
 	client.do_SESSION_IDENTIFIED();
 	Sleep(5000);
