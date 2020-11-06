@@ -20,6 +20,9 @@ std::string renderer_name_;
 SDL_Renderer* renderer_ = nullptr;
 SDL_Texture* texture_ = nullptr;
 
+int gTotalDisplays = 0;
+SDL_Rect* gDisplayBounds = NULL;
+
 IDirect3DDevice9* device_ = nullptr;
 SDL_GLContext gl_context_ = nullptr;
 
@@ -119,6 +122,19 @@ bool SDL_Init()
 	SDL_SetRenderDrawColor(renderer_, 114, 144, 154, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(renderer_);
 	SDL_RenderPresent(renderer_);
+
+	gTotalDisplays = SDL_GetNumVideoDisplays();
+	if (gTotalDisplays < 2)
+	{
+		printf("Warning: Only one display connected!");
+	}
+
+	//Get bounds of each display
+	gDisplayBounds = new SDL_Rect[gTotalDisplays];
+	for (int i = 0; i < gTotalDisplays; ++i)
+	{
+		SDL_GetDisplayBounds(i, &gDisplayBounds[i]);
+	}
 
 	overlay_ = new Overlay;
 
@@ -263,7 +279,7 @@ int main()
 		SDL_Event event;
 		if (SDL_WaitEvent(&event)) {
 			//window.Porcess(event);
-			ImGui_ImplSDL2_ProcessEvent(&event);
+			//ImGui_ImplSDL2_ProcessEvent(&event);
 
 			switch (event.type)
 			{

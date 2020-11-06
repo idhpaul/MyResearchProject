@@ -1,5 +1,9 @@
-#include "overlay.h"
+﻿#include "overlay.h"
+#include <iostream>
 #include <mutex>
+
+extern SDL_Rect* gDisplayBounds;
+
 Overlay::Overlay()
 {
 }
@@ -107,6 +111,8 @@ void Overlay::Init()
 		ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
 		ImGui::GetStyle().AntiAliasedLines = false;
 		ImGui::GetStyle().WindowRounding = 0;
+
+		ImGui::GetIO().Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\malgun.ttf", 15.0f,NULL, ImGui::GetIO().Fonts->GetGlyphRangesKorean());
 		});
 }
 
@@ -167,6 +173,51 @@ bool Overlay::Copy()
     {
         if (ImGui::BeginTabItem("Video Info"))
         {
+			if (ImGui::Button(u8"전체 화면"))
+			{
+				printf("전체 화면\n");
+
+				int mWindowDisplayID;
+				mWindowDisplayID = SDL_GetWindowDisplayIndex(window_);
+
+#if _DEBUG
+				int mHeight;
+				int mWidth;
+				SDL_GetWindowPosition(window_, &mWidth, &mHeight);
+
+
+				std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+				std::cout << "Display x,y : " << mWidth << ", " << mHeight << std::endl;
+				std::cout << "Display num : " << mWindowDisplayID << std::endl;
+
+				std::cout << "gDisplayBounds[mWindowDisplayID].x and y : " << gDisplayBounds[mWindowDisplayID].x << ", " << gDisplayBounds[mWindowDisplayID].y << std::endl;
+				std::cout << "gDisplayBounds[mWindowDisplayID].w and h : " << gDisplayBounds[mWindowDisplayID].w << ", " << gDisplayBounds[mWindowDisplayID].h << std::endl;
+
+				std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << std::endl;
+#endif
+
+				SDL_SetWindowResizable(window_, SDL_FALSE);
+				SDL_SetWindowSize(window_, 1920, 1080);
+				SDL_SetWindowPosition(window_, gDisplayBounds[mWindowDisplayID].x, gDisplayBounds[mWindowDisplayID].y);
+			}
+
+			ImGui::SameLine();
+			if (ImGui::Button(u8"창모드"))
+			{
+				printf("창모드\n");
+
+				int mHeight;
+				int mWidth;
+				SDL_GetWindowPosition(window_, &mWidth, &mHeight);
+
+
+				SDL_SetWindowResizable(window_, SDL_TRUE);
+				SDL_SetWindowSize(window_, 1280, 720);
+				SDL_SetWindowPosition(window_, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+			}
+
+			ImGui::SameLine();
+
 			ImGui::EndTabItem();
         }
 
