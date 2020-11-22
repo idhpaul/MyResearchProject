@@ -148,7 +148,7 @@ int main()
 
 
 	//Set Audio Device format
-	Get_audio_format(24, 48000);
+	Get_audio_format(16, 48000);
 
 	hr_READ = pDevice_READ->Activate(__uuidof(IAudioClient), CLSCTX_ALL, NULL, (void**)&audioClient);
 	if (FAILED(hr_READ))
