@@ -502,7 +502,7 @@ private:
 int main()
 {
 
-	ClientSession client("localhost","8090");
+	ClientSession client("192.168.0.202","8090");
 
 	client.do_SESSION_IDENTIFIED();
 	Sleep(5000);

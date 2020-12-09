@@ -1,3 +1,5 @@
+#include <iostream>
+#include <thread>
 #include <stdio.h>
 
 #include <Windows.h>
@@ -470,7 +472,14 @@ ProcessEvent(SDL_Event *event) {
 			event->button.x,
 			event->button.y);
 
-		printf("mouse up\n");
+		std::cout << "Mouse up" << std::endl;
+		std::cout << "\t button : " << event->button.button << std::endl;
+		std::cout << "\t button x : " << event->button.x << std::endl;
+		std::cout << "\t button y : " << event->button.y << std::endl;
+		std::cout << "\t button state : " << event->button.state << std::endl;
+		std::cout << "\t button type : " << event->button.type << std::endl;
+
+
 		break;
 	case SDL_MOUSEBUTTONDOWN:
 
@@ -479,6 +488,11 @@ ProcessEvent(SDL_Event *event) {
 			event->button.y);
 
 		printf("mouse down\n");
+		std::cout << "\t button : " << event->button.button << std::endl;
+		std::cout << "\t button x : " << event->button.x << std::endl;
+		std::cout << "\t button y : " << event->button.y << std::endl;
+		std::cout << "\t button state : " << event->button.state << std::endl;
+		std::cout << "\t button type : " << event->button.type << std::endl;
 		break;
 	case SDL_MOUSEMOTION:
 
@@ -491,6 +505,11 @@ ProcessEvent(SDL_Event *event) {
 			0/*relativeMouseMode == 0 ? 0 : 1*/);
 
 		printf("mouse motion\n");
+		std::cout << "\t button : " << event->button.button << std::endl;
+		std::cout << "\t button x : " << event->button.x << std::endl;
+		std::cout << "\t button y : " << event->button.y << std::endl;
+		std::cout << "\t button state : " << event->button.state << std::endl;
+		std::cout << "\t button type : " << event->button.type << std::endl;
 		break;
 #if 1	// only support SDL2
 	case SDL_MOUSEWHEEL:
@@ -499,6 +518,11 @@ ProcessEvent(SDL_Event *event) {
 
 		
 		printf("mouse wheel\n");
+		std::cout << "\t button : " << event->button.button << std::endl;
+		std::cout << "\t button x : " << event->button.x << std::endl;
+		std::cout << "\t button y : " << event->button.y << std::endl;
+		std::cout << "\t button state : " << event->button.state << std::endl;
+		std::cout << "\t button type : " << event->button.type << std::endl;
 		break;
 
 	case SDL_WINDOWEVENT:
@@ -760,17 +784,25 @@ int main()
 	//	SDL_PushEvent(&event);
 	//}
 
+
+	SDL_EventState(SDL_RENDER_DEVICE_RESET, 1);
+	SDL_EventState(SDL_RENDER_TARGETS_RESET, 1);
+
+	while (true)
+	{
+		/*if (SDL_WaitEvent(&event)) {
+			ProcessEvent(&event);
+
+			if (event.type == SDL_QUIT)
+				break;
+		}*/
+	}
 	
 	//RegisterHotKey(NULL, 26000, 0,VK_F5);
 	//HMODULE hInstance = GetModuleHandle(NULL);
 	//hHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardProc, hInstance, NULL);
 
-	while (true)
-	{		
-		if (SDL_WaitEvent(&event)) {
-			ProcessEvent(&event);
-		}
-	}
+	
 
 	
 
