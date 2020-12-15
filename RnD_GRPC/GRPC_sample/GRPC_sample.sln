@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GRPC_sample_streaming", "GR
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GRPC_sample_streaming_client", "GRPC_sample_streaming_client\GRPC_sample_streaming_client.vcxproj", "{BBD0C34F-0228-479F-8BED-93AD0DDA4C13}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GRPC_sample_stream_server", "GRPC_sample_stream_server\GRPC_sample_stream_server.vcxproj", "{01D0EE3A-680E-4E45-A766-E9B61A5FBE44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -47,6 +49,12 @@ Global
 		{BBD0C34F-0228-479F-8BED-93AD0DDA4C13}.Release|x64.ActiveCfg = Release|x64
 		{BBD0C34F-0228-479F-8BED-93AD0DDA4C13}.Release|x64.Build.0 = Release|x64
 		{BBD0C34F-0228-479F-8BED-93AD0DDA4C13}.Release|x86.ActiveCfg = Release|x64
+		{01D0EE3A-680E-4E45-A766-E9B61A5FBE44}.Debug|x64.ActiveCfg = Debug|x64
+		{01D0EE3A-680E-4E45-A766-E9B61A5FBE44}.Debug|x64.Build.0 = Debug|x64
+		{01D0EE3A-680E-4E45-A766-E9B61A5FBE44}.Debug|x86.ActiveCfg = Debug|x64
+		{01D0EE3A-680E-4E45-A766-E9B61A5FBE44}.Release|x64.ActiveCfg = Release|x64
+		{01D0EE3A-680E-4E45-A766-E9B61A5FBE44}.Release|x64.Build.0 = Release|x64
+		{01D0EE3A-680E-4E45-A766-E9B61A5FBE44}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

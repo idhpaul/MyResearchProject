@@ -20,30 +20,29 @@ using namespace FileExchange;
 std::atomic_bool shutdownRequested(false);
 
 
-//void signalHandler(int signo)
-//{
-//    shutdownRequested.store(true, std::memory_order_release);
-//}
+void signalHandler(int signo)
+{
+    shutdownRequested.store(true, std::memory_order_release);
+}
 
 
-//void setSignalHandler()
-//{
-//        struct sigaction sa;
-//        sa.sa_handler = signalHandler;
-//        sigemptyset(&sa.sa_mask);
-//        sa.sa_flags = 0;
-//        sigaction(SIGINT, &sa, NULL);
-//}
+void setSignalHandler()
+{
+    typedef void (*SignalHandlerPointer)(int);
+
+    SignalHandlerPointer previousHandler;
+    previousHandler = signal(SIGINT, signalHandler);
+}
 
 
 int main(int argc, char** argv)
 {
     try {
         gpr_log_verbosity_init();
-        gpr_set_log_verbosity(GPR_LOG_SEVERITY_ERROR);
+        gpr_set_log_verbosity(GPR_LOG_SEVERITY_DEBUG);
 
         gpr_log(GPR_DEBUG, "Setting up signal handlers");
-        //setSignalHandler();
+        setSignalHandler();
 
         gpr_log(GPR_DEBUG, "Starting server");
         FileManager fileManager(argv + 1, argv + argc);
