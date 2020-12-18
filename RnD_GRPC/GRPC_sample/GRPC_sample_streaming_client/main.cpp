@@ -70,24 +70,21 @@ void printUsage(const std::string& appName)
 }
 
 
-//void signalHandler(int signo)
-//{
-//    if (client) {
-//        client->cancel();
-//    }
-//}
-//
-//
-//void setSignalHandler()
-//{
-//        struct sigaction sa;
-//        sa.sa_handler = signalHandler;
-//        sigemptyset(&sa.sa_mask);
-//        sa.sa_flags = 0;
-//        sigaction(SIGINT, &sa, NULL);
-//}
+void signalHandler(int signo)
+{
+    if (client) {
+        client->cancel();
+    }
+}
 
 
+void setSignalHandler()
+{
+    typedef void (*SignalHandlerPointer)(int);
+
+    SignalHandlerPointer previousHandler;
+    previousHandler = signal(SIGINT, signalHandler);
+}
 
 void runRequest(FileExchangeClient* client, const RequestData& requestData)
 {
@@ -114,7 +111,7 @@ int main(int argc, char** argv)
 {
     try {
         gpr_log_verbosity_init();
-        gpr_set_log_verbosity(GPR_LOG_SEVERITY_ERROR);
+        gpr_set_log_verbosity(GPR_LOG_SEVERITY_DEBUG);
 
         RequestData requestData;
 
@@ -127,7 +124,7 @@ int main(int argc, char** argv)
             //setSignalHandler();
 
             gpr_log(GPR_DEBUG, "Starting client");
-            auto channel = grpc::CreateChannel("localhost:55555", grpc::InsecureChannelCredentials());
+            auto channel = grpc::CreateChannel("192.168.0.96:55555", grpc::InsecureChannelCredentials());
             client = std::make_unique<FileExchangeClient>(channel);
 
             //gpr_log(GPR_DEBUG, "Starting worker threads");
