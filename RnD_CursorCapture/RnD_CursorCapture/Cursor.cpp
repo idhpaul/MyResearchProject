@@ -281,6 +281,8 @@ void mouseCursorFromHCursor(HDC dc, HCURSOR cursor)
         // GetDIBits() does not provide any indication whether the bitmap has
         // alpha channel, so we use HasAlphaChannel() below to find it out.
         has_alpha = hasAlphaChannel(reinterpret_cast<const uint32_t*>(image.data()), width, height);
+
+
     }
     else
     {

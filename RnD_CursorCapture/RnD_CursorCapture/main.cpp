@@ -1,3 +1,5 @@
+#include "SocketUtil.h"
+#include "TCPSocket.h"
 #include "Cursor.h"
 
 #include <iostream>
@@ -9,10 +11,82 @@
 extern std::vector<uint8_t> image;
 #endif
 
+std::shared_ptr<TCPSocket> tcpSocket(new TCPSocket);
+SOCKET clientSocketfd = -1;
+
+#define SERVER_IP "0.0.0.0"
+#define SERVER_PORT 8099
+
+int SocketStart();
+void SocketStop();
+
+int SocketStart()
+{
+    bool bResult = false;
+
+    WSADATA wsaData;
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData))
+    {
+        std::cerr << "Win socket start failed" << std::endl;
+        WSACleanup();
+    }
+
+    tcpSocket->create();
+    //SocketUtil::setReuseAddr(tcpSocket->fd());
+    //SocketUtil::setReusePort(tcpSocket->fd());
+    //SocketUtil::setNonBlock(tcpSocket->fd());
+    //SocketUtil::setKeepAlive(tcpSocket->fd());
+
+    bResult = tcpSocket->bind(SERVER_IP, SERVER_PORT);
+    if (FALSE == bResult)
+    {
+        std::cerr << "main tcpSocket bind failed" << std::endl;
+        std::cerr << "GetLastError : " << WSAGetLastError() << std::endl;
+
+        SocketStop();
+        return -1;
+    }
+
+    bResult = tcpSocket->listen(SOMAXCONN);
+    if (FALSE == bResult)
+    {
+        std::cerr << "main tcpSocket listen failed" << std::endl;
+        std::cerr << "GetLastError : " << WSAGetLastError() << std::endl;
+
+        SocketStop();
+        return -1;
+    }
+
+    std::cout << "Listening........" << std::endl;
+
+    clientSocketfd = tcpSocket->accept();
+    if (clientSocketfd <= 0)
+    {
+        std::cerr << "main tcpSocket accept failed" << std::endl;
+        std::cerr << "GetLastError : " << WSAGetLastError() << std::endl;
+
+        SocketStop();
+        return -1;
+    }
+
+    std::cout << "Accept OK!" << std::endl;
+}
+
+void SocketStop()
+{
+    SocketUtil::close(clientSocketfd);
+    tcpSocket->close();
+
+    // Unload Windows Socket DLL
+    WSACleanup();
+}
 
 
 int main()
 {
+
+    SocketStart();
+
 #if TEST_SDL
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
@@ -40,6 +114,7 @@ int main()
 #if TEST_SDL
     //SDL_SetCursor(cursor);
     
+    int ret;
     while (SDL_TRUE)
     {
         SDL_Event event;
@@ -54,21 +129,44 @@ int main()
         }
 
         CursorInfo();
-        
-        /*SDL_PixelFormat* format = SDL_AllocFormat(SDL_PIXELFORMAT_ARGB32);
-        SDL_Surface* output = SDL_ConvertSurface(input, format, 0);
-        SDL_FreeFormat(format);*/
 
-        SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormatFrom((void*)image.data(), 32, 32, 32, 32*4, SDL_PIXELFORMAT_ARGB32);
+        // TODO : What is diff send return values
+        ret = ::send(clientSocketfd, (char*)image.data(), 4096, 0);
+        if (ret > 0)
+        {
+            std::cout << "Send OK - sendsize: " << ret << std::endl;
+        }
+        else if (ret < 0)
+        {
+            std::cout << "Send ret < 0" << std::endl;
 
-        cursor = SDL_CreateColorCursor(surface, 0, 0);
-        if (!cursor) {
+            int error = WSAGetLastError();
+
+            if (error == WSAEWOULDBLOCK || error == WSAEINPROGRESS || error == 0)
+                ret = 0;
+
+            error = SDL_FALSE;
             goto exit;
         }
-        SDL_SetCursor(cursor);
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        else
+        {
+            std::cout << "Send ret = 0" << std::endl;
+            error = SDL_FALSE;
+            goto exit;
+        }
+
+        //SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormatFrom((void*)image.data(), 32, 32, 32, 32*4, SDL_PIXELFORMAT_ARGB32);
+
+        //cursor = SDL_CreateColorCursor(surface, 0, 0);
+        //if (!cursor) {
+        //    goto exit;
+        //}
+        //SDL_SetCursor(cursor);
 
         SDL_RenderClear(renderer);
+
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+
         SDL_RenderPresent(renderer);
         Sleep(1000);
     }

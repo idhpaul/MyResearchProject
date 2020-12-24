@@ -16,6 +16,9 @@
     <Filter Include="cursorcapture">
       <UniqueIdentifier>{783cf5e4-246d-42d8-91f8-6e56edebe72b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="socket">
+      <UniqueIdentifier>{04a29cd4-40e7-4f99-88fd-c9d00d0094aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,6 +27,12 @@
     <ClCompile Include="Cursor.cpp">
       <Filter>cursorcapture</Filter>
     </ClCompile>
+    <ClCompile Include="SocketUtil.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPSocket.cpp">
+      <Filter>socket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cursor.h">
@@ -31,6 +40,15 @@
     </ClInclude>
     <ClInclude Include="scoped_gdi_object.h">
       <Filter>cursorcapture</Filter>
+    </ClInclude>
+    <ClInclude Include="Socket.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketUtil.h">
+      <Filter>socket</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPSocket.h">
+      <Filter>socket</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
