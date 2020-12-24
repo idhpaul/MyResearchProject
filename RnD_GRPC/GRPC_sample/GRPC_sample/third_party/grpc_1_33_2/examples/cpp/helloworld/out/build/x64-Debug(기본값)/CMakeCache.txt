@@ -14,14 +14,35 @@
 # EXTERNAL cache entries
 ########################
 
+//Path to a program.
+CMAKE_AR:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/bin/Hostx64/x64/lib.exe
+
 //No help, variable specified on the command line.
 CMAKE_BUILD_TYPE:STRING=Debug
 
 //No help, variable specified on the command line.
-CMAKE_CXX_COMPILER:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.27.29110/bin/Hostx64/x64/cl.exe
+CMAKE_CXX_COMPILER:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/bin/Hostx64/x64/cl.exe
+
+//Flags used by the CXX compiler during all build types.
+CMAKE_CXX_FLAGS:STRING=/DWIN32 /D_WINDOWS /W3 /GR /EHsc
+
+//Flags used by the CXX compiler during DEBUG builds.
+CMAKE_CXX_FLAGS_DEBUG:STRING=/MDd /Zi /Ob0 /Od /RTC1
+
+//Flags used by the CXX compiler during MINSIZEREL builds.
+CMAKE_CXX_FLAGS_MINSIZEREL:STRING=/MD /O1 /Ob1 /DNDEBUG
+
+//Flags used by the CXX compiler during RELEASE builds.
+CMAKE_CXX_FLAGS_RELEASE:STRING=/MD /O2 /Ob2 /DNDEBUG
+
+//Flags used by the CXX compiler during RELWITHDEBINFO builds.
+CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=/MD /Zi /O2 /Ob1 /DNDEBUG
+
+//Libraries linked by default with all C++ applications.
+CMAKE_CXX_STANDARD_LIBRARIES:STRING=kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
 
 //No help, variable specified on the command line.
-CMAKE_C_COMPILER:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.27.29110/bin/Hostx64/x64/cl.exe
+CMAKE_C_COMPILER:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/bin/Hostx64/x64/cl.exe
 
 //Flags used by the C compiler during all build types.
 CMAKE_C_FLAGS:STRING=/DWIN32 /D_WINDOWS /W3
@@ -60,10 +81,10 @@ CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=/debug /INCREMENTAL
 CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=
 
 //No help, variable specified on the command line.
-CMAKE_INSTALL_PREFIX:PATH=C:/Users/mslm/source/repos/idhpaul/MyResearchProject/RnD_GRPC/GRPC_sample/GRPC_sample/third_party/grpc_1_33_2/examples/cpp/helloworld/out/install/x64-Debug(기본값)
+CMAKE_INSTALL_PREFIX:PATH=C:/Users/mslm/Source/Repos/idhpaul/MyResearchProject/RnD_GRPC/GRPC_sample/GRPC_sample/third_party/grpc_1_33_2/examples/cpp/helloworld/out/install/x64-Debug(기본값)
 
 //Path to a program.
-CMAKE_LINKER:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.27.29110/bin/Hostx64/x64/link.exe
+CMAKE_LINKER:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/bin/Hostx64/x64/link.exe
 
 //make program
 CMAKE_MAKE_PROGRAM:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe
@@ -165,9 +186,6 @@ CMAKE_STATIC_LINKER_FLAGS_RELEASE:STRING=
 // during RELWITHDEBINFO builds.
 CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
-//No help, variable specified on the command line.
-CMAKE_TOOLCHAIN_FILE:UNINITIALIZED=C:/mslmlib/vcpkg/scripts/buildsystems/vcpkg.cmake
-
 //If this value is on, makefiles will be generated without the
 // .SILENT directive, and all commands will be echoed to the console
 // during the make.  This is useful for debugging only. With Visual
@@ -180,30 +198,8 @@ HelloWorld_BINARY_DIR:STATIC=C:/Users/mslm/source/repos/idhpaul/MyResearchProjec
 //Value Computed by CMake
 HelloWorld_SOURCE_DIR:STATIC=C:/Users/mslm/source/repos/idhpaul/MyResearchProject/RnD_GRPC/GRPC_sample/GRPC_sample/third_party/grpc_1_33_2/examples/cpp/helloworld
 
-//Automatically copy dependencies into the output directory for
-// executables.
-VCPKG_APPLOCAL_DEPS:BOOL=ON
-
-//Vcpkg target triplet (ex. x86-windows)
-VCPKG_TARGET_TRIPLET:STRING=x64-windows
-
-//Enables messages from the VCPKG toolchain for debugging purposes.
-VCPKG_VERBOSE:BOOL=OFF
-
-//(experimental) Automatically copy dependencies into the install
-// target directory for executables.
-X_VCPKG_APPLOCAL_DEPS_INSTALL:BOOL=
-
-//(experimental) Add USES_TERMINAL to VCPKG_APPLOCAL_DEPS to force
-// serialization.
-X_VCPKG_APPLOCAL_DEPS_SERIALIZED:BOOL=OFF
-
-//Path to a program.
-_VCPKG_CL:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.27.29110/bin/Hostx64/x64/cl.exe
-
-//The directory which contains the installed libraries for each
-// triplet
-_VCPKG_INSTALLED_DIR:PATH=C:/mslmlib/vcpkg/installed
+//The directory containing a CMake configuration file for Protobuf.
+Protobuf_DIR:PATH=Protobuf_DIR-NOTFOUND
 
 
 ########################
@@ -215,9 +211,9 @@ CMAKE_CACHEFILE_DIR:INTERNAL=c:/Users/mslm/source/repos/idhpaul/MyResearchProjec
 //Major version of cmake used to create the current loaded cache
 CMAKE_CACHE_MAJOR_VERSION:INTERNAL=3
 //Minor version of cmake used to create the current loaded cache
-CMAKE_CACHE_MINOR_VERSION:INTERNAL=17
+CMAKE_CACHE_MINOR_VERSION:INTERNAL=18
 //Patch version of cmake used to create the current loaded cache
-CMAKE_CACHE_PATCH_VERSION:INTERNAL=20032601
+CMAKE_CACHE_PATCH_VERSION:INTERNAL=20081302
 //Path to CMake executable.
 CMAKE_COMMAND:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe
 //Path to cpack program executable.
@@ -226,6 +222,18 @@ CMAKE_CPACK_COMMAND:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2019
 CMAKE_CTEST_COMMAND:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/ctest.exe
 //ADVANCED property for variable: CMAKE_CXX_COMPILER
 CMAKE_CXX_COMPILER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_CXX_FLAGS
+CMAKE_CXX_FLAGS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_CXX_FLAGS_DEBUG
+CMAKE_CXX_FLAGS_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_CXX_FLAGS_MINSIZEREL
+CMAKE_CXX_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_CXX_FLAGS_RELEASE
+CMAKE_CXX_FLAGS_RELEASE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_CXX_FLAGS_RELWITHDEBINFO
+CMAKE_CXX_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_CXX_STANDARD_LIBRARIES
+CMAKE_CXX_STANDARD_LIBRARIES-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_C_COMPILER
 CMAKE_C_COMPILER-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_C_FLAGS
@@ -264,6 +272,8 @@ CMAKE_GENERATOR_INSTANCE:INTERNAL=
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
+//Have include pthread.h
+CMAKE_HAVE_PTHREAD_H:INTERNAL=
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=C:/Users/mslm/source/repos/idhpaul/MyResearchProject/RnD_GRPC/GRPC_sample/GRPC_sample/third_party/grpc_1_33_2/examples/cpp/helloworld
@@ -299,7 +309,7 @@ CMAKE_RC_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_RC_FLAGS_RELWITHDEBINFO
 CMAKE_RC_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //Path to CMake installation.
-CMAKE_ROOT:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.17
+CMAKE_ROOT:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.18
 //ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS
 CMAKE_SHARED_LINKER_FLAGS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS_DEBUG
@@ -324,20 +334,8 @@ CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
 CMAKE_STATIC_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO
 CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CMAKE_TOOLCHAIN_FILE
-CMAKE_TOOLCHAIN_FILE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
-//Install the dependencies listed in your manifest:
-//\n    If this is off, you will have to manually install your dependencies.
-//\n    See https://github.com/microsoft/vcpkg/tree/master/docs/specifications/manifests.md
-// for more info.
-//\n
-VCPKG_MANIFEST_INSTALL:INTERNAL=OFF
-//ADVANCED property for variable: VCPKG_VERBOSE
-VCPKG_VERBOSE-ADVANCED:INTERNAL=1
-//Making sure VCPKG_MANIFEST_MODE doesn't change
-_INTERNAL_CHECK_VCPKG_MANIFEST_MODE:INTERNAL=OFF
-//_vcpkg_get_directory_name_of_file_above: _VCPKG_ROOT_DIR
-_VCPKG_ROOT_DIR:INTERNAL=C:/mslmlib/vcpkg
+//Details about finding Threads
+FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 
