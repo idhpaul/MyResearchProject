@@ -131,7 +131,7 @@ int main()
         CursorInfo();
 
         // TODO : What is diff send return values
-        ret = ::send(clientSocketfd, (char*)image.data(), 4096, 0);
+        ret = ::send(clientSocketfd, (char*)image.data(), 6240, 0);
         if (ret > 0)
         {
             std::cout << "Send OK - sendsize: " << ret << std::endl;
