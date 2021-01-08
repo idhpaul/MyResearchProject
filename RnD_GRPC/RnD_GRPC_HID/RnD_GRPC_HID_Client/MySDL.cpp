@@ -1,10 +1,10 @@
 #include "MySDL.h"
 
+#include <assert.h>
+
 #include <iostream>
 #include <functional>
 #include <vector>
-
-#include <assert.h>
 
 MySDL::MySDL()
     :windowWidth_(1280), windowHeight_(720), textureWidth_(1920), textureHeight_(1080)
@@ -271,12 +271,16 @@ int MySDL::MyMouseMotionFunction(const SDL_Event& sdlEvent)
 
     std::cout << "Mouse move : " << (sdlEvent.motion.x * textureWidth_) / relativew << "x" << (sdlEvent.motion.y * textureHeight_) / relativeh << std::endl;
 
+    //Push Grpc protobuff message(async)
+
     return 0;
 }
 
 int MySDL::MyMouseButtonDownFunction(const SDL_Event& sdlEvent)
 {
     std::cout << "Mouse bt Down" << std::endl;
+
+    //Push Grpc protobuff message(async)
 
     return 0;
 }
@@ -285,6 +289,7 @@ int MySDL::MyMouseButtonUpFunction(const SDL_Event& sdlEvent)
 {
     std::cout << "Mouse bt Up" << std::endl;
 
+    //Push Grpc protobuff message(async)
 
     return 0;
 }
@@ -295,6 +300,8 @@ int MySDL::MyMouseWheelFunction(const SDL_Event& sdlEvent)
         std::cout << "Mouse wheel Up" << std::endl;
     else
         std::cout << "Mouse wheel Down" << std::endl;
+
+    //Push Grpc protobuff message(async)
 
     return 0;
 }
