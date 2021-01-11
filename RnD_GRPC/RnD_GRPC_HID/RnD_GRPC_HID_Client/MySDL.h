@@ -2,24 +2,10 @@
 #include <SDL.h>
 
 #include <mutex>
+#include <thread>
 
-typedef enum MyEvent
-{
-	MY_KEYUP,
-	MY_KEYDOWN,
-	MY_MOUSEBUTTONUP,
-	MY_MOUSEBUTTONDOWN,
-	MY_MOUSEMOTION,
-	MY_MOUSEWHEEL,
-	MY_WINDOWEVENT,
-	MY_SYSWMEVENT,
-	MY_REDNERTARGET_RESET,
-	MY_RENDERDEVICE_RESET,
-	MY_USEREVENT,
-	MY_QUIT,
+#include "InjectorClient.h"
 
-	MY_UNKOWN = -1
-} MyEventType;
 
 class MySDL
 {
@@ -34,6 +20,9 @@ public:
 	bool Process();
 
 	bool IsIntialized();
+
+	void Create_Injector(const std::string& ip, const std::string& port);
+	void Destory_Injector();
 
 
 private:
@@ -54,12 +43,17 @@ private:
     int MyMouseWheelFunction(const SDL_Event& sdlEvent);
     int MyUserFunction(const SDL_Event& sdlEvent);
 
+	void RegisterHook();
+	void UnRegisterHook();
+
+	inline void GetWindowSize(int* width, int* hegith);
 
 	std::once_flag sdlinit_;
 
 	bool isInit_ = false;
 	bool isFullScreen = false;
 	bool isGrab = false;
+	bool isKeyboardFocus = false;
 
 	uint32_t windowWidth_;
 	uint32_t windowHeight_;
@@ -71,6 +65,9 @@ private:
 	SDL_Texture* texture_ = nullptr;
 
 	SDL_Event sdlEvent_;
+
+	//for grpc
+	std::unique_ptr<InjectClient> injectorClient;
 
 };
 

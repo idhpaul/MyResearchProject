@@ -1,0 +1,65 @@
+syntax="proto3";
+
+package hid;
+
+service Injection {
+
+	rpc PushKeyboardInject(KeyboardRequest) returns (KeyboardResponse) {}
+	rpc PushMouseInject(MouseRequest) returns (MouseResponse) {}
+	rpc PushClipboardInject (ClipboardRequest) returns (ClipboardResponse) {}
+
+}
+
+message MouseRequest
+ {
+	enum ProceedType
+	{
+		MOTION = 0;
+		DOWN = 1;
+		UP = 2;
+		Wheel =3;
+	}
+	enum ButtonType
+	{
+		LEFT = 0;
+		MIDDLE = 1;
+		RIGHT = 2;
+		NONE = 3;
+	}
+	
+	ProceedType proceedtype =1;
+	ButtonType buttontype = 2;
+	
+	// 4byte for each x, y
+	sint64  location= 3;
+}
+
+message MouseResponse {
+	bool   isSame = 1;
+	uint32 width = 2;
+	uint32 height = 3;
+	uint32 xHotspot = 4;
+	uint32 yHotspot = 5;
+	uint32 cursorsize = 6;
+	bytes data = 7;
+	
+}
+
+message KeyboardRequest {
+	sint32 keycode = 1;
+	
+	// 1byte(none), 1byte(none), 1byte(none), 1byte(isExtendKey)
+	sint32 extend = 2;
+}
+
+message KeyboardResponse {
+	string reply = 1;
+}
+
+message ClipboardRequest {
+	string clipboardData = 1;
+}
+
+message ClipboardResponse {
+	string reply = 1;
+}

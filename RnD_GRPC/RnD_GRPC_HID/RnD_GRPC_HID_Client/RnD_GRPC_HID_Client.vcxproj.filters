@@ -16,6 +16,9 @@
     <Filter Include="SDL">
       <UniqueIdentifier>{78d06f08-a1f9-4326-8b14-8fd325fb9541}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Injector">
+      <UniqueIdentifier>{17f825f9-50e6-4e96-85c0-126bb0ff6cc7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MySDL.cpp">
@@ -24,10 +27,28 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="InjectorClient.cpp">
+      <Filter>Injector</Filter>
+    </ClCompile>
+    <ClCompile Include="MyInjector.grpc.pb.cc">
+      <Filter>Injector</Filter>
+    </ClCompile>
+    <ClCompile Include="MyInjector.pb.cc">
+      <Filter>Injector</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MySDL.h">
       <Filter>SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="InjectorClient.h">
+      <Filter>Injector</Filter>
+    </ClInclude>
+    <ClInclude Include="MyInjector.grpc.pb.h">
+      <Filter>Injector</Filter>
+    </ClInclude>
+    <ClInclude Include="MyInjector.pb.h">
+      <Filter>Injector</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
