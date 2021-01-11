@@ -11,10 +11,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MyInjector.grpc.pb.h" />
+    <ClInclude Include="MyInjector.pb.h" />
     <ClInclude Include="MySDL.h" />
+    <ClInclude Include="InjectorClient.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="InjectorClient.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MyInjector.grpc.pb.cc" />
+    <ClCompile Include="MyInjector.pb.cc" />
     <ClCompile Include="MySDL.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -67,10 +73,14 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>C:\mslmlib\MSLM_static\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\mslmlib\MSLM_static\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>MSLM_HIDd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

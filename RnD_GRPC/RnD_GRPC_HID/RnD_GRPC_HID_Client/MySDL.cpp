@@ -6,20 +6,29 @@
 #include <functional>
 #include <vector>
 
+#include "MSLM_HID_API.h"
+
 MySDL::MySDL()
     :windowWidth_(1280), windowHeight_(720), textureWidth_(1920), textureHeight_(1080)
 {
     SetFunctionPointList();
+
+    RegisterHook();
+
 }
 
 MySDL::MySDL(uint32_t wWidth, uint32_t wHeight, uint32_t tWidth, uint32_t tHeight)
     :windowWidth_(wWidth), windowHeight_(wHeight), textureWidth_(tWidth), textureHeight_(tHeight)
 {
     SetFunctionPointList();
+
+    RegisterHook();
 }
 
 MySDL::~MySDL()
 {
+    UnRegisterHook();
+
     Destory();
 
     SDL_Quit();
@@ -97,6 +106,20 @@ bool MySDL::IsIntialized()
     return isInit_;
 }
 
+void MySDL::Create_Injector(const std::string& ip, const std::string& port)
+{
+    std::string connectinfo = ip + ":" + port;
+    injectorClient = std::make_unique<InjectClient>(grpc::CreateChannel(connectinfo, grpc::InsecureChannelCredentials()));
+
+    // Need Mouse cursor callback register
+
+}
+
+void MySDL::Destory_Injector()
+{
+    
+}
+
 void MySDL::SetFunctionPointList()
 {
     myFunctionList_[0][0] = &MySDL::MyQuitFunction;
@@ -105,13 +128,13 @@ void MySDL::SetFunctionPointList()
     myFunctionList_[1][1] = &MySDL::MySystemFuctnion;
 
     myFunctionList_[2][0] = &MySDL::MyKeyDownFunction;
-    myFunctionList_[2][1] = &MySDL::MyKeyUPFunction;
-    myFunctionList_[2][2] = &MySDL::MySystemFuctnion;
+    myFunctionList_[2][1] = &MySDL::MyKeyUPFunction;                
 
     myFunctionList_[3][0] = &MySDL::MyMouseMotionFunction;
     myFunctionList_[3][1] = &MySDL::MyMouseButtonDownFunction;
     myFunctionList_[3][2] = &MySDL::MyMouseButtonUpFunction;
-    myFunctionList_[3][3] = &MySDL::MyMouseWheelFunction;
+    myFunctionList_[3][3] = &MySDL::MyMouseWheelFunction;      
+
 
     myFunctionList_[4][0] = &MySDL::MyUserFunction;
 }
@@ -177,9 +200,11 @@ int MySDL::MyWindowFunction(const SDL_Event& sdlEvent)
         break;
     case SDL_WINDOWEVENT_FOCUS_GAINED:
         SDL_Log("Window %d gained keyboard focus", sdlEvent.window.windowID);
+        isKeyboardFocus = true;
         break;
     case SDL_WINDOWEVENT_FOCUS_LOST:
         SDL_Log("Window %d lost keyboard focus", sdlEvent.window.windowID);
+        isKeyboardFocus = false;;
         break;
     case SDL_WINDOWEVENT_CLOSE:
         SDL_Log("Window %d closed", sdlEvent.window.windowID);
@@ -206,7 +231,9 @@ int MySDL::MySystemFuctnion(const SDL_Event& sdlEvent)
 
 int MySDL::MyKeyDownFunction(const SDL_Event& sdlEvent)
 {
-    std::cout << "Key Down" << std::endl;
+    std::cout << "SDL Get Key Down" << std::endl;
+    printf("dll key code : %x\n", sdlEvent.key.keysym.unused);
+    printf("dll key extend : %x\n", sdlEvent.key.keysym.mod);
 
 
     if ((sdlEvent.key.keysym.mod & KMOD_CTRL) &&
@@ -260,6 +287,10 @@ int MySDL::MyKeyDownFunction(const SDL_Event& sdlEvent)
 int MySDL::MyKeyUPFunction(const SDL_Event& sdlEvent)
 {
     std::cout << "Key Up" << std::endl;
+
+    printf("dll key code : %x\n", sdlEvent.key.keysym.unused);
+    printf("dll key extend : %x\n", sdlEvent.key.keysym.mod);
+
     return 0;
 }
 
@@ -267,41 +298,76 @@ int MySDL::MyMouseMotionFunction(const SDL_Event& sdlEvent)
 {
 
     int relativew = 0, relativeh = 0;
-    SDL_GetWindowSize(window_, &relativew, &relativeh);
+    GetWindowSize(&relativew, &relativeh);
 
     std::cout << "Mouse move : " << (sdlEvent.motion.x * textureWidth_) / relativew << "x" << (sdlEvent.motion.y * textureHeight_) / relativeh << std::endl;
 
     //Push Grpc protobuff message(async)
+    injectorClient->PushMouse(
+        MouseProceedType::MOTION,
+        NONE,
+        (sdlEvent.motion.x * textureWidth_) / relativew,
+        (sdlEvent.motion.y * textureHeight_) / relativeh
+    );
 
     return 0;
 }
 
 int MySDL::MyMouseButtonDownFunction(const SDL_Event& sdlEvent)
 {
+    int relativew = 0, relativeh = 0;
+    GetWindowSize(&relativew, &relativeh);
+    
     std::cout << "Mouse bt Down" << std::endl;
 
     //Push Grpc protobuff message(async)
+    injectorClient->PushMouse(
+        MouseProceedType::DOWN,
+        MouseButtonType(sdlEvent.button.button),
+        0,
+        0
+    );
 
     return 0;
 }
 
 int MySDL::MyMouseButtonUpFunction(const SDL_Event& sdlEvent)
 {
+    int relativew = 0, relativeh = 0;
+    GetWindowSize(&relativew, &relativeh);
+    
     std::cout << "Mouse bt Up" << std::endl;
 
+    if(sdlEvent.button.button)
+
     //Push Grpc protobuff message(async)
+    injectorClient->PushMouse(
+        MouseProceedType::UP,
+        MouseButtonType(sdlEvent.button.button),
+        0,
+        0
+    );
 
     return 0;
 }
 
 int MySDL::MyMouseWheelFunction(const SDL_Event& sdlEvent)
 {
+    int relativew = 0, relativeh = 0;
+    GetWindowSize(&relativew, &relativeh);
+    
     if (sdlEvent.wheel.y > 0)
         std::cout << "Mouse wheel Up" << std::endl;
     else
         std::cout << "Mouse wheel Down" << std::endl;
 
     //Push Grpc protobuff message(async)
+    injectorClient->PushMouse(
+        MouseProceedType::Wheel,
+        MouseButtonType::NONE,
+        sdlEvent_.button.x,
+        sdlEvent_.button.y
+    );
 
     return 0;
 }
@@ -311,4 +377,26 @@ int MySDL::MyUserFunction(const SDL_Event& sdlEvent)
     std::cout << "User called" << std::endl;
 
     return 0;
+}
+
+void MySDL::RegisterHook()
+{
+    auto now = std::chrono::system_clock::now();
+    time_t tt = std::chrono::system_clock::to_time_t(now);
+
+    struct tm tm;
+    localtime_s(&tm, &tt);
+
+    MSLM_Start_Keyboard((void*)&sdlEvent_, &isKeyboardFocus);
+}
+
+void MySDL::UnRegisterHook()
+{
+    // End MSLM Keyboard Hook
+    MSLM_Stop_Keyboard();
+}
+
+inline void MySDL::GetWindowSize(int* width, int* hegith)
+{
+    SDL_GetWindowSize(window_, width, hegith);
 }

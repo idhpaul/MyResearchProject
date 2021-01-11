@@ -27,6 +27,8 @@ int main()
 	if (!sdlRender->IsIntialized())
 		return -1;
 
+	sdlRender->Create_Injector(std::string("192.168.0.202"), std::string("8099"));
+
 	// Main loop
 	sdlRender->Process();
 
