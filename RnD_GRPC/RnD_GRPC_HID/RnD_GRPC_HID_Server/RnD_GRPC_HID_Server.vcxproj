@@ -57,6 +57,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -80,6 +81,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="InjectorServer.cpp" />
+    <ClCompile Include="MyInjector.grpc.pb.cc" />
+    <ClCompile Include="MyInjector.pb.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="InjectorServer.h" />
+    <ClInclude Include="MyInjector.grpc.pb.h" />
+    <ClInclude Include="MyInjector.pb.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

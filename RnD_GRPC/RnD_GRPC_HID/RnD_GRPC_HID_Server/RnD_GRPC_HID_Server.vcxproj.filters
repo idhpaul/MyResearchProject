@@ -13,5 +13,33 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Injector">
+      <UniqueIdentifier>{ab3f432c-6ca9-4254-85e0-9d1105ea31c8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="InjectorServer.cpp">
+      <Filter>Injector</Filter>
+    </ClCompile>
+    <ClCompile Include="MyInjector.grpc.pb.cc">
+      <Filter>Injector</Filter>
+    </ClCompile>
+    <ClCompile Include="MyInjector.pb.cc">
+      <Filter>Injector</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="InjectorServer.h">
+      <Filter>Injector</Filter>
+    </ClInclude>
+    <ClInclude Include="MyInjector.grpc.pb.h">
+      <Filter>Injector</Filter>
+    </ClInclude>
+    <ClInclude Include="MyInjector.pb.h">
+      <Filter>Injector</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
