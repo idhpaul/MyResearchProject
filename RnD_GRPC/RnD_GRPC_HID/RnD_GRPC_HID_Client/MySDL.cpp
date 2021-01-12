@@ -112,6 +112,11 @@ void MySDL::Create_Injector(const std::string& ip, const std::string& port)
     injectorClient = std::make_unique<InjectClient>(grpc::CreateChannel(connectinfo, grpc::InsecureChannelCredentials()));
 
     // Need Mouse cursor callback register
+    cb_create_colorcursor = std::bind(&MySDL::CreateColorCursor, this, std::placeholders::_1);
+    cb_destroy_colorcursor = std::bind(&MySDL::DestroyColorCursor, this);
+
+    injectorClient->RegisterCreateCursorCB(cb_create_colorcursor);
+    injectorClient->RegisterDestroyCursorCB(cb_destroy_colorcursor);
 
 }
 
@@ -235,6 +240,13 @@ int MySDL::MyKeyDownFunction(const SDL_Event& sdlEvent)
     printf("dll key code : %x\n", sdlEvent.key.keysym.unused);
     printf("dll key extend : %x\n", sdlEvent.key.keysym.mod);
 
+    uint32_t kbmode = 0;
+    kbmode |= 0b0000'0001'0000'0000;                // Key down
+    if (sdlEvent.key.keysym.mod)
+        kbmode |= 0b0000'0000'0000'0001;            // extend key
+
+    injectorClient->PushKeyboard(sdlEvent.key.keysym.unused, kbmode);
+
 
     if ((sdlEvent.key.keysym.mod & KMOD_CTRL) &&
         (sdlEvent.key.keysym.mod & KMOD_ALT) &&
@@ -291,6 +303,12 @@ int MySDL::MyKeyUPFunction(const SDL_Event& sdlEvent)
     printf("dll key code : %x\n", sdlEvent.key.keysym.unused);
     printf("dll key extend : %x\n", sdlEvent.key.keysym.mod);
 
+    uint32_t kbmode = 0;
+    if (sdlEvent.key.keysym.mod)
+        kbmode |= 0b0000'0000'0000'0001;          // extend key
+
+    injectorClient->PushKeyboard(sdlEvent.key.keysym.unused, kbmode);
+
     return 0;
 }
 
@@ -304,7 +322,7 @@ int MySDL::MyMouseMotionFunction(const SDL_Event& sdlEvent)
 
     //Push Grpc protobuff message(async)
     injectorClient->PushMouse(
-        MouseProceedType::MOTION,
+        MouseProceedType::MOUSE_MOTION,
         NONE,
         (sdlEvent.motion.x * textureWidth_) / relativew,
         (sdlEvent.motion.y * textureHeight_) / relativeh
@@ -322,7 +340,7 @@ int MySDL::MyMouseButtonDownFunction(const SDL_Event& sdlEvent)
 
     //Push Grpc protobuff message(async)
     injectorClient->PushMouse(
-        MouseProceedType::DOWN,
+        MouseProceedType::MOUSE_DOWN,
         MouseButtonType(sdlEvent.button.button),
         0,
         0
@@ -338,11 +356,9 @@ int MySDL::MyMouseButtonUpFunction(const SDL_Event& sdlEvent)
     
     std::cout << "Mouse bt Up" << std::endl;
 
-    if(sdlEvent.button.button)
-
     //Push Grpc protobuff message(async)
     injectorClient->PushMouse(
-        MouseProceedType::UP,
+        MouseProceedType::MOUSE_UP,
         MouseButtonType(sdlEvent.button.button),
         0,
         0
@@ -363,7 +379,7 @@ int MySDL::MyMouseWheelFunction(const SDL_Event& sdlEvent)
 
     //Push Grpc protobuff message(async)
     injectorClient->PushMouse(
-        MouseProceedType::Wheel,
+        MouseProceedType::MOUSE_WHEEL,
         MouseButtonType::NONE,
         sdlEvent_.button.x,
         sdlEvent_.button.y
@@ -399,4 +415,40 @@ void MySDL::UnRegisterHook()
 inline void MySDL::GetWindowSize(int* width, int* hegith)
 {
     SDL_GetWindowSize(window_, width, hegith);
+}
+
+void MySDL::CreateColorCursor(CursorData data)
+{
+    cursor_surface_ = SDL_CreateRGBSurfaceWithFormatFrom((void*)data.cursor_image.c_str(), data.width, data.height, data.width, data.width * 4, SDL_PIXELFORMAT_BGRA32);
+    if (cursor_surface_ == NULL)
+    {
+        std::cerr << "Create RGB surface failed GLE: " << SDL_GetError() << std::endl;
+    }
+
+    // Create Color Cursor
+    cursor_ = SDL_CreateColorCursor(cursor_surface_, data.xHotspot, data.yHotspot);
+    if (cursor_ == NULL)
+    {
+        std::cerr << "Create Color Cursor failed GLE: " << SDL_GetError() << std::endl;
+        std::cerr << "Get last error : " << GetLastError() << std::endl;
+    }
+
+    // Set Color Cursor
+    SDL_SetCursor(cursor_);
+}
+
+void MySDL::DestroyColorCursor()
+{
+    if (cursor_surface_)
+    {
+        SDL_FreeSurface(cursor_surface_);
+        cursor_surface_ = nullptr;
+    }
+    
+    if (cursor_)
+    {
+        SDL_FreeCursor(cursor_);
+        cursor_ = nullptr;
+    }
+    
 }

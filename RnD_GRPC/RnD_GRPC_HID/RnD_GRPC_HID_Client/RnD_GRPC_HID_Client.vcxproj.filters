@@ -19,6 +19,9 @@
     <Filter Include="Injector">
       <UniqueIdentifier>{17f825f9-50e6-4e96-85c0-126bb0ff6cc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Cursor">
+      <UniqueIdentifier>{86b9342f-9492-4d17-bb24-ecd36dc48c9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MySDL.cpp">
@@ -36,6 +39,9 @@
     <ClCompile Include="MyInjector.pb.cc">
       <Filter>Injector</Filter>
     </ClCompile>
+    <ClCompile Include="MyCursorStruct.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MySDL.h">
@@ -49,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="MyInjector.pb.h">
       <Filter>Injector</Filter>
+    </ClInclude>
+    <ClInclude Include="MyCursorStruct.h">
+      <Filter>Cursor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

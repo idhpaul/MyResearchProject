@@ -10,7 +10,7 @@
 #include <thread>
 
 #include "MyInjector.grpc.pb.h"
-
+#include "MyCursorStruct.h"
 
 using grpc::Channel;
 using grpc::ClientAsyncResponseReader;
@@ -25,10 +25,10 @@ using hid::Injection;
 
 enum MouseProceedType
 {
-    MOTION = 0,
-    DOWN = 1,
-    UP = 2,
-    Wheel = 3,
+    MOUSE_MOTION = 0,
+    MOUSE_DOWN = 1,
+    MOUSE_UP = 2,
+    MOUSE_WHEEL = 3,
 };
 
 enum MouseButtonType
@@ -39,6 +39,12 @@ enum MouseButtonType
     NONE = 4
 };
 
+enum KeyboardProceedType
+{
+    KEYBOARD_DOWN = 0,
+    KEYBOARD_UP = 1
+};
+
 class InjectClient {
 public:
     explicit InjectClient(std::shared_ptr<Channel> channel)
@@ -47,6 +53,13 @@ public:
     void PushKeyboard(uint32_t kbCode, uint32_t extend);
     void PushMouse(MouseProceedType proceedType, MouseButtonType btType, int x, int y);
     void PushClipboard();
+
+    void RegisterCreateCursorCB(std::function<void(CursorData cb)> createcb);
+    void RegisterDestroyCursorCB(std::function<void()> destroycb);
+
+private:
+    std::function<void(CursorData)> createColorcursorCB;
+    std::function<void()> destroyColorcursorCB;
     
     // Out of the passed in Channel comes the stub, stored here, our view of the
     // server's exposed services.

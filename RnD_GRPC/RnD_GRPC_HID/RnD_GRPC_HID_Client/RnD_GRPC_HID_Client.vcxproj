@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MyCursorStruct.h" />
     <ClInclude Include="MyInjector.grpc.pb.h" />
     <ClInclude Include="MyInjector.pb.h" />
     <ClInclude Include="MySDL.h" />
@@ -19,6 +20,7 @@
   <ItemGroup>
     <ClCompile Include="InjectorClient.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MyCursorStruct.cpp" />
     <ClCompile Include="MyInjector.grpc.pb.cc" />
     <ClCompile Include="MyInjector.pb.cc" />
     <ClCompile Include="MySDL.cpp" />

@@ -4,8 +4,8 @@
 #include <mutex>
 #include <thread>
 
+#include "MyCursorStruct.h"
 #include "InjectorClient.h"
-
 
 class MySDL
 {
@@ -48,6 +48,9 @@ private:
 
 	inline void GetWindowSize(int* width, int* hegith);
 
+	void CreateColorCursor(CursorData data);
+	void DestroyColorCursor();
+
 	std::once_flag sdlinit_;
 
 	bool isInit_ = false;
@@ -66,7 +69,15 @@ private:
 
 	SDL_Event sdlEvent_;
 
-	//for grpc
+	// for cursor
+	SDL_Cursor* cursor_ = nullptr;
+	SDL_Surface* cursor_surface_ = nullptr;
+
+	// cursor callback function
+	std::function<void(CursorData data)> cb_create_colorcursor;
+	std::function<void()> cb_destroy_colorcursor;
+
+	// for grpc
 	std::unique_ptr<InjectClient> injectorClient;
 
 };
