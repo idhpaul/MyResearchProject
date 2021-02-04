@@ -163,8 +163,37 @@ void InjectClient::PushMouse(MouseProceedType proceedType, MouseButtonType btTyp
     }
 }
 
-void InjectClient::PushClipboard()
+void InjectClient::PushClipboard(const char* clipboardData)
 {
+    // Data we are sending to the server.
+    ClipboardRequest request;
+
+    request.set_clipboarddata(clipboardData);
+
+    ClipboardResponse reply;
+    ClientContext context;
+    CompletionQueue cq;
+
+    Status status;
+
+    std::unique_ptr<ClientAsyncResponseReader<ClipboardResponse> > rpc(stub_->PrepareAsyncPushClipboardInject(&context, request, &cq));
+
+    rpc->StartCall();
+    rpc->Finish(&reply, &status, (void*)3);
+
+    void* got_tag;
+    bool ok = false;
+
+    GPR_ASSERT(cq.Next(&got_tag, &ok));
+    GPR_ASSERT(got_tag == (void*)3);
+    GPR_ASSERT(ok);
+
+    if (status.ok()) {
+        std::cout << "Mouse RPC OK" << std::endl;
+    }
+    else {
+        std::cout << "Mouse RPC Failed" << std::endl;
+    }
 }
 
 void InjectClient::RegisterCreateCursorCB(std::function<void(CursorData cb)> createcb)

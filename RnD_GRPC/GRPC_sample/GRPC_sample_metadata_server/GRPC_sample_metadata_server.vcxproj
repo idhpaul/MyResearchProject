@@ -10,25 +10,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="MyCursorStruct.h" />
-    <ClInclude Include="MyInjector.grpc.pb.h" />
-    <ClInclude Include="MyInjector.pb.h" />
-    <ClInclude Include="MySDL.h" />
-    <ClInclude Include="InjectorClient.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="InjectorClient.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MyInjector.grpc.pb.cc" />
-    <ClCompile Include="MyInjector.pb.cc" />
-    <ClCompile Include="MySDL.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{16a115d3-ca69-459a-bd4f-eb1062b4f8c4}</ProjectGuid>
-    <RootNamespace>RnDGRPCHIDClient</RootNamespace>
+    <ProjectGuid>{2dd69e97-a41b-4db9-9677-c970d1515e01}</ProjectGuid>
+    <RootNamespace>GRPCsamplemetadataserver</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -52,13 +38,11 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="C:\mslmlib\grpc_static_3_13_2\etc\grpc_lib_list\grpc_debug_lib_list.props" />
-    <Import Project="..\..\..\..\..\..\..\..\..\mslmlib\SDL2-2.0.12\SDL2_2_0_12.props" />
+    <Import Project="..\..\..\..\..\..\..\..\..\mslmlib\grpc_static_3_13_2\etc\grpc_lib_list\grpc_debug_lib_list.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="C:\mslmlib\grpc_static_3_13_2\etc\grpc_lib_list\grpc_release_lib_list.props" />
-    <Import Project="..\..\..\..\..\..\..\..\..\mslmlib\SDL2-2.0.12\SDL2_2_0_12.props" />
+    <Import Project="..\..\..\..\..\..\..\..\..\mslmlib\grpc_static_3_13_2\etc\grpc_lib_list\grpc_release_lib_list.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -67,27 +51,18 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <VcpkgUseStatic>true</VcpkgUseStatic>
-  </PropertyGroup>
-  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <VcpkgUseStatic>true</VcpkgUseStatic>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>C:\mslmlib\MSLM_static\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\mslmlib\MSLM_static\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MSLM_HIDd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -106,6 +81,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="greeter_seerver.cpp" />
+    <ClCompile Include="helloworld.grpc.pb.cc" />
+    <ClCompile Include="helloworld.pb.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="helloworld.grpc.pb.h" />
+    <ClInclude Include="helloworld.pb.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

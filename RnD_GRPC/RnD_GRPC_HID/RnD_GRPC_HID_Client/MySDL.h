@@ -26,7 +26,7 @@ public:
 
 
 private:
-	int (MySDL::*myFunctionList_[5][4])(const SDL_Event&);
+	int (MySDL::*myFunctionList_[6][4])(const SDL_Event&);
 	void SetFunctionPointList();
 
 	int MyFunctionCaller(const uint32_t type, const SDL_Event& event);
@@ -41,6 +41,7 @@ private:
     int MyMouseButtonDownFunction(const SDL_Event& sdlEvent);
     int MyMouseButtonUpFunction(const SDL_Event& sdlEvent);
     int MyMouseWheelFunction(const SDL_Event& sdlEvent);
+	int MyClipBoardFunction(const SDL_Event& sdlEvent);
     int MyUserFunction(const SDL_Event& sdlEvent);
 
 	void RegisterHook();

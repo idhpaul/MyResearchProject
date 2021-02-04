@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <functional>
+#include <fstream>
+#include <sstream>
 #include <vector>
 
 #include "MSLM_HID_API.h"
@@ -106,10 +108,43 @@ bool MySDL::IsIntialized()
     return isInit_;
 }
 
+void read(const std::string& filename, std::string& data)
+{
+    std::ifstream file(filename.c_str(), std::ios::in);
+
+    if (file.is_open())
+    {
+        std::stringstream ss;
+        ss << file.rdbuf();
+
+        file.close();
+
+        data = ss.str();
+    }
+
+    return;
+}
+
 void MySDL::Create_Injector(const std::string& ip, const std::string& port)
 {
     std::string connectinfo = ip + ":" + port;
-    injectorClient = std::make_unique<InjectClient>(grpc::CreateChannel(connectinfo, grpc::InsecureChannelCredentials()));
+
+    std::string cert;
+    std::string key;
+    std::string root;
+
+    read("client.crt", cert);
+    read("client.key", key);
+    read("ca.crt", root);
+
+    grpc::SslCredentialsOptions opts =
+    {
+        root,
+        key,
+        cert
+    };
+
+    injectorClient = std::make_unique<InjectClient>(grpc::CreateChannel(connectinfo, grpc::SslCredentials(opts)));
 
     // Need Mouse cursor callback register
     cb_create_colorcursor = std::bind(&MySDL::CreateColorCursor, this, std::placeholders::_1);
@@ -140,17 +175,21 @@ void MySDL::SetFunctionPointList()
     myFunctionList_[3][2] = &MySDL::MyMouseButtonUpFunction;
     myFunctionList_[3][3] = &MySDL::MyMouseWheelFunction;      
 
+    myFunctionList_[4][0] = &MySDL::MyClipBoardFunction;
 
-    myFunctionList_[4][0] = &MySDL::MyUserFunction;
+    myFunctionList_[5][0] = &MySDL::MyUserFunction;
 }
 
 int MySDL::MyFunctionCaller(const uint32_t type, const SDL_Event& event)
 {
     unsigned int groupIndex = type >> 8;
-    if (groupIndex & 0b1000'0000)
-        groupIndex = 4;                             // for SDL User Event
+    if (groupIndex == 0b0000'1001)
+        groupIndex = 5;                             // for SDL Clipboard Event
 
-    if (groupIndex > 4)                             // Boundary out
+    if (groupIndex == 0b1000'0000)
+        groupIndex = 6;                             // for SDL User Event
+
+    if (groupIndex > 7)                             // Boundary out
         return 0;
 
     unsigned int subIndex = type & 0b0000'1111;     // C++14 binary literal type
@@ -384,6 +423,17 @@ int MySDL::MyMouseWheelFunction(const SDL_Event& sdlEvent)
         sdlEvent_.button.x,
         sdlEvent_.button.y
     );
+
+    return 0;
+}
+
+int MySDL::MyClipBoardFunction(const SDL_Event& sdlEvent)
+{
+    const char* clipboard_data = SDL_GetClipboardText();
+
+    injectorClient->PushClipboard(clipboard_data);
+
+    SDL_free((void*)clipboard_data);
 
     return 0;
 }

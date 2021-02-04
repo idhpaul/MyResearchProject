@@ -21,6 +21,8 @@ using hid::MouseRequest;
 using hid::MouseResponse;
 using hid::KeyboardRequest;
 using hid::KeyboardResponse;
+using hid::ClipboardRequest;
+using hid::ClipboardResponse;
 using hid::Injection;
 
 enum MouseProceedType
@@ -52,7 +54,7 @@ public:
 
     void PushKeyboard(uint32_t kbCode, uint32_t extend);
     void PushMouse(MouseProceedType proceedType, MouseButtonType btType, int x, int y);
-    void PushClipboard();
+    void PushClipboard(const char* clipboardData);
 
     void RegisterCreateCursorCB(std::function<void(CursorData cb)> createcb);
     void RegisterDestroyCursorCB(std::function<void()> destroycb);
