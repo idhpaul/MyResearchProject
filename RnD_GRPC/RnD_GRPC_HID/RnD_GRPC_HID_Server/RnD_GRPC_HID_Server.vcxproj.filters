@@ -16,6 +16,9 @@
     <Filter Include="Injector">
       <UniqueIdentifier>{ab3f432c-6ca9-4254-85e0-9d1105ea31c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Cursor">
+      <UniqueIdentifier>{b99db122-7cf3-496c-9a9f-b02625aa8480}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -30,6 +33,12 @@
     <ClCompile Include="MyInjector.pb.cc">
       <Filter>Injector</Filter>
     </ClCompile>
+    <ClCompile Include="Cursor.cpp">
+      <Filter>Cursor</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseCursor.cc">
+      <Filter>Cursor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InjectorServer.h">
@@ -40,6 +49,18 @@
     </ClInclude>
     <ClInclude Include="MyInjector.pb.h">
       <Filter>Injector</Filter>
+    </ClInclude>
+    <ClInclude Include="Cursor.h">
+      <Filter>Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="CursorStruct.h">
+      <Filter>Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseCursor.h">
+      <Filter>Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="scoped_gdi_object.h">
+      <Filter>Cursor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -81,15 +81,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="InjectorServer.cpp" />
+    <ClCompile Include="MouseCursor.cc" />
     <ClCompile Include="MyInjector.grpc.pb.cc" />
     <ClCompile Include="MyInjector.pb.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cursor.h" />
+    <ClInclude Include="CursorStruct.h" />
     <ClInclude Include="InjectorServer.h" />
+    <ClInclude Include="MouseCursor.h" />
     <ClInclude Include="MyInjector.grpc.pb.h" />
     <ClInclude Include="MyInjector.pb.h" />
+    <ClInclude Include="scoped_gdi_object.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

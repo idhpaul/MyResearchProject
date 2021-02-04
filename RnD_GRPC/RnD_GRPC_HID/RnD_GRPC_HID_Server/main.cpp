@@ -7,6 +7,9 @@
 #include <grpc/support/log.h>
 #include "MyInjector.grpc.pb.h"
 
+#include "MouseCursor.h"
+#include "Cursor.h"
+
 using grpc::Server;
 using grpc::ServerAsyncResponseWriter;
 using grpc::ServerBuilder;
@@ -80,69 +83,22 @@ private:
 				// part of its FINISH state.
 				new CallInjectData(service_, cq_, true);
 
-				
-				std::string prefix("Push Keyboard Inject : ");
-
 				INPUT in;
 				ZeroMemory(&in, sizeof(in));
-				//if ("keyboard" == keyboard_request_.type())
-				//{
-				//	in.type = INPUT_KEYBOARD;
-				//	in.ki.wScan = 0;
-				//	in.ki.time = 0;
-				//	in.ki.dwExtraInfo = 0;
 
-				//	in.ki.wVk = keyboard_request_.keycode();
+				in.type = INPUT_KEYBOARD;
+				in.ki.wScan = 0;
+				in.ki.time = 0;
+				in.ki.dwExtraInfo = 0;
 
-				//	if (keyboard_request_.is_pressed())
-				//	{
-				//		//printf("key pressed");
-				//		in.ki.dwFlags = 0;
+				(keyboard_request_.extend() & 0b0000'0001'0000'0000) ? in.ki.dwFlags |= 0 : in.ki.dwFlags |= KEYEVENTF_KEYUP;
+				(keyboard_request_.extend() & 0b0000'0000'0000'0001) ? in.ki.dwFlags |= KEYEVENTF_EXTENDEDKEY : in.ki.dwFlags |= 0;
+				
+				in.ki.wVk = keyboard_request_.keycode();
 
-				//		if (keyboard_request_.is_extend())
-				//		{
-				//			//printf("extend key pressed");
-				//			in.ki.dwFlags = KEYEVENTF_EXTENDEDKEY;
-				//		}
-				//	}
-				//	else
-				//	{
-				//		//printf("key up");
-				//		in.ki.dwFlags = KEYEVENTF_KEYUP;
-
-				//		if (keyboard_request_.is_extend())
-				//		{
-				//			//printf("extend key up");
-				//			in.ki.dwFlags |= KEYEVENTF_EXTENDEDKEY;
-				//		}
-				//	}
-				//}
-
-				////
-				//// write data to pipe
-				//memcpy(chBuf, (char*)&in, BUFSIZE);
-
-				//fSuccess = WriteFile(
-				//	hPipe,                  // pipe handle 
-				//	chBuf,             // message 
-				//	BUFSIZE,              // message length 
-				//	&cbWritten,             // bytes written 
-				//	NULL);                  // not overlapped 
-
-				//if (!fSuccess)
-				//{
-				//	std::cout << "WriteFile to pipe failed, GetLastError : " << GetLastError() << std::endl;
-
-				//	hPipe = INVALID_HANDLE_VALUE;
-				//	std::cout << "[TODO]Need exception process" << std::endl;
-				//	//return Status::CANCELLED;
-				//}
-
-				////
-
+				SendInput(1, &in, sizeof(INPUT));
 
 				//keyboard_response_.set_reply(prefix + keyboard_request_.type());
-
 
 				status_ = KEYBOARD_FINISH;
 				keyboard_responder_.Finish(keyboard_response_, Status::OK, this);
@@ -165,95 +121,88 @@ private:
 				// part of its FINISH state.
 				new CallInjectData(service_, cq_);
 
-
-				INPUT in;
-				ZeroMemory(&in, sizeof(in));
 				DEVMODE	mode;
 				EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &mode);
 
-				if (mouse_request_.proceedtype() == hid::MouseRequest_ProceedType::MouseRequest_ProceedType_MOTION)
-				{
-					std::cout << "Motion" << std::endl;
-					in.type = INPUT_MOUSE;
+				INPUT in;
+				ZeroMemory(&in, sizeof(in));
 
+				in.type = INPUT_MOUSE;
+
+				switch (mouse_request_.proceedtype())
+				{
+				case hid::MouseRequest_ProceedType::MouseRequest_ProceedType_MOTION:
+				{
 					uint64_t location = mouse_request_.location();
 
 					auto y = int32_t(location);
 					auto x = int32_t(location >> 32);
 
-					std::cout << "x : " << x << " y : " << y << std::endl;
-
 					in.mi.dx = (x * 65535) / (mode.dmPelsWidth - 1);
 					in.mi.dy = (y * 65535) / (mode.dmPelsHeight - 1);
 					in.mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-
-					SendInput(1, &in, sizeof(in));
 				}
-				else if (mouse_request_.proceedtype() == hid::MouseRequest_ProceedType::MouseRequest_ProceedType_DOWN)
-				{
-					in.type = INPUT_MOUSE;
-
-					if (mouse_request_.buttontype() == hid::MouseRequest_ButtonType::MouseRequest_ButtonType_LEFT)
+					break;
+				case hid::MouseRequest_ProceedType::MouseRequest_ProceedType_DOWN:
+					switch (mouse_request_.buttontype())
 					{
+					case hid::MouseRequest_ButtonType::MouseRequest_ButtonType_LEFT:
 						in.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-					}
-					else if (mouse_request_.buttontype() == hid::MouseRequest_ButtonType::MouseRequest_ButtonType_MIDDLE)
-					{
-						in.mi.dwFlags = MOUSEEVENTF_MIDDLEDOWN;
-					}
-					else if (mouse_request_.buttontype() == hid::MouseRequest_ButtonType::MouseRequest_ButtonType_RIGHT)
-					{
+						break;
+					case hid::MouseRequest_ButtonType::MouseRequest_ButtonType_RIGHT: 
 						in.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+						break;
+					case hid::MouseRequest_ButtonType::MouseRequest_ButtonType_MIDDLE:
+						in.mi.dwFlags = MOUSEEVENTF_MIDDLEDOWN;
+						break;
+					default:
+						break;
 					}
-
-					SendInput(1, &in, sizeof(in));
-				}
-				else if (mouse_request_.proceedtype() == hid::MouseRequest_ProceedType::MouseRequest_ProceedType_UP)
-				{
-					in.type = INPUT_MOUSE;
-
-					if (mouse_request_.buttontype() == hid::MouseRequest_ButtonType::MouseRequest_ButtonType_LEFT)
+					break;
+				case hid::MouseRequest_ProceedType::MouseRequest_ProceedType_UP:
+					switch (mouse_request_.buttontype())
 					{
+					case hid::MouseRequest_ButtonType::MouseRequest_ButtonType_LEFT:
 						in.mi.dwFlags = MOUSEEVENTF_LEFTUP;
-					}
-					else if (mouse_request_.buttontype() == hid::MouseRequest_ButtonType::MouseRequest_ButtonType_MIDDLE)
-					{
+						break;
+					case hid::MouseRequest_ButtonType::MouseRequest_ButtonType_MIDDLE:
 						in.mi.dwFlags = MOUSEEVENTF_MIDDLEUP;
-					}
-					else if (mouse_request_.buttontype() == hid::MouseRequest_ButtonType::MouseRequest_ButtonType_RIGHT)
-					{
+						break;
+					case hid::MouseRequest_ButtonType::MouseRequest_ButtonType_RIGHT:
 						in.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+						break;
 					}
-
-					SendInput(1, &in, sizeof(in));
-				}
-				else if (mouse_request_.proceedtype() == hid::MouseRequest_ProceedType::MouseRequest_ProceedType_Wheel)
+					break;
+				case hid::MouseRequest_ProceedType::MouseRequest_ProceedType_Wheel:
 				{
-					in.type = INPUT_MOUSE;
 					in.mi.dwFlags = MOUSEEVENTF_WHEEL;
 
 					(mouse_request_.location() >> 32 > 0) ? in.mi.mouseData = +WHEEL_DELTA : in.mi.mouseData = -WHEEL_DELTA;;
 
-					SendInput(1, &in, sizeof(in));
+				}
+					break;
 				}
 
-				////Reply mouser cursor data
-				//CursorPayload cursorData = mouse_cursor_capture_.CaptureCursor();
-				////CursorInfo(&cursorData);
+				SendInput(1, &in, sizeof(in));
 
-				//if (cursorData.cursorsize == 0)
-				//{
-				//	mouse_response_.set_cursorsize(0);
-				//}
-				//else
-				//{
-				//	mouse_response_.set_width(cursorData.width);
-				//	mouse_response_.set_height(cursorData.height);
-				//	mouse_response_.set_xhotspot(cursorData.xHotspot);
-				//	mouse_response_.set_yhotspot(cursorData.yHotspot);
-				//	mouse_response_.set_cursorsize(cursorData.cursorsize);
-				//	mouse_response_.set_data(cursorData.cursordata.data(), cursorData.cursordata.size());
-				//}
+				//Reply mouser cursor data
+				CursorPayload cursorData = mouse_cursor_capture_.CaptureCursor();
+				//CursorInfo(&cursorData);
+
+				if (cursorData.cursorsize == 0)
+				{
+					mouse_response_.set_cursorsize(0);
+				}
+				else
+				{
+					mouse_response_.set_width(cursorData.width);
+					mouse_response_.set_height(cursorData.height);
+					mouse_response_.set_xhotspot(cursorData.xHotspot);
+					mouse_response_.set_yhotspot(cursorData.yHotspot);
+					mouse_response_.set_cursorsize(cursorData.cursorsize);
+					mouse_response_.set_data(cursorData.cursordata.data(), cursorData.cursordata.size());
+				}
+
 				// And we are done! Let the gRPC runtime know we've finished, using the
 				// memory address of this instance as the uniquely identifying tag for
 				// the event.
@@ -286,7 +235,7 @@ private:
 
 		MouseRequest mouse_request_;
 		MouseResponse mouse_response_;
-		//MouseCursor mouse_cursor_capture_;
+		MouseCursor mouse_cursor_capture_;
 
 		// The means to get back to the client.
 		ServerAsyncResponseWriter<KeyboardResponse> keyboard_responder_;
