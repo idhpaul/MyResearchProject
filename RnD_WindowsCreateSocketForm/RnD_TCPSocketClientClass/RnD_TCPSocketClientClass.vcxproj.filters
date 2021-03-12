@@ -18,6 +18,17 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="TCPSocketClientClass.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketUtil.cpp">
+      <Filter>TCPSocketClass</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPSocket.cpp">
+      <Filter>TCPSocketClass</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="Socket.h">
       <Filter>TCPSocketClass</Filter>
     </ClInclude>
@@ -27,16 +38,5 @@
     <ClInclude Include="TCPSocket.h">
       <Filter>TCPSocketClass</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="SocketUtil.cpp">
-      <Filter>TCPSocketClass</Filter>
-    </ClCompile>
-    <ClCompile Include="TCPSocket.cpp">
-      <Filter>TCPSocketClass</Filter>
-    </ClCompile>
-    <ClCompile Include="TCPSocketClientClass.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

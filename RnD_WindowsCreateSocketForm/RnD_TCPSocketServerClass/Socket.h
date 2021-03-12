@@ -5,8 +5,8 @@
 #define WIN32_LEAN_AND_MEAN						// Do not include external MFC overheader
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 
-#include <Windows.h>
 #include <WinSock2.h>
+#include <Windows.h>
 #include <ws2tcpip.h>
 #include <iphlpapi.h>
 

@@ -1,6 +1,6 @@
 #pragma warning( disable : 4996) // disable _CRT_SECURE_NO_WARNINGS
 
-#include "TCPSocket.h"
+#include "TcpSocket.h"
 #include "SocketUtil.h"
 
 #include <memory>
@@ -14,18 +14,6 @@
 
 #define SEND_TEST 0
 #define RECV_TEST 1
-
-
-//// std::string message = std::system_category().message(hr);
-//// PLOG_INFO << "A-GetDefaultAudioEndpoint(c++11) : " << message;
-//
-//// PLOG_INFO << "A-Activate1 : " << format_error(hr);
-//std::string format_error(unsigned __int32 hr)
-//{
-//    std::stringstream ss;
-//    ss << "Failed to Initialize COM. Error code = 0x" << std::hex << hr << std::endl;
-//    return ss.str();
-//}
 
 std::string GetLocalIPAddress()
 {
@@ -152,22 +140,20 @@ int main()
 	std::string ip = GetLocalIPAddress();
 	uint16_t port = 23654;
 
-    char* sendbuf = (char*)malloc(512);
-    char* recvbuf = (char*)malloc(512);
+    uint32_t send_buf_size = 512;
+    std::shared_ptr<char> send_buf(new char[send_buf_size], std::default_delete<char[]>());
+    uint32_t recv_buf_size = 512;
+    std::shared_ptr<char> rev_buf(new char[recv_buf_size], std::default_delete<char[]>());
 
-    uint32_t sendlen = _msize(sendbuf);
-    uint32_t recvlen = _msize(recvbuf);
+	std::shared_ptr<TcpSocket> tcpSocket(new TcpSocket);
 
-	std::shared_ptr<TCPSocket> tcpSocket(new TCPSocket);
-    SOCKET clientSocketfd = -1;
-
-	tcpSocket->create();
+	tcpSocket->Create();
 	//SocketUtil::setReuseAddr(tcpSocket->fd());
 	//SocketUtil::setReusePort(tcpSocket->fd());
 	//SocketUtil::setNonBlock(tcpSocket->fd());
     //SocketUtil::setKeepAlive(tcpSocket->fd());
 
-	bResult = tcpSocket->bind(ip, port);
+	bResult = tcpSocket->Bind(ip, port);
     if (FALSE == bResult)
     {
         std::cerr << "main tcpSocket bind failed" << std::endl;
@@ -176,7 +162,7 @@ int main()
         goto EXIT;
     }
     
-    bResult = tcpSocket->listen(SOMAXCONN);
+    bResult = tcpSocket->Listen(SOMAXCONN);
     if (FALSE == bResult)
     {
         std::cerr << "main tcpSocket listen failed" << std::endl;
@@ -187,8 +173,8 @@ int main()
 
     std::cout << "Listening........" << std::endl;
 
-    clientSocketfd = tcpSocket->accept();
-    if (clientSocketfd <= 0)
+    std::shared_ptr<TcpSocket> clientSocket(new TcpSocket(tcpSocket->Accept()));
+    if (clientSocket == nullptr)
     {
         std::cerr << "main tcpSocket accept failed" << std::endl;
         std::cerr << "GetLastError : " << WSAGetLastError() << std::endl;
@@ -204,7 +190,7 @@ int main()
     strcpy(sendbuf, "Hello Im TX, This is send test bye!\n");
 
     // TODO : What is diff send return values
-    ret = ::send(clientSocketfd, (char*)sendbuf, sendlen, 0);
+    ret = ::send(clientSocket->GetSocket(), send_buf.get(), send_buf_size, 0);
     if (ret > 0)
     {
         std::cout << "Send OK - sendsize: " << ret << std::endl;
@@ -229,7 +215,7 @@ int main()
 #if RECV_TEST
     while (true)
     {
-        ret = ::recv(clientSocketfd, (char*)recvbuf, recvlen, 0);
+        ret = ::recv(clientSocket->GetSocket(), rev_buf.get(), recv_buf_size, 0);
         if (ret == -1)
         {
             // Error Handling;
@@ -254,17 +240,14 @@ int main()
             std::cout << "All Received!" << std::endl;
             std::cout << WSAGetLastError() << std::endl;
 
-            std::cout << "[RECV message] " << recvbuf << std::endl;
+            std::cout << "[RECV message] " << rev_buf.get() << std::endl;
         }
     }
 #endif
 
 EXIT:
-    free(sendbuf);
-    free(recvbuf);
-
-    SocketUtil::close(clientSocketfd);
-    tcpSocket->close();
+    clientSocket->Close();
+    tcpSocket->Close();
 
 	// Unload Windows Socket DLL
 	WSACleanup();

@@ -4,26 +4,22 @@
 
 #include "Socket.h"
 
-class TCPSocket
+class TcpSocket
 {
 public:
-    TCPSocket(SOCKET sockfd = -1);
-    virtual ~TCPSocket();
+    TcpSocket(SOCKET sockfd = -1);
+    virtual ~TcpSocket();
 
-    virtual SOCKET create();
-
-    virtual bool bind(std::string ip, uint16_t port);
-    virtual bool listen(int backlog);
-    virtual SOCKET accept();
-
-    virtual bool connect(std::string ip, uint16_t port, int timeout = 0);
-
-    virtual void close();
-    virtual void shutdownWrite();
-
-    SOCKET fd() const { return _sockfd; }
+    SOCKET Create();
+    bool   Bind(std::string ip, uint16_t port);
+    bool   Listen(int backlog);
+    SOCKET Accept();
+    bool   Connect(std::string ip, uint16_t port, int timeout = 0);
+    void   Close();
+    void   ShutdownWrite();
+    SOCKET GetSocket() const { return sockfd_; }
 
 private:
-    SOCKET _sockfd = -1;
+    SOCKET sockfd_ = -1;
 };
 #endif //TCPSOCKET_H

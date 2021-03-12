@@ -143,14 +143,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Socket.h" />
-    <ClInclude Include="SocketUtil.h" />
-    <ClInclude Include="TCPSocket.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="SocketUtil.cpp" />
     <ClCompile Include="TCPSocket.cpp" />
     <ClCompile Include="TCPSocketClientClass.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Socket.h" />
+    <ClInclude Include="SocketUtil.h" />
+    <ClInclude Include="TCPSocket.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
