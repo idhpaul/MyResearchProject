@@ -13,10 +13,12 @@
 
 #include <iostream>
 #include <memory>
+#include <thread>
 
 
-#define HOST "localhost"
-#define PORT (7000)
+#define HOST "192.168.0.202"
+//#define HOST "210.183.46.213"
+#define PORT (20020)
 #define BUFFERSIZE (1000)
 char  buffer[BUFFERSIZE];
 
@@ -32,7 +34,7 @@ int  main(int argc, char** argv) {
     if (argc != 1) { printf("Usage: client username\n"); exit(1); }
     if (enet_initialize() != 0) { printf("Could not initialize enet.\n"); return 0; }
 
-    client = enet_host_create(NULL, 1, 2, 5760 / 8, 1440 / 8);
+    client = enet_host_create(NULL, 32,2,0,0);
     if (client == NULL) { printf("Could not create client.\n"); return 0; }
 
     enet_address_set_host(&address, HOST);
@@ -45,7 +47,8 @@ int  main(int argc, char** argv) {
         event.type == ENET_EVENT_TYPE_CONNECT) {
         printf("Connection to %s succeeded.\n", HOST);
         connected++;
-        strncpy_s(buffer, _countof(buffer), argv[1], BUFFERSIZE);
+       
+        strncpy_s(buffer, _countof(buffer), "hello server", BUFFERSIZE);
         packet = enet_packet_create(buffer, strlen(buffer) + 1, ENET_PACKET_FLAG_RELIABLE);
         enet_peer_send(peer, 0, packet);
     }
@@ -58,29 +61,48 @@ int  main(int argc, char** argv) {
 
     //! SDL Init
     std::shared_ptr<RenderD11> RenderObj = std::make_shared<RenderD11>(1280, 720, 1920, 1080);
-    RenderObj->Initialize(RenderDriverType::DXD11);
+    RenderObj->Initialize(RenderDriverType::DXD9);
 
-    while (1)
-    {
-        while (enet_host_service(client, &event, 1000) > 0)
+    std::thread th1([&]()
         {
-            switch (event.type)
-            {
-            case ENET_EVENT_TYPE_RECEIVE:
-                printf("A packet of length %u .\n",
-                    event.packet->dataLength);
+            while (1) {
+                while (enet_host_service(client, &event, 100) > 0) {
+                    switch (event.type) {
+                    case ENET_EVENT_TYPE_RECEIVE:
 
-                /* Clean up the packet now that we're done using it. */
-                enet_packet_destroy(event.packet);
+                        printf("do render \n");
+                        printf("recv data size : %d\n", event.packet->dataLength);
+                        RenderObj->Render((uint8_t*)event.packet->data, 1920, 1080);
 
-                break;
-            case ENET_EVENT_TYPE_DISCONNECT:
-                connected = 0;
-                printf("You have been disconnected.\n");
-                return 2;
+                        break;
+                    case ENET_EVENT_TYPE_DISCONNECT:
+                        connected = 0;
+                        printf("You have been disconnected.\n");
+                        return 2;
+                    }
+                }
+
+                if (connected) {
+                    /*printf("Input: ");
+                    gets_s(buffer, sizeof(buffer));*/
+
+                    memcpy(buffer, "requset frame data", 19);
+                    printf("requset frame data\n");
+
+                    if (strlen(buffer) == 0) { continue; }
+                    if (strncmp("q", buffer, BUFFERSIZE) == 0) {
+                        connected = 0;
+                        enet_peer_disconnect(peer, 0);
+                        continue;
+                    }
+
+                    packet = enet_packet_create(buffer, strlen(buffer) + 1, ENET_PACKET_FLAG_RELIABLE);
+                    enet_peer_send(peer, 0, packet);
+                }
             }
-        }
-    }
+        });
+
+    RenderObj->Procedd_poll(60);
 
     enet_deinitialize();
 }
