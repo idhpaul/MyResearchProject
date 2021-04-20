@@ -44,5 +44,8 @@
     <ClInclude Include="PixelShaderLuminance.h">
       <Filter>dxgi</Filter>
     </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>dxgi</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

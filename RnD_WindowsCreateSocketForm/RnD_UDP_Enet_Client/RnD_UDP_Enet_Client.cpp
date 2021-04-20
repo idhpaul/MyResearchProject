@@ -4,11 +4,16 @@
 #define ENET_DLL
 #define ENET_IMPLEMENTATION
 
+#include "Render_D11.h"
+#include "enet.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-//#include <unistd.h>
-#include "enet.h"
+
+#include <iostream>
+#include <memory>
+
 
 #define HOST "localhost"
 #define PORT (7000)
@@ -50,31 +55,30 @@ int  main(int argc, char** argv) {
         return 0;
     }
 
-    while (1) {
-        while (enet_host_service(client, &event, 1000) > 0) {
-            switch (event.type) {
+
+    //! SDL Init
+    std::shared_ptr<RenderD11> RenderObj = std::make_shared<RenderD11>(1280, 720, 1920, 1080);
+    RenderObj->Initialize(RenderDriverType::DXD11);
+
+    while (1)
+    {
+        while (enet_host_service(client, &event, 1000) > 0)
+        {
+            switch (event.type)
+            {
             case ENET_EVENT_TYPE_RECEIVE:
-                puts((char*)event.packet->data); break;
+                printf("A packet of length %u .\n",
+                    event.packet->dataLength);
+
+                /* Clean up the packet now that we're done using it. */
+                enet_packet_destroy(event.packet);
+
+                break;
             case ENET_EVENT_TYPE_DISCONNECT:
                 connected = 0;
                 printf("You have been disconnected.\n");
                 return 2;
             }
-        }
-
-        if (connected) {
-            printf("Input: ");
-            gets_s(buffer, sizeof(buffer));
-
-            if (strlen(buffer) == 0) { continue; }
-            if (strncmp("q", buffer, BUFFERSIZE) == 0) {
-                connected = 0;
-                enet_peer_disconnect(peer, 0);
-                continue;
-            }
-
-            packet = enet_packet_create(buffer, strlen(buffer) + 1, ENET_PACKET_FLAG_RELIABLE);
-            enet_peer_send(peer, 0, packet);
         }
     }
 
