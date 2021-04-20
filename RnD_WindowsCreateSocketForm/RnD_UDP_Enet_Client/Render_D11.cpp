@@ -152,7 +152,7 @@ int32_t RenderD11::Procedd_poll(int fps)
 		SDL_SetWindowTitle(window_, fpsStr.c_str());
 
 		int delayTime = fps_ - totalProccedd;
-		std::cout << "delay time : " << delayTime << std::endl;
+		//std::cout << "delay time : " << delayTime << std::endl;
 
 		if(delayTime > 0)
 			SDL_Delay(delayTime);
