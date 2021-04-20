@@ -16,10 +16,33 @@
     <Filter Include="enet">
       <UniqueIdentifier>{5d4f6584-42d4-4042-8719-da64410aac23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dxgi">
+      <UniqueIdentifier>{9fce1017-60f0-4aa6-b3bd-ca4a977bcd37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RnD_UDP_Enet_Server.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="DuplicationManager.cpp">
+      <Filter>dxgi</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="thirdparty\enet\enet.h">
+      <Filter>enet</Filter>
+    </ClInclude>
+    <ClInclude Include="DuplicationManager.h">
+      <Filter>dxgi</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShaderCbCr.h">
+      <Filter>dxgi</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShaderChrominance.h">
+      <Filter>dxgi</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShaderLuminance.h">
+      <Filter>dxgi</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
