@@ -35,6 +35,7 @@
 #ifndef ENET_INCLUDE_H
 #define ENET_INCLUDE_H
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -5981,6 +5982,7 @@ extern "C" {
             NULL,
             NULL) == SOCKET_ERROR
         ) {
+
             return (WSAGetLastError() == WSAEWOULDBLOCK) ? 0 : -1;
         }
 

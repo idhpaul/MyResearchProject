@@ -20,13 +20,15 @@
 #define HEIGHT		1080
 
 #define HOST "localhost"
-#define PORT (7000)
+#define PORT (20020)
 #define BUFFERSIZE (1000)
 
 ENetAddress  address;
 ENetHost* server;
 ENetEvent  event;
 ENetPacket* packet;
+
+char    buffer[BUFFERSIZE];
 
 int  main(int argc, char** argv)
 {
@@ -56,14 +58,19 @@ int  main(int argc, char** argv)
     while (1) {
         while (enet_host_service(server, &event, 1000) > 0) {
             switch (event.type) {
-            case ENET_EVENT_TYPE_NONE:
-                printf("type none\n");
-                break;
-            case ENET_EVENT_TYPE_CONNECT: 
-                printf("type connect\n");
+            case ENET_EVENT_TYPE_CONNECT: break;
+            case ENET_EVENT_TYPE_RECEIVE:
+                if (event.peer->data == NULL) {
+                    event.peer->data = malloc(strlen((char*)event.packet->data) + 1);
+                    strcpy((char*)event.peer->data, (char*)event.packet->data);
 
-                while (true)
-                {
+                    sprintf_s(buffer, sizeof(buffer), "%s has connected\n", (char*)event.packet->data);
+                    packet = enet_packet_create(buffer,
+                        strlen(buffer) + 1, 0);
+                    enet_host_broadcast(server, 1, packet);
+                    enet_host_flush(server);
+                }
+                else {
                     // Capture Frame
                     // 프레임 가져오기(BGRA, GPU)
                     Ret = DXGI_Capture_->GetFrame();
@@ -84,13 +91,16 @@ int  main(int argc, char** argv)
                         }
 
                         // send frame
-                        
+                    
                         ENetPacket* packet = enet_packet_create(
                             nv12_texture.data(),             // data
                             nv12_texture.size(),             // data length
                             ENET_PACKET_FLAG_RELIABLE);
 
                         enet_peer_send(event.peer, 0, packet);
+                        enet_host_flush(server);
+
+                        std::cout << "Send packet" << std::endl;
                     }
                     else
                     {
@@ -98,24 +108,53 @@ int  main(int argc, char** argv)
                         printf("Could not get the frame.\n");
                         break;
                     }
-
-                    Sleep(1000);
-                    
+                    /*sprintf_s(buffer, sizeof(buffer), "%s: %s", (char*)event.peer->data, (char*)event.packet->data);
+                    packet = enet_packet_create(buffer, strlen(buffer) + 1, 0);
+                    enet_peer_send(server->peers, 0, packet);
+                    enet_host_flush(server);*/
                 }
-
                 break;
             case ENET_EVENT_TYPE_DISCONNECT:
-                printf("type disconect\n");
-                break;
-            case ENET_EVENT_TYPE_RECEIVE:
-                printf("type receive\n");
-                break;
-            case ENET_EVENT_TYPE_DISCONNECT_TIMEOUT:
-                printf("type disconnect timeout\n");
+                sprintf_s(buffer, sizeof(buffer), "%s has disconnected.", (char*)event.peer->data);
+                packet = enet_packet_create(buffer, strlen(buffer) + 1, 0);
+                enet_host_broadcast(server, 1, packet);
+                free(event.peer->data);
+                event.peer->data = NULL;
                 break;
             default: printf("Tick tock.\n"); break;
             }
         }
+        //while (enet_host_service(server, &event, 1000) > 0) {
+        //    switch (event.type) {
+        //    case ENET_EVENT_TYPE_NONE:
+        //        printf("type none\n");
+        //        break;
+        //    case ENET_EVENT_TYPE_CONNECT: 
+        //        printf("type connect\n");
+
+        //        printf("connect : ", event.data);
+
+        //        while (true)
+        //        {
+        //            
+
+        //            Sleep(1000);
+        //            
+        //        }
+
+        //        break;
+        //    case ENET_EVENT_TYPE_DISCONNECT:
+        //        printf("type disconect\n");
+        //        break;
+        //    case ENET_EVENT_TYPE_RECEIVE:
+        //        printf("type receive\n");
+        //        break;
+        //    case ENET_EVENT_TYPE_DISCONNECT_TIMEOUT:
+        //        printf("type disconnect timeout\n");
+        //        break;
+        //    default: printf("Tick tock.\n"); break;
+        //    }
+        //}
     }
 
     enet_host_destroy(server);
