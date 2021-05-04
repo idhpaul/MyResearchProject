@@ -56,7 +56,7 @@ int  main(int argc, char** argv)
     if (server == NULL) { printf("Could not start server.\n"); return 0; }
 
     while (1) {
-        while (enet_host_service(server, &event, 1000) > 0) {
+        while (enet_host_service(server, &event, 33) > 0) {
             switch (event.type) {
             case ENET_EVENT_TYPE_CONNECT: break;
             case ENET_EVENT_TYPE_RECEIVE:
