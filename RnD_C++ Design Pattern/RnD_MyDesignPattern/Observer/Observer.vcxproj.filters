@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Capture.cpp">
+      <Filter>Main Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Decoder.cpp">
+      <Filter>Main Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Encoder.cpp">
+      <Filter>Main Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ConcreteSubject.cpp">
+      <Filter>Observer Pattern</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Capture.h">
+      <Filter>Main Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Decoder.h">
+      <Filter>Main Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Encoder.h">
+      <Filter>Main Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ConcreteSubject.h">
+      <Filter>Observer Pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Observer Pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="Subject.h">
+      <Filter>Observer Pattern</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Main Object">
+      <UniqueIdentifier>{b92b3d26-e229-48d1-8af7-679063352e49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Observer Pattern">
+      <UniqueIdentifier>{41835373-f019-45c5-acde-8fb99dcc5435}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+</Project>
