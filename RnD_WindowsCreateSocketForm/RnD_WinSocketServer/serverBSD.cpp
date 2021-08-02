@@ -1,6 +1,9 @@
 #include <stdio.h>
 
-#include <WinSock2.h>
+
+#include <winsock2.h>
+
+#pragma comment (lib, "Ws2_32.lib")
 
 int main() {
 
@@ -58,7 +61,25 @@ int main() {
 		return -1;
 	}
 
-	send(clientsock, "message buffer here", sizeof(20), 0);
+	while (true)
+	{
+		int res = send(clientsock, "message buffer here", sizeof(20), 0);
+		if (res > 0)
+		{
+
+		}
+		else if (res == 0)
+		{
+			printf("GetLastError : %d\n", WSAGetLastError());
+		}
+		else
+		{
+			printf("GetLastError : %d\n", WSAGetLastError());
+		}
+
+		Sleep(1000);
+	}
+
 
 
 	closesocket(sock);
